@@ -15,8 +15,7 @@ import useMe from "../hooks/useMe";
 // Path: packages\frontend\src\components\Navbar.tsx
 
 export default function Navbar() {
-
-    const { data, isError } = useMe()
+  const { data, isError } = useMe();
 
   return (
     <Box>
@@ -48,54 +47,54 @@ export default function Navbar() {
           direction={"row"}
           spacing={6}
         >
-            {!data ? (
-                <>
-                    <Button
-                        as={Link}
-                        fontSize={"sm"}
-                        fontWeight={400}
-                        variant={"link"}
-                        to="/login"
-                    >
-                        Login
-                    </Button>
-                    <Button
-                        as={Link}
-                        display={{ base: "none", md: "inline-flex" }}
-                        fontSize={"sm"}
-                        fontWeight={600}
-                        color={"white"}
-                        bg={"gray.900"}
-                        to={"/register"}
-                        _hover={{
-                            bg: "gray.700",
-                        }}
-                    >
-                        Register
-                    </Button>
-                    </>
-            ): (
-                <>
-                    <Button
-                        as={Link}
-                        fontSize={"sm"}
-                        fontWeight={400}
-                        variant={"link"}
-                        to="/profile"
-                    >
-                        Profile
-                    </Button>
-                    <Button
-                        as={Link}
-                        fontSize={"sm"}
-                        fontWeight={400}
-                        variant={"link"}
-                        to="/logout"
-                    >
-                        Logout
-                    </Button>
-                </>
-            )}
+          {!data ? (
+            <>
+              <Button
+                as={Link}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                to="/login"
+              >
+                Login
+              </Button>
+              <Button
+                as={Link}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"gray.900"}
+                to={"/register"}
+                _hover={{
+                  bg: "gray.700",
+                }}
+              >
+                Register
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                as={Link}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                to="/profile"
+              >
+                Profile
+              </Button>
+              <Button
+                as={Link}
+                fontSize={"sm"}
+                fontWeight={400}
+                variant={"link"}
+                to="/logout"
+              >
+                Logout
+              </Button>
+            </>
+          )}
           <Button
             as={"a"}
             fontSize={"sm"}
@@ -104,6 +103,15 @@ export default function Navbar() {
             href="/docs"
           >
             Docs
+          </Button>
+          <Button
+            as={Link}
+            fontSize={"sm"}
+            fontWeight={400}
+            variant={"link"}
+            to="/ManageInventory"
+          >
+            Manage Inventory
           </Button>
         </Stack>
       </Flex>
