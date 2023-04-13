@@ -83,7 +83,7 @@ export default function Navbar() {
                   fontSize={"sm"}
                   fontWeight={400}
                   variant={"link"}
-                  to="/ManageInventory"
+                  to="/staff/inventory/manage"
                 >
                   Manage Inventory
                 </Button>
