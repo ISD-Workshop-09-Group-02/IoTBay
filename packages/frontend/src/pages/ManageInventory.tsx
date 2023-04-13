@@ -20,6 +20,7 @@ import {
   Tag,
   Badge,
   TableContainer,
+  Checkbox,
 } from "@chakra-ui/react";
 
 import useMe from "../hooks/useMe";
@@ -51,7 +52,7 @@ export default function ManageInventory() {
                 size="lg"
                 leftIcon={<Icon>{reactImage}</Icon>}
               >
-                Delete Product
+                Delete Products
               </Button>
             </HStack>
           </HStack>
@@ -103,7 +104,7 @@ export default function ManageInventory() {
 
         {/* Table */}
         <Box
-          background={"#01121f"}
+          background={"gray.800"}
           // padding
           padding={4}
         >
@@ -115,8 +116,8 @@ export default function ManageInventory() {
                   <Th textAlign="center">Name</Th>
                   <Th textAlign="center">Stock</Th>
                   <Th textAlign="center">Categories</Th>
-                  <Th textAlign="center">Last Updated</Th>
-                  <Th textAlign="center">Price</Th>
+                  <Th textAlign="center">Last Updated (DD-MM-YYYY)</Th>
+                  <Th textAlign="center">Price ($)</Th>
                   <Th textAlign="center">Operations</Th>
                 </Tr>
               </Thead>
@@ -152,15 +153,22 @@ const TableRow: React.FC<{
   return (
     <Tr>
       <Td>
-        <img src="https://via.placeholder.com/150" alt="Product Image" />
+        <HStack spacing={4} align="center" justify="center">
+          <Checkbox></Checkbox>
+          <img src="https://via.placeholder.com/150" alt="Product Image" />
+        </HStack>
       </Td>
       <Td>
-        <Text fontSize="2xl">Product Name</Text>
+        <Text fontSize="2xl" paddingBottom={2}>
+          Product Name
+        </Text>
         <Text fontSize="sm">Product Description</Text>
       </Td>
       <Td>
         <Box textAlign="center">
-          <Text fontSize="2xl">XX</Text>
+          <Text fontSize="2xl" paddingBottom={2}>
+            XX
+          </Text>
           <Text fontSize="sm">In Stock</Text>
         </Box>
       </Td>
@@ -177,13 +185,15 @@ const TableRow: React.FC<{
       </Td>
       <Td>
         <Box textAlign="center">
-          <Text fontSize="2xl">01/01/2023</Text>
+          <Text fontSize="2xl" paddingBottom={2}>
+            01/01/2023
+          </Text>
           <Badge colorScheme="red">LAST UPDATED</Badge>
         </Box>
       </Td>
       <Td>
         <Box textAlign="center">
-          <Text fontSize="2xl">$XX.XX</Text>
+          <Text fontSize="2xl">XX.XX</Text>
         </Box>
       </Td>
       <Td>
