@@ -4,7 +4,13 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   IconButton,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
   useBreakpointValue,
@@ -12,6 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
 import { UserDto } from "../api/generated";
+import reactImage from "../assets/react.svg";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -78,15 +85,37 @@ export default function Navbar() {
           ) : (
             <>
               {data.userType === UserDto.userType.STAFF && (
-                <Button
-                  as={Link}
-                  fontSize={"sm"}
-                  fontWeight={400}
-                  variant={"link"}
-                  to="/staff/inventory/manage"
-                >
-                  Manage Inventory
-                </Button>
+                <Menu>
+                  {({ isOpen }) => (
+                    <>
+                      <MenuButton
+                        isActive={isOpen}
+                        as={Button}
+                        rightIcon={<Icon>{reactImage}</Icon>}
+                        color="black"
+                      >
+                        Manage Inventory
+                      </MenuButton>
+                      <MenuList>
+                        <MenuItem
+                          as={"a"}
+                          href="/staff/inventory/manage"
+                          color="black"
+                        >
+                          Manage Inventory
+                        </MenuItem>
+
+                        <MenuItem
+                          as={"a"}
+                          href="/staff/inventory/create"
+                          color="black"
+                        >
+                          Create Inventory
+                        </MenuItem>
+                      </MenuList>
+                    </>
+                  )}
+                </Menu>
               )}
               <Button
                 as={Link}
