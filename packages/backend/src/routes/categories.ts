@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
 import { UserCollectionSchemaRef, UserSchemaRef } from "../schema";
+import { CategorySchemaRef } from "../schema/categories.schema";
 
 /*
   getCategory (GET) /:categoryId
