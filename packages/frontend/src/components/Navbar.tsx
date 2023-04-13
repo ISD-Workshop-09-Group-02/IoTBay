@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
+import { UserDto } from "../api/generated";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -38,7 +39,8 @@ export default function Navbar() {
             as={Link}
             to="/"
           >
-            IoTBay
+            IoTBay -{" "}
+            {data?.userType === UserDto.userType.STAFF ? "Staff" : "Customer"}
           </Text>
         </Flex>
         <Stack
@@ -75,6 +77,17 @@ export default function Navbar() {
             </>
           ) : (
             <>
+              {data.userType === UserDto.userType.STAFF && (
+                <Button
+                  as={Link}
+                  fontSize={"sm"}
+                  fontWeight={400}
+                  variant={"link"}
+                  to="/ManageInventory"
+                >
+                  Manage Inventory
+                </Button>
+              )}
               <Button
                 as={Link}
                 fontSize={"sm"}
@@ -103,15 +116,6 @@ export default function Navbar() {
             href="/docs"
           >
             Docs
-          </Button>
-          <Button
-            as={Link}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            to="/ManageInventory"
-          >
-            Manage Inventory
           </Button>
         </Stack>
       </Flex>
