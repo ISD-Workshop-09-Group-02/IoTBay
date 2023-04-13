@@ -38,15 +38,15 @@ const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: "/ManageInventory",
+        path: "/staff/inventory/manage",
         element: <ManageInventory />,
       },
       {
-        path: "/CreateInventory",
+        path: "/staff/inventory/create",
         element: <CreateInventory />,
       },
       {
-        path: "/ManageInventory/:id",
+        path: "/staff/inventory/edit/:id",
         element: <EditInventory />,
       },
       {
