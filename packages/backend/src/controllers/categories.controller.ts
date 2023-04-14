@@ -101,6 +101,43 @@ export const createCategory = async (
 };
 
 // deleteCategory (DELETE) /
+export const deleteCategory = async (
+  request: FastifyRequest<{ Params: ICategoryRouteParams }>,
+  reply: FastifyReply
+) => {
+  const { categoryId } = request.params;
+
+  const category = await prisma.productCategory.findUnique({
+    where: {
+      categoryId,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (!category) {
+    return reply.notFound("Category not found");
+  }
+
+  const deletedCategory = await prisma.productCategory.delete({
+    where: {
+      categoryId,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (!deletedCategory) {
+    return reply.internalServerError("Failed to delete category");
+  }
+
+  return reply.status(200).send(deletedCategory);
+};
+
 // deleteCategories (DELETE) /
 
 // updateCategory (PUT) /

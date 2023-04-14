@@ -92,8 +92,6 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     handler: controllers.createCategory,
   });
 
-  /*
-
   // deleteCategory (DELETE) /:categoryId
   fastify.route({
     schema: {
@@ -119,6 +117,8 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     preValidation: [isLoggedIn, isStaff],
     handler: controllers.categories,
   });
+
+  /*
 
   // deleteCategories (DELETE) /
   fastify.route({
