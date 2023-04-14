@@ -21,8 +21,8 @@ import {
   ProductsSchema,
 } from "./schema";
 import { env } from "./utils";
-import productsRouter from "./routes/products";
-import categoriesRouter from "./routes/categories";
+import productsRouter from "./routes/products.router";
+import categoriesRouter from "./routes/categories.router";
 // Load environment variables
 config();
 

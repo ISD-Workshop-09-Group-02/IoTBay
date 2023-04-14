@@ -35,9 +35,11 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.product,
   });
+
+  /*
 
   // getProducts (GET) /
   fastify.route({
@@ -171,4 +173,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
     preValidation: [isLoggedIn, isStaff],
     handler: controllers.products,
   });
+
+  */
 }
