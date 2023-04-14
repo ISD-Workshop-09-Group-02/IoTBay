@@ -2,9 +2,15 @@ import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
 
+interface IProduct {
+  productId: string;
+}
+
 // getProduct (GET) /:productId
 export const product = async (
-  request: FastifyRequest<{ Params: { productId: string } }>,
+  request: FastifyRequest<{
+    Params: IProduct;
+  }>,
   reply: FastifyReply
 ) => {
   const { productId } = request.params;
@@ -20,14 +26,12 @@ export const product = async (
     select: {
       productId: true,
       name: true,
-      // price: true,
-      // stock: true,
-      // description: true,
-      // image: true,
-      // category: true,
-      // OrderLineItem: true,
-      // Category: true,
-      // categoryId: true,
+      price: true,
+      stock: true,
+      description: true,
+      image: true,
+      category: true,
+      categoryId: true,
     },
   });
 
