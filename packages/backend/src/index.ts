@@ -9,10 +9,17 @@ import prisma from "./services/prisma.service";
 
 import authRouter from "./routes/auth.router";
 import usersRouter from "./routes/users.router";
-import fastify from 'fastify'
+import fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import { LoginSchema, RegisterSchema, UserCollectionSchema, UserSchema } from "./schema";
+import {
+  LoginSchema,
+  RegisterSchema,
+  UserCollectionSchema,
+  UserSchema,
+} from "./schema";
 import { env } from "./utils";
+import productsRouter from "./routes/products";
+import categoriesRouter from "./routes/categories";
 // Load environment variables
 config();
 
@@ -50,7 +57,7 @@ await server.register(await import("@fastify/swagger"), {
         UserSchema,
         UserCollectionSchema,
         LoginSchema,
-        RegisterSchema
+        RegisterSchema,
       },
     },
     info: {
@@ -58,13 +65,12 @@ await server.register(await import("@fastify/swagger"), {
       version: "0.1.0",
       description: "IoTBay API",
     },
-
   },
   refResolver: {
-    buildLocalReference (json, baseUri, fragment, i) {
-      return json.$id?.toString() || `my-fragment-${i}`
-    }
-  }
+    buildLocalReference(json, baseUri, fragment, i) {
+      return json.$id?.toString() || `my-fragment-${i}`;
+    },
+  },
 });
 
 // Register schemas to swagger
@@ -121,7 +127,13 @@ fastifyPassport.registerUserDeserializer(async (userId: string, request) => {
 await server.register(authRouter, { prefix: "/api/auth" });
 
 // Register the users router
-await server.register(usersRouter, {prefix: "/api/users"});
+await server.register(usersRouter, { prefix: "/api/users" });
+
+// Register the products router
+await server.register(productsRouter, { prefix: "/api/products" });
+
+// Register the categories router
+await server.register(categoriesRouter, { prefix: "/api/categories" });
 
 // If there's no route, send the index.html file
 await server.setNotFoundHandler((req, res) => {
