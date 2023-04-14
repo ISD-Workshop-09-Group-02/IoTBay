@@ -16,6 +16,8 @@ import {
   RegisterSchema,
   UserCollectionSchema,
   UserSchema,
+  CategorySchema,
+  ProductsSchema,
 } from "./schema";
 import { env } from "./utils";
 import productsRouter from "./routes/products";
@@ -58,6 +60,8 @@ await server.register(await import("@fastify/swagger"), {
         UserCollectionSchema,
         LoginSchema,
         RegisterSchema,
+        CategorySchema,
+        ProductsSchema,
       },
     },
     info: {
@@ -78,6 +82,8 @@ server.addSchema(UserSchema);
 server.addSchema(UserCollectionSchema);
 server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
+server.addSchema(CategorySchema);
+server.addSchema(ProductsSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
