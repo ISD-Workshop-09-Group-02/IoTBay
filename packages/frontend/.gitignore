@@ -7,10 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# dependencies
 node_modules
 dist
 dist-ssr
 *.local
+
+# testing
+/coverage
+/cypress/videos
+/cypress/screenshots
+
+# production
+/build
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +31,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
