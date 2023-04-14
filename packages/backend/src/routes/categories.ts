@@ -39,8 +39,10 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     method: "GET",
     url: "/:categoryId",
     preValidation: [isLoggedIn, isStaff],
-    handler: controllers.categories,
+    handler: controllers.category,
   });
+
+  /*
 
   // getCategories (GET) /
   fastify.route({
@@ -165,4 +167,6 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     preValidation: [isLoggedIn, isStaff],
     handler: controllers.categories,
   });
+
+  */
 }
