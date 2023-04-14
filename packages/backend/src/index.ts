@@ -17,6 +17,7 @@ import {
   UserCollectionSchema,
   UserSchema,
   CategorySchema,
+  CategoryCollectionSchema,
   ProductsSchema,
 } from "./schema";
 import { env } from "./utils";
@@ -61,6 +62,7 @@ await server.register(await import("@fastify/swagger"), {
         LoginSchema,
         RegisterSchema,
         CategorySchema,
+        CategoryCollectionSchema,
         ProductsSchema,
       },
     },
@@ -83,6 +85,7 @@ server.addSchema(UserCollectionSchema);
 server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
 server.addSchema(CategorySchema);
+server.addSchema(CategoryCollectionSchema);
 server.addSchema(ProductsSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {

@@ -27,10 +27,10 @@ export const category = async (
     select: {
       categoryId: true,
       name: true,
-    }
+    },
   });
 
-  if(!category) {
+  if (!category) {
     return reply.notFound("Category not found");
   }
 
@@ -38,8 +38,67 @@ export const category = async (
 };
 
 // getCategories (GET) /
+export const categories = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  const categories = await prisma.productCategory.findMany({
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (categories.length === 0) {
+    return reply.notFound("No categories found");
+  }
+
+  return reply.status(200).send(categories);
+};
+
+interface ICreateCategory {
+  name: string;
+}
 
 // createCategory (POST) /
+export const createCategory = async (
+  request: FastifyRequest<{ Body: ICreateCategory }>,
+  reply: FastifyReply
+) => {
+  const { name } = request.body;
+
+  // Check if category already exists
+
+  const categoryExists = await prisma.productCategory.findFirst({
+    where: {
+      name,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (categoryExists) {
+    return reply.badRequest("Category already exists");
+  }
+
+  const category = await prisma.productCategory.create({
+    data: {
+      name,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (!category) {
+    return reply.internalServerError("Failed to create category");
+  }
+
+  return reply.status(201).send(category);
+};
 
 // deleteCategory (DELETE) /
 // deleteCategories (DELETE) /

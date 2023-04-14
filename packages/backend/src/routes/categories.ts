@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { CategorySchemaRef } from "../schema";
+import { CategoryCollectionSchemaRef, CategorySchemaRef } from "../schema";
 
 /*
   getCategory (GET) /:categoryId
@@ -38,17 +38,15 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/:categoryId",
-    preValidation: [isLoggedIn, isStaff],
+    // preValidation: [isLoggedIn, isStaff],
     handler: controllers.category,
   });
-
-  /*
 
   // getCategories (GET) /
   fastify.route({
     schema: {
       response: {
-        200: CategorySchemaRef,
+        200: CategoryCollectionSchemaRef,
       },
       params: {
         type: "object",
@@ -63,8 +61,8 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       ],
     },
     method: "GET",
-    url: "",
-    preValidation: [isLoggedIn, isStaff],
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
     handler: controllers.categories,
   });
 
@@ -76,7 +74,9 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       },
       params: {
         type: "object",
-        properties: {},
+        properties: {
+          name: { type: "string" },
+        },
       },
       operationId: "createCategory",
       tags: ["Categories"],
@@ -88,9 +88,11 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "POST",
     url: "",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.categories,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.createCategory,
   });
+
+  /*
 
   // deleteCategory (DELETE) /:categoryId
   fastify.route({
