@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
-import { UserDto } from "../api/generated";
+import { UserSchema } from "../api/generated";
 import reactImage from "../assets/react.svg";
 
 // Path: packages\frontend\src\components\Navbar.tsx
@@ -47,7 +47,9 @@ export default function Navbar() {
             to="/"
           >
             IoTBay -{" "}
-            {data?.userType === UserDto.userType.STAFF ? "Staff" : "Customer"}
+            {data?.userType === UserSchema.userType.STAFF
+              ? "Staff"
+              : "Customer"}
           </Text>
         </Flex>
         <Stack
@@ -84,7 +86,7 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              {data.userType === UserDto.userType.STAFF && (
+              {data.userType === UserSchema.userType.STAFF && (
                 <Menu>
                   {({ isOpen }) => (
                     <>
