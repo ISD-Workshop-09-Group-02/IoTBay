@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { ProductSchemaRef } from "../schema/products.schema";
+import { ProductSchemaRef } from "../schema";
 
 /*
   getProduct (GET) /:productId
