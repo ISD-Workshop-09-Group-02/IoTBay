@@ -139,5 +139,53 @@ export const deleteCategory = async (
 };
 
 // deleteCategories (DELETE) /
+export const deleteCategories = async (
+  request: FastifyRequest<{
+    Body: {
+      categoryIds: string[];
+    };
+  }>,
+  reply: FastifyReply
+) => {
+  const { categoryIds } = request.body;
+
+  if (!categoryIds || categoryIds.length === 0) {
+    return reply.badRequest("No categoryIds provided");
+  }
+
+  const categories = await prisma.productCategory.findMany({
+    where: {
+      categoryId: {
+        in: categoryIds,
+      },
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (categories.length === 0) {
+    return reply.notFound("No categories found");
+  }
+
+  if (categories.length !== categoryIds.length) {
+    return reply.badRequest("One or more categories not found");
+  }
+
+  const deletedCategories = await prisma.productCategory.deleteMany({
+    where: {
+      categoryId: {
+        in: categoryIds,
+      },
+    },
+  });
+
+  if (!deletedCategories.count) {
+    return reply.internalServerError("Failed to delete categories");
+  }
+
+  return reply.status(200).send(deletedCategories);
+};
 
 // updateCategory (PUT) /
