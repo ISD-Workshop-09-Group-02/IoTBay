@@ -4,26 +4,19 @@ import {
   Box,
   Button,
   Flex,
-  Icon,
   IconButton,
-  Image,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
-import { UserDto } from "../api/generated";
-import reactImage from "../assets/react.svg";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
 export default function Navbar() {
-  const { data, isError } = useMe();
+
+    const { data, isError } = useMe()
 
   return (
     <Box>
@@ -46,8 +39,7 @@ export default function Navbar() {
             as={Link}
             to="/"
           >
-            IoTBay -{" "}
-            {data?.userType === UserDto.userType.STAFF ? "Staff" : "Customer"}
+            IoTBay
           </Text>
         </Flex>
         <Stack
@@ -56,87 +48,54 @@ export default function Navbar() {
           direction={"row"}
           spacing={6}
         >
-          {!data ? (
-            <>
-              <Button
-                as={Link}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                to="/login"
-              >
-                Login
-              </Button>
-              <Button
-                as={Link}
-                display={{ base: "none", md: "inline-flex" }}
-                fontSize={"sm"}
-                fontWeight={600}
-                color={"white"}
-                bg={"gray.900"}
-                to={"/register"}
-                _hover={{
-                  bg: "gray.700",
-                }}
-              >
-                Register
-              </Button>
-            </>
-          ) : (
-            <>
-              {data.userType === UserDto.userType.STAFF && (
-                <Menu>
-                  {({ isOpen }) => (
-                    <>
-                      <MenuButton
-                        isActive={isOpen}
-                        as={Button}
-                        rightIcon={<Icon>{reactImage}</Icon>}
-                        color="black"
-                      >
-                        Manage Inventory
-                      </MenuButton>
-                      <MenuList>
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/manage"
-                          color="black"
-                        >
-                          Manage Inventory
-                        </MenuItem>
-
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/create"
-                          color="black"
-                        >
-                          Create Inventory
-                        </MenuItem>
-                      </MenuList>
+            {!data ? (
+                <>
+                    <Button
+                        as={Link}
+                        fontSize={"sm"}
+                        fontWeight={400}
+                        variant={"link"}
+                        to="/login"
+                    >
+                        Login
+                    </Button>
+                    <Button
+                        as={Link}
+                        display={{ base: "none", md: "inline-flex" }}
+                        fontSize={"sm"}
+                        fontWeight={600}
+                        color={"white"}
+                        bg={"gray.900"}
+                        to={"/register"}
+                        _hover={{
+                            bg: "gray.700",
+                        }}
+                    >
+                        Register
+                    </Button>
                     </>
-                  )}
-                </Menu>
-              )}
-              <Button
-                as={Link}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                to="/profile"
-              >
-                Profile
-              </Button>
-              <Button
-                as={Link}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                to="/logout"
-              >
-                Logout
-              </Button>
-            </>
-          )}
+            ): (
+                <>
+                    <Button
+                        as={Link}
+                        fontSize={"sm"}
+                        fontWeight={400}
+                        variant={"link"}
+                        to="/profile"
+                    >
+                        Profile
+                    </Button>
+                    <Button
+                        as={Link}
+                        fontSize={"sm"}
+                        fontWeight={400}
+                        variant={"link"}
+                        to="/logout"
+                    >
+                        Logout
+                    </Button>
+                </>
+            )}
           <Button
             as={"a"}
             fontSize={"sm"}
