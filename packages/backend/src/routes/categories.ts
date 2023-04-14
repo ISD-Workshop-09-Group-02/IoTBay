@@ -155,9 +155,6 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
   });
 
-  /*
-
-
   // updateCategory (PUT) /:categoryId
   fastify.route({
     schema: {
@@ -170,6 +167,12 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
           categoryId: { type: "string" },
         },
       },
+      body: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+        },
+      },
       operationId: "updateCategory",
       tags: ["Categories"],
       security: [
@@ -180,9 +183,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "PUT",
     url: "/:categoryId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.categories,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.updateCategory,
   });
-
-  */
 }

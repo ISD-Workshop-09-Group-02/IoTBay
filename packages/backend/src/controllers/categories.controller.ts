@@ -189,3 +189,54 @@ export const deleteCategories = async (
 };
 
 // updateCategory (PUT) /
+export const updateCategory = async (
+  request: FastifyRequest<{
+    Params: ICategoryRouteParams;
+    Body: ICreateCategory;
+  }>,
+  reply: FastifyReply
+) => {
+  const { categoryId } = request.params;
+  const { name } = request.body;
+
+  if (!categoryId) {
+    return reply.badRequest("No categoryId provided");
+  }
+
+  if (!name) {
+    return reply.badRequest("No name provided");
+  }
+
+  const category = await prisma.productCategory.findUnique({
+    where: {
+      categoryId,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (!category) {
+    return reply.notFound("Category not found");
+  }
+
+  const updatedCategory = await prisma.productCategory.update({
+    where: {
+      categoryId,
+    },
+    data: {
+      name,
+    },
+    select: {
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  if (!updatedCategory) {
+    return reply.internalServerError("Failed to update category");
+  }
+
+  return reply.status(200).send(updatedCategory);
+};
