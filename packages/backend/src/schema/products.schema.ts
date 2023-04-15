@@ -9,9 +9,9 @@ export const ProductsSchema = Type.Object(
     description: Type.String(),
     image: Type.String(),
     category: Type.String(),
-    OrderLineItems: Type.Array(Type.String()),
-    Category: Type.String(),
-    categoryId: Type.String({ format: "uuid" }),
+    // OrderLineItems: Type.Array(Type.String()),
+    // Category: Type.String(),
+    categoryId: Type.Optional(Type.String({ format: "uuid" })),
   },
   {
     description: "ProductsSchema",

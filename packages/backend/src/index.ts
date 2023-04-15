@@ -9,6 +9,9 @@ import prisma from "./services/prisma.service";
 
 import authRouter from "./routes/auth.router";
 import usersRouter from "./routes/users.router";
+import categoriesRouter from "./routes/categories.router";
+import productsRouter from "./routes/products.router";
+
 import fastify from "fastify";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import {
@@ -16,10 +19,12 @@ import {
   RegisterSchema,
   UserCollectionSchema,
   UserSchema,
+  CategorySchema,
+  CategoryCollectionSchema,
+  ProductsSchema,
+  ProductsCollectionSchema,
 } from "./schema";
 import { env } from "./utils";
-import productsRouter from "./routes/products";
-import categoriesRouter from "./routes/categories";
 // Load environment variables
 config();
 
@@ -58,6 +63,10 @@ await server.register(await import("@fastify/swagger"), {
         UserCollectionSchema,
         LoginSchema,
         RegisterSchema,
+        CategorySchema,
+        CategoryCollectionSchema,
+        ProductsSchema,
+        ProductsCollectionSchema,
       },
     },
     info: {
@@ -78,6 +87,10 @@ server.addSchema(UserSchema);
 server.addSchema(UserCollectionSchema);
 server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
+server.addSchema(CategorySchema);
+server.addSchema(CategoryCollectionSchema);
+server.addSchema(ProductsSchema);
+server.addSchema(ProductsCollectionSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",

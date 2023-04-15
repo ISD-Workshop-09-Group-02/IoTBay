@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { ProductSchemaRef } from "../schema/products.schema";
+import { ProductSchemaRef, ProductsCollectionSchemaRef } from "../schema";
 
 /*
   getProduct (GET) /:productId
@@ -35,15 +35,15 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.product,
   });
 
   // getProducts (GET) /
   fastify.route({
     schema: {
       response: {
-        200: ProductSchemaRef,
+        200: ProductsCollectionSchemaRef,
       },
       params: {
         type: "object",
@@ -58,8 +58,8 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "GET",
-    url: "",
-    preValidation: [isLoggedIn, isStaff],
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
     handler: controllers.products,
   });
 
@@ -75,9 +75,10 @@ export default async function productsRouter(fastify: FastifyInstance) {
           name: { type: "string" },
           price: { type: "number" },
           stock: { type: "number" },
+          image: { type: "string" },
           description: { type: "string" },
-          categories: { type: "array" },
-          images: { type: "string" },
+          category: { type: "string" },
+          // categoryId: { type: "string" },
         },
       },
       operationId: "createProduct",
@@ -89,9 +90,9 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "POST",
-    url: "",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.createProduct,
   });
 
   // deleteProduct (DELETE) /
@@ -116,20 +117,20 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.deleteProduct,
   });
 
   // deleteProducts (DELETE) /
   fastify.route({
     schema: {
       response: {
-        200: ProductSchemaRef,
+        200: ProductsCollectionSchemaRef,
       },
-      params: {
+      body: {
         type: "object",
         properties: {
-          productId: { type: "string" },
+          products: { type: "array" },
         },
       },
       operationId: "deleteProducts",
@@ -141,12 +142,12 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "DELETE",
-    url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.deleteProducts,
   });
 
-  // updateProduct (PUT) /
+  // updateProduct (PUT) /:productId
   fastify.route({
     schema: {
       response: {
@@ -156,6 +157,18 @@ export default async function productsRouter(fastify: FastifyInstance) {
         type: "object",
         properties: {
           productId: { type: "string" },
+        },
+      },
+      body: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          price: { type: "number" },
+          stock: { type: "number" },
+          image: { type: "string" },
+          description: { type: "string" },
+          category: { type: "string" },
+          // categoryId: { type: "string" },
         },
       },
       operationId: "updateProduct",
@@ -168,7 +181,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "PUT",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.updateProduct,
   });
 }
