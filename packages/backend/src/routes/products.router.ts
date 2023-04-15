@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { ProductSchemaRef } from "../schema";
+import { ProductSchemaRef, ProductsCollectionSchemaRef } from "../schema";
 
 /*
   getProduct (GET) /:productId
@@ -39,13 +39,11 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.product,
   });
 
-  /*
-
   // getProducts (GET) /
   fastify.route({
     schema: {
       response: {
-        200: ProductSchemaRef,
+        200: ProductsCollectionSchemaRef,
       },
       params: {
         type: "object",
@@ -60,10 +58,12 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "GET",
-    url: "",
-    preValidation: [isLoggedIn, isStaff],
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
     handler: controllers.products,
   });
+
+  /*
 
   // createProduct (POST) /
   fastify.route({

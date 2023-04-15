@@ -43,6 +43,30 @@ export const product = async (
 };
 
 // getProducts (GET) /
+export const products = async (
+  request: FastifyRequest,
+  reply: FastifyReply
+) => {
+  const products = await prisma.product.findMany({
+    select: {
+      productId: true,
+      name: true,
+      price: true,
+      stock: true,
+      description: true,
+      image: true,
+      category: true,
+      categoryId: true,
+    },
+  });
+
+  if (!products) {
+    return reply.notFound("Products not found");
+  }
+
+  return reply.status(200).send(products);
+};
+
 // createProduct (POST) /
 // deleteProduct (DELETE) /
 // deleteProducts (DELETE) /
