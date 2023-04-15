@@ -150,5 +150,46 @@ export const createProduct = async (
 };
 
 // deleteProduct (DELETE) /
+export const deleteProduct = async (
+  request: FastifyRequest<{
+    Params: IProduct;
+  }>,
+  reply: FastifyReply
+) => {
+  const { productId } = request.params;
+
+  if (!productId) {
+    return reply.badRequest("No productId provided");
+  }
+
+  const findProduct = await prisma.product.findMany({
+    where: {
+      productId,
+    },
+  });
+
+  if (findProduct.length === 0) {
+    return reply.notFound("Product not found");
+  }
+
+  const product = await prisma.product.delete({
+    where: {
+      productId,
+    },
+    select: {
+      productId: true,
+      name: true,
+      price: true,
+      stock: true,
+      description: true,
+      image: true,
+      category: true,
+      // categoryId: true,
+    },
+  });
+
+  return reply.status(200).send(product);
+};
+
 // deleteProducts (DELETE) /
 // updateProduct (PUT) /

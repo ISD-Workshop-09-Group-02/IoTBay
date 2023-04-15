@@ -95,8 +95,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.createProduct,
   });
 
-  /*
-
   // deleteProduct (DELETE) /
   fastify.route({
     schema: {
@@ -119,9 +117,11 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.deleteProduct,
   });
+
+  /*
 
   // deleteProducts (DELETE) /
   fastify.route({
