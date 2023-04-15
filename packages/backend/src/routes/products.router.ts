@@ -63,8 +63,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.products,
   });
 
-  /*
-
   // createProduct (POST) /
   fastify.route({
     schema: {
@@ -77,9 +75,10 @@ export default async function productsRouter(fastify: FastifyInstance) {
           name: { type: "string" },
           price: { type: "number" },
           stock: { type: "number" },
+          image: { type: "string" },
           description: { type: "string" },
-          categories: { type: "array" },
-          images: { type: "string" },
+          category: { type: "array" },
+          // categoryId: { type: "string" },
         },
       },
       operationId: "createProduct",
@@ -91,10 +90,12 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "POST",
-    url: "",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.createProduct,
   });
+
+  /*
 
   // deleteProduct (DELETE) /
   fastify.route({

@@ -11,7 +11,7 @@ export const ProductsSchema = Type.Object(
     category: Type.String(),
     // OrderLineItems: Type.Array(Type.String()),
     // Category: Type.String(),
-    categoryId: Type.String({ format: "uuid" }),
+    categoryId: Type.Optional(Type.String({ format: "uuid" })),
   },
   {
     description: "ProductsSchema",

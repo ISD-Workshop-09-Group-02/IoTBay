@@ -67,7 +67,88 @@ export const products = async (
   return reply.status(200).send(products);
 };
 
+interface ICreateProduct {
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  image: string;
+  category: string;
+  // categoryId: string;
+}
+
 // createProduct (POST) /
+export const createProduct = async (
+  request: FastifyRequest<{ Body: ICreateProduct }>,
+  reply: FastifyReply
+) => {
+  const {
+    name,
+    price,
+    stock,
+    description,
+    image,
+    category,
+    // categoryId,
+  } = request.body;
+
+  if (
+    !name ||
+    !price ||
+    !stock ||
+    !description ||
+    !image ||
+    !category
+    // !categoryId ||
+  ) {
+    return reply.badRequest("Missing fields");
+  }
+
+  const productExists = await prisma.product.findMany({
+    where: {
+      name,
+      price,
+      stock,
+      description,
+      image,
+      category,
+      // categoryId,
+    },
+  });
+
+  if (productExists.length > 0) {
+    return reply.badRequest("Product already exists");
+  }
+
+  const product = await prisma.product.create({
+    data: {
+      name,
+      price,
+      stock,
+      description,
+      image,
+      // categoryId,
+      category,
+    },
+    select: {
+      productId: true,
+      name: true,
+      price: true,
+      stock: true,
+      description: true,
+      image: true,
+      category: true,
+      // categoryId: true,
+    },
+  });
+
+  if (!product) {
+    return reply.notFound("Product not found");
+  }
+
+  return reply.status(200).send(product);
+};
+
 // deleteProduct (DELETE) /
 // deleteProducts (DELETE) /
 // updateProduct (PUT) /
