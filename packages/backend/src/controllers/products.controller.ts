@@ -191,5 +191,61 @@ export const deleteProduct = async (
   return reply.status(200).send(product);
 };
 
+interface IDeleteProducts {
+  products: string[];
+}
+
 // deleteProducts (DELETE) /
+export const deleteProducts = async (
+  request: FastifyRequest<{
+    Body: IDeleteProducts;
+  }>,
+  response: FastifyReply
+) => {
+  const { products } = request.body;
+
+  if (!products) {
+    return response.badRequest("No products provided");
+  }
+
+  // Find all products that exist with productId
+  const findProducts = await prisma.product.findMany({
+    where: {
+      productId: {
+        in: products,
+      },
+    },
+    select: {
+      productId: true,
+      name: true,
+      price: true,
+      stock: true,
+      description: true,
+      image: true,
+      category: true,
+      // categoryId: true,
+    },
+  });
+
+  if (findProducts.length !== products.length) {
+    return response.badRequest("Some products do not exist");
+  }
+
+  console.log(products);
+
+  const deletedProducts = await prisma.product.deleteMany({
+    where: {
+      productId: {
+        in: products,
+      },
+    },
+  });
+
+  if (!deletedProducts.count || deletedProducts.count === 0) {
+    return response.notFound("Products not found");
+  }
+
+  return response.status(200).send(findProducts);
+};
+
 // updateProduct (PUT) /

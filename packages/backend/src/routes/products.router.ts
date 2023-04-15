@@ -121,18 +121,16 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.deleteProduct,
   });
 
-  /*
-
   // deleteProducts (DELETE) /
   fastify.route({
     schema: {
       response: {
-        200: ProductSchemaRef,
+        200: ProductsCollectionSchemaRef,
       },
-      params: {
+      body: {
         type: "object",
         properties: {
-          productId: { type: "string" },
+          products: { type: "array" },
         },
       },
       operationId: "deleteProducts",
@@ -144,10 +142,12 @@ export default async function productsRouter(fastify: FastifyInstance) {
       ],
     },
     method: "DELETE",
-    url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    url: "/",
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.deleteProducts,
   });
+
+  /*
 
   // updateProduct (PUT) /
   fastify.route({
