@@ -77,7 +77,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
           stock: { type: "number" },
           image: { type: "string" },
           description: { type: "string" },
-          category: { type: "array" },
+          category: { type: "string" },
           // categoryId: { type: "string" },
         },
       },
@@ -147,9 +147,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.deleteProducts,
   });
 
-  /*
-
-  // updateProduct (PUT) /
+  // updateProduct (PUT) /:productId
   fastify.route({
     schema: {
       response: {
@@ -159,6 +157,18 @@ export default async function productsRouter(fastify: FastifyInstance) {
         type: "object",
         properties: {
           productId: { type: "string" },
+        },
+      },
+      body: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          price: { type: "number" },
+          stock: { type: "number" },
+          image: { type: "string" },
+          description: { type: "string" },
+          category: { type: "string" },
+          // categoryId: { type: "string" },
         },
       },
       operationId: "updateProduct",
@@ -171,9 +181,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "PUT",
     url: "/:productId",
-    preValidation: [isLoggedIn, isStaff],
-    handler: controllers.products,
+    // preValidation: [isLoggedIn, isStaff],
+    handler: controllers.updateProduct,
   });
-
-  */
 }
