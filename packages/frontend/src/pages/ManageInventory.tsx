@@ -23,14 +23,37 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 
-import useMe from "../hooks/useMe";
-
 import reactImage from "../assets/react.svg";
 import { Icon } from "@chakra-ui/react";
 import React from "react";
+import {
+  useDeleteProduct,
+  useDeleteProducts,
+  useGetProducts,
+} from "../hooks/useProducts";
+import { Link } from "react-router-dom";
+import { useGetCategories } from "../hooks/useCategories";
 
 export default function ManageInventory() {
-  const { data: me } = useMe();
+  const getProducts = useGetProducts();
+
+  const deleteProducts = useDeleteProducts();
+  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+
+  // Get categories
+  const getCategories = useGetCategories();
+
+  if (getProducts.isLoading || getCategories.isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (getProducts.isError || getCategories.isError) {
+    return (
+      <Text>
+        Error: {getProducts?.error?.message || getCategories?.error?.message}
+      </Text>
+    );
+  }
 
   return (
     <Container maxW={"container.xl"}>
@@ -44,6 +67,8 @@ export default function ManageInventory() {
                 colorScheme="green"
                 size="lg"
                 leftIcon={<Icon>{reactImage}</Icon>}
+                as={Link}
+                to="/staff/inventory/create"
               >
                 Create Product
               </Button>
@@ -51,6 +76,9 @@ export default function ManageInventory() {
                 colorScheme="red"
                 size="lg"
                 leftIcon={<Icon>{reactImage}</Icon>}
+                onClick={() => {
+                  deleteProducts.mutate(selectedItems);
+                }}
               >
                 Delete Products
               </Button>
@@ -83,9 +111,10 @@ export default function ManageInventory() {
               width="30%"
               variant="filled"
             >
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
+              {getCategories.data &&
+                getCategories.data.map((category) => (
+                  <option value={category.categoryId}>{category.name}</option>
+                ))}
             </Select>
             <Button
               colorScheme="green"
@@ -98,9 +127,14 @@ export default function ManageInventory() {
           </HStack>
         </Box>
 
-        <Box>
-          <Text fontSize="2xl">XX Products Found</Text>
-        </Box>
+        {/* Number of Products Found */}
+        {getProducts.data.length !== 0 && (
+          <Box>
+            <Text fontSize="2xl">
+              {JSON.stringify(getProducts.data.length)} Products Found
+            </Text>
+          </Box>
+        )}
 
         {/* Table */}
         <Box
@@ -123,8 +157,27 @@ export default function ManageInventory() {
               </Thead>
 
               <Tbody>
-                {[1, 2, 3, 4, 5].map((element, index) => {
-                  return <TableRow key={index} />;
+                {getProducts.data.map((element, index) => {
+                  return (
+                    <TableRow
+                      key={element.productId}
+                      productId={element.productId}
+                      name={element.name}
+                      price={element.price}
+                      stock={element.stock}
+                      description={element.description}
+                      image={element.image}
+                      category={element.category}
+                      categoryId={element.categoryId}
+                      lastUpdated={
+                        element.lastUpdated
+                          ? new Date(element.lastUpdated)
+                          : null
+                      }
+                      isSelect={selectedItems.includes(element.productId)}
+                      setSelectedItems={setSelectedItems}
+                    />
+                  );
                 })}
               </Tbody>
             </Table>
@@ -135,39 +188,75 @@ export default function ManageInventory() {
   );
 }
 
-export interface ICategories {
-  name: string;
-  color: string;
-  url: string;
-}
-
 const TableRow: React.FC<{
+  productId: string;
   image?: string;
   name?: string;
   description?: string;
   stock?: number;
-  categories?: ICategories[];
-  lastUpdated?: Date;
-  price?: string;
-}> = ({ ...props }) => {
+  category?: string;
+  categoryId?: string;
+  lastUpdated?: Date | null;
+  price?: number;
+  isSelect?: boolean;
+  setSelectedItems?: React.Dispatch<React.SetStateAction<string[]>>;
+}> = (props) => {
+  const deleteProduct = useDeleteProduct();
+
+  function convertToDDMMYYYY(lastUpdated: Date): string {
+    if (!lastUpdated) return "N/A";
+
+    return lastUpdated.toLocaleDateString("en-GB", {
+      // you can use undefined as first argument
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  }
+
+  function convertToCurrency(price: number): string {
+    if (!price) return "N/A";
+
+    return price.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+  }
+
   return (
     <Tr>
       <Td>
         <HStack spacing={4} align="center" justify="center">
-          <Checkbox></Checkbox>
-          <img src="https://via.placeholder.com/150" alt="Product Image" />
+          <Checkbox
+            isChecked={props.isSelect}
+            onChange={(e) => {
+              if (!props.setSelectedItems) return;
+
+              if (e.target.checked) {
+                props.setSelectedItems((prev) => [...prev, props.productId]);
+              } else {
+                props.setSelectedItems((prev) =>
+                  prev.filter((element) => element !== props.productId)
+                );
+              }
+            }}
+          ></Checkbox>
+          {/* Image */}
+          {props.image && (
+            <img src={props.image} alt="Product Image" width="150px" />
+          )}
         </HStack>
       </Td>
       <Td>
         <Text fontSize="2xl" paddingBottom={2}>
-          Product Name
+          {props.name}
         </Text>
-        <Text fontSize="sm">Product Description</Text>
+        <Text fontSize="sm">{props.description}</Text>
       </Td>
       <Td>
         <Box textAlign="center">
           <Text fontSize="2xl" paddingBottom={2}>
-            XX
+            {props.stock ? props.stock : 0}
           </Text>
           <Text fontSize="sm">In Stock</Text>
         </Box>
@@ -175,33 +264,60 @@ const TableRow: React.FC<{
       <Td>
         {/* Tags */}
         <HStack spacing={2} align="center" justify="flex-start">
-          <Tag size="lg" variant="solid" colorScheme="purple">
-            Iot Device
-          </Tag>
-          <Tag size="lg" variant="solid" colorScheme="purple">
-            Iot Device
+          {/* {props.category &&
+            props.category.map((element, index) => {
+              return (
+                <Tag size="lg" variant="solid" colorScheme="purple" key={index}>
+                  {element}
+                </Tag>
+              );
+            })} */}
+          <Tag
+            size="lg"
+            variant="solid"
+            colorScheme="purple"
+            key={props.category}
+          >
+            {props.category}
           </Tag>
         </HStack>
       </Td>
       <Td>
         <Box textAlign="center">
           <Text fontSize="2xl" paddingBottom={2}>
-            01/01/2023
+            {props.lastUpdated ? convertToDDMMYYYY(props.lastUpdated) : "N/A"}
           </Text>
-          <Badge colorScheme="red">LAST UPDATED</Badge>
+          <Badge colorScheme="green">LAST UPDATED</Badge>
         </Box>
       </Td>
       <Td>
         <Box textAlign="center">
-          <Text fontSize="2xl">XX.XX</Text>
+          <Text fontSize="2xl">
+            {props.price ? convertToCurrency(props.price) : "N/A"}
+          </Text>
         </Box>
       </Td>
       <Td>
         <Stack spacing={2}>
-          <Button colorScheme="yellow" size="sm" width="100%">
+          <Button
+            colorScheme="yellow"
+            size="sm"
+            width="100%"
+            as={Link}
+            to={{
+              pathname: `/staff/inventory/edit/${props.productId}`,
+            }}
+          >
             Edit
           </Button>
-          <Button colorScheme="red" size="sm" width="100%">
+          <Button
+            colorScheme="red"
+            size="sm"
+            width="100%"
+            onClick={() => {
+              deleteProduct.mutate(props.productId);
+            }}
+          >
             Delete
           </Button>
         </Stack>

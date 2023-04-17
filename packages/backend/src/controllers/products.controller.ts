@@ -64,7 +64,14 @@ export const products = async (
     return reply.notFound("Products not found");
   }
 
-  return reply.status(200).send(products);
+  let productMappedWithDate = products.map((product) => {
+    return {
+      ...product,
+      lastUpdated: "2021-05-01T00:00:00.000Z",
+    };
+  });
+
+  return reply.status(200).send(productMappedWithDate);
 };
 
 interface ICreateProduct {

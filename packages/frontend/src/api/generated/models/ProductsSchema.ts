@@ -14,4 +14,5 @@ export type ProductsSchema = {
     image: string;
     category: string;
     categoryId?: string;
+    lastUpdated?: string;
 };
