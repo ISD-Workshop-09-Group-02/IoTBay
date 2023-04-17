@@ -41,35 +41,33 @@ export function useCreateCategory() {
 }
 
 // deleteCategory (DELETE) /
-// Overcomplicated the routes so this one isn't being generated correctly
-// Will have to refactor categories.router.ts to fix this & controllers to fix
-
-// export function useDeleteCategory(categoryId: string) {
-//     const queryClient = useQueryClient();
-//     return useMutation<unknown, ApiError, string>(
-//         (categoryId) => api.categories.deleteCategory(categoryId),
-//         {
-//         onSuccess: () => {
-//             queryClient.invalidateQueries(["categories"]);
-//         },
-//         }
-//     );
-// }
+export function useDeleteCategory(categoryId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, ApiError, string>(
+    (categoryId) => api.categories.deleteCategory(categoryId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([categoryKey]);
+      },
+    }
+  );
+}
 
 // deleteCategories (DELETE) /
-
-// updateCategory (PUT) /
-// export function useUpdateCategory(categoryId: string, name: string) {
-//   const queryClient = useQueryClient();
-//   return useMutation<CategorySchema, ApiError, CategorySchema>(
-//     (category) => api.categories.updateCategory(categoryId, { name }),
-//     {
-//       onSuccess: () => {
-//         queryClient.invalidateQueries(["categories"]);
-//       },
-//     }
-//   );
-// }
+export function useDeleteCategories() {
+  const queryClient = useQueryClient();
+  return useMutation<unknown, ApiError, string[]>(
+    (categoryIds) =>
+      api.categories.deleteCategories({
+        categoryIds: categoryIds,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([categoryKey]);
+      },
+    }
+  );
+}
 
 interface IUpdateCategory {
   categoryId: string;
