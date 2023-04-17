@@ -204,9 +204,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                 value={props.category}
               >
                 {getCategories.data?.map((category) => {
-                  return (
-                    <option value={category.categoryId}>{category.name}</option>
-                  );
+                  return <option value={category.name}>{category.name}</option>;
                 })}
               </Select>
             </Box>

@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CreateEditInventory from "./Components/CreateEditInventory";
 import { useCreateProduct } from "../../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateInventory() {
-  const [name, setName] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [price, setPrice] = React.useState(0);
-  const [stock, setStock] = React.useState(0);
-  const [category, setCategory] = React.useState("");
-  const [image, setImage] = React.useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [stock, setStock] = useState(0);
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState("");
 
   const createProduct = useCreateProduct();
 
