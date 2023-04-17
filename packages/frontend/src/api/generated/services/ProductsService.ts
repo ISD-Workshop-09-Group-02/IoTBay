@@ -123,7 +123,7 @@ category: string,
      */
     public deleteProducts(
 requestBody?: {
-products?: any[];
+products?: Array<string>;
 },
 ): CancelablePromise<ProductsCollectionSchema> {
         return this.httpRequest.request({
