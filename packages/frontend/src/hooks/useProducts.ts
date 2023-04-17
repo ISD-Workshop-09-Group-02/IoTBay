@@ -22,20 +22,22 @@ export function useGetProducts() {
   );
 }
 
+type ICreateProduct = Omit<ProductsSchema, "productId">;
+
 // createProduct (POST) /
 export function useCreateProduct() {
   const queryClient = useQueryClient();
 
-  return useMutation<ProductsSchema, ApiError, ProductsSchema>(
+  return useMutation<ProductsSchema, ApiError, ICreateProduct>(
     ({ name, price, stock, description, image, category }) =>
-      api.products.createProduct(
+      api.products.createProduct({
         name,
         price,
         stock,
         description,
         image,
-        category
-      ),
+        category,
+      }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([productKey]);

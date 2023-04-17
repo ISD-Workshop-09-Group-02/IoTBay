@@ -69,7 +69,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
       response: {
         200: ProductSchemaRef,
       },
-      params: {
+      body: {
         type: "object",
         properties: {
           name: { type: "string" },

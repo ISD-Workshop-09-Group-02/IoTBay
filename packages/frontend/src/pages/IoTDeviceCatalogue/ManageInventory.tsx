@@ -23,16 +23,16 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 
-import reactImage from "../assets/react.svg";
+import reactImage from "../../assets/react.svg";
 import { Icon } from "@chakra-ui/react";
 import React from "react";
 import {
   useDeleteProduct,
   useDeleteProducts,
   useGetProducts,
-} from "../hooks/useProducts";
+} from "../../hooks/useProducts";
 import { Link } from "react-router-dom";
-import { useGetCategories } from "../hooks/useCategories";
+import { useGetCategories } from "../../hooks/useCategories";
 
 export default function ManageInventory() {
   const getProducts = useGetProducts();
