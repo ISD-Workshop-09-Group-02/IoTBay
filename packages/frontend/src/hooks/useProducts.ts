@@ -16,9 +16,31 @@ export function useGetProduct(productId: string) {
 }
 
 // getProducts (GET) /
-export function useGetProducts() {
-  return useQuery<ProductsCollectionSchema, ApiError>([productKey], () =>
-    api.products.getProducts()
+export function useGetProducts({
+  searchFilter,
+  categoryFilter,
+}: {
+  searchFilter?: string;
+  categoryFilter?: string;
+}) {
+  return useQuery<ProductsCollectionSchema, ApiError>(
+    [productKey],
+    () => api.products.getProducts(),
+    {
+      select: (data: ProductsCollectionSchema) => {
+        if (searchFilter) {
+          data = data.filter((product: ProductsSchema) =>
+            product.name.toLowerCase().includes(searchFilter.toLowerCase())
+          );
+        }
+        if (categoryFilter) {
+          data = data.filter(
+            (product: ProductsSchema) => product.category === categoryFilter
+          );
+        }
+        return data;
+      },
+    }
   );
 }
 

@@ -25,7 +25,7 @@ import {
 
 import reactImage from "../../assets/react.svg";
 import { Icon } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import {
   useDeleteProduct,
   useDeleteProducts,
@@ -35,10 +35,26 @@ import { Link } from "react-router-dom";
 import { useGetCategories } from "../../hooks/useCategories";
 
 export default function ManageInventory() {
-  const getProducts = useGetProducts();
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
 
-  const deleteProducts = useDeleteProducts();
+  interface IFilter {
+    searchFilter: string;
+    categoryFilter: string;
+  }
+
+  const [finalFilter, setFinalFilter] = React.useState<IFilter>({
+    searchFilter: "",
+    categoryFilter: "",
+  });
+
+  const getProducts = useGetProducts({
+    searchFilter: finalFilter.searchFilter,
+    categoryFilter: finalFilter.categoryFilter,
+  });
+
   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+  const deleteProducts = useDeleteProducts();
 
   // Get categories
   const getCategories = useGetCategories();
@@ -103,6 +119,10 @@ export default function ManageInventory() {
               variant="filled"
               width="60%"
               // leftIcon={<SearchIcon />}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              value={search}
             />
             <Select
               placeholder="Filter by category"
@@ -110,10 +130,14 @@ export default function ManageInventory() {
               // width={}
               width="30%"
               variant="filled"
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              value={category}
             >
               {getCategories.data &&
                 getCategories.data.map((category) => (
-                  <option value={category.categoryId}>{category.name}</option>
+                  <option value={category.name}>{category.name}</option>
                 ))}
             </Select>
             <Button
@@ -121,6 +145,12 @@ export default function ManageInventory() {
               size="lg"
               leftIcon={<Icon>{reactImage}</Icon>}
               width="20%"
+              onClick={() => {
+                setFinalFilter({
+                  searchFilter: search,
+                  categoryFilter: category,
+                });
+              }}
             >
               Search
             </Button>
