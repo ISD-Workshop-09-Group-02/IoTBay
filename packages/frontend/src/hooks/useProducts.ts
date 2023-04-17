@@ -16,26 +16,50 @@ export function useGetProduct(productId: string) {
 }
 
 // getProducts (GET) /
-export function useGetProducts() {
-  return useQuery<ProductsCollectionSchema, ApiError>([productKey], () =>
-    api.products.getProducts()
+export function useGetProducts({
+  searchFilter,
+  categoryFilter,
+}: {
+  searchFilter?: string;
+  categoryFilter?: string;
+}) {
+  return useQuery<ProductsCollectionSchema, ApiError>(
+    [productKey],
+    () => api.products.getProducts(),
+    {
+      select: (data: ProductsCollectionSchema) => {
+        if (searchFilter) {
+          data = data.filter((product: ProductsSchema) =>
+            product.name.toLowerCase().includes(searchFilter.toLowerCase())
+          );
+        }
+        if (categoryFilter) {
+          data = data.filter(
+            (product: ProductsSchema) => product.category === categoryFilter
+          );
+        }
+        return data;
+      },
+    }
   );
 }
+
+type ICreateProduct = Omit<ProductsSchema, "productId">;
 
 // createProduct (POST) /
 export function useCreateProduct() {
   const queryClient = useQueryClient();
 
-  return useMutation<ProductsSchema, ApiError, ProductsSchema>(
+  return useMutation<ProductsSchema, ApiError, ICreateProduct>(
     ({ name, price, stock, description, image, category }) =>
-      api.products.createProduct(
+      api.products.createProduct({
         name,
         price,
         stock,
         description,
         image,
-        category
-      ),
+        category,
+      }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries([productKey]);

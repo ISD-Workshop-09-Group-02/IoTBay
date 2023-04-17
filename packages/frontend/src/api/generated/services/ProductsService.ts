@@ -85,34 +85,25 @@ category?: string;
     }
 
     /**
-     * @param name 
-     * @param price 
-     * @param stock 
-     * @param image 
-     * @param description 
-     * @param category 
+     * @param requestBody 
      * @returns ProductsSchema Default Response
      * @throws ApiError
      */
     public createProduct(
-name: string,
-price: number,
-stock: number,
-image: string,
-description: string,
-category: string,
+requestBody?: {
+name?: string;
+price?: number;
+stock?: number;
+image?: string;
+description?: string;
+category?: string;
+},
 ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/products/',
-            path: {
-                'name': name,
-                'price': price,
-                'stock': stock,
-                'image': image,
-                'description': description,
-                'category': category,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

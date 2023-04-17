@@ -14,9 +14,9 @@ import profileLoader from "./loaders/profileLoader";
 import Profile from "./pages/Profile";
 import Logout from "./pages/Logout";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import ManageInventory from "./pages/ManageInventory";
-import CreateInventory from "./pages/CreateInventory";
-import EditInventory from "./pages/EditInventory";
+import CreateInventory from "./pages/IoTDeviceCatalogue/CreateInventory";
+import ManageInventory from "./pages/IoTDeviceCatalogue/ManageInventory";
+import EditInventory from "./pages/IoTDeviceCatalogue/EditInventory";
 
 const queryClient = new QueryClient();
 
