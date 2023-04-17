@@ -21,6 +21,7 @@ import {
   Badge,
   TableContainer,
   Checkbox,
+  useColorMode,
 } from "@chakra-ui/react";
 
 import reactImage from "../../assets/react.svg";
@@ -184,8 +185,9 @@ export default function ManageInventory() {
 
         {/* Table */}
         <Box
-          background={"gray.800"}
-          // padding
+          background={
+            useColorMode().colorMode === "light" ? "gray.100" : "gray.900"
+          }
           padding={4}
         >
           <TableContainer>

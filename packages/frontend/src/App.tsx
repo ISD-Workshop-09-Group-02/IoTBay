@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { ButtonGroup, Container, Button } from "@chakra-ui/react";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -17,6 +16,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CreateInventory from "./pages/IoTDeviceCatalogue/CreateInventory";
 import ManageInventory from "./pages/IoTDeviceCatalogue/ManageInventory";
 import EditInventory from "./pages/IoTDeviceCatalogue/EditInventory";
+import DarkLightModeToggle from "./components/DarkLightModeToggle";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +87,8 @@ export default function App() {
           <ReactQueryDevtoolsProduction />
         </React.Suspense>
       )}
+
+      <DarkLightModeToggle />
     </QueryClientProvider>
   );
 }

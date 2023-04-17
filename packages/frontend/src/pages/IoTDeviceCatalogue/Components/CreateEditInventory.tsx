@@ -27,6 +27,7 @@ import {
   NumberDecrementStepper,
   NumberInputField,
   Textarea,
+  useColorMode,
 } from "@chakra-ui/react";
 
 import reactImage from "../../../assets/react.svg";
@@ -88,7 +89,12 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
         </Box>
 
         {/* Product Info */}
-        <Box bg="gray.800" padding={4}>
+        <Box
+          background={
+            useColorMode().colorMode === "light" ? "gray.100" : "gray.900"
+          }
+          padding={4}
+        >
           <Flex
             direction="row"
             alignItems={"start"}

@@ -29,7 +29,6 @@ export default function Navbar() {
     <Box>
       <Flex
         bg="gray.800"
-        color="white"
         minH="60px"
         py={{ base: 2 }}
         px={{ base: 4 }}
@@ -94,24 +93,15 @@ export default function Navbar() {
                         isActive={isOpen}
                         as={Button}
                         rightIcon={<Icon>{reactImage}</Icon>}
-                        color="black"
                       >
                         Manage Inventory
                       </MenuButton>
                       <MenuList>
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/manage"
-                          color="black"
-                        >
+                        <MenuItem as={"a"} href="/staff/inventory/manage">
                           Manage Inventory
                         </MenuItem>
 
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/create"
-                          color="black"
-                        >
+                        <MenuItem as={"a"} href="/staff/inventory/create">
                           Create Inventory
                         </MenuItem>
                       </MenuList>
