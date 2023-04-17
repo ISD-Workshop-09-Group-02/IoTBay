@@ -30,6 +30,23 @@ categoryId: string,
 
     /**
      * @param categoryId 
+     * @returns CategorySchema Default Response
+     * @throws ApiError
+     */
+    public deleteCategory(
+categoryId: string,
+): CancelablePromise<CategorySchema> {
+        return this.httpRequest.request({
+            method: 'DELETE',
+            url: '/api/categories/{categoryId}',
+            path: {
+                'categoryId': categoryId,
+            },
+        });
+    }
+
+    /**
+     * @param categoryId 
      * @param requestBody 
      * @returns CategorySchema Default Response
      * @throws ApiError
@@ -81,13 +98,20 @@ name?: string;
     }
 
     /**
-     * @returns CategorySchema Default Response
+     * @param requestBody 
+     * @returns CategoryCollectionSchema Default Response
      * @throws ApiError
      */
-    public deleteCategory(): CancelablePromise<CategorySchema> {
+    public deleteCategories(
+requestBody?: {
+categoryIds?: Array<string>;
+},
+): CancelablePromise<CategoryCollectionSchema> {
         return this.httpRequest.request({
             method: 'DELETE',
-            url: '/api/categories/{categoryId}?',
+            url: '/api/categories/',
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 
