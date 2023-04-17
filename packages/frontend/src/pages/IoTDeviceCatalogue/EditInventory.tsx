@@ -2,6 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import CreateEditInventory from "./Components/CreateEditInventory";
 import { useEffect, useState } from "react";
 import { useUpdateProduct, useGetProduct } from "../../hooks/useProducts";
+import { useToast } from "@chakra-ui/react";
+import { ApiError } from "../../api/generated";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
@@ -15,7 +17,7 @@ export default function EditInventory() {
 
   const getProduct = useGetProduct(productId);
   const updateProduct = useUpdateProduct();
-
+  const toast = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,26 +31,47 @@ export default function EditInventory() {
     }
   }, [getProduct.isSuccess, getProduct.data]);
 
-  useEffect(() => {
-    if (updateProduct.isSuccess) {
-      navigate("/staff/inventory/manage");
-    }
-  }, [updateProduct.isSuccess, navigate]);
-
-  const updateProductFunction = () => {
+  const updateProductFunction = async () => {
     if (!name || !description || !price || !stock || !category || !image) {
       return;
     }
 
-    updateProduct.mutate({
-      productId: productId,
-      name: name,
-      price: price,
-      image: image,
-      description: description,
-      stock: stock,
-      category: category,
-    });
+    try {
+      updateProduct.mutateAsync({
+        productId: productId,
+        name: name,
+        price: price,
+        image: image,
+        description: description,
+        stock: stock,
+        category: category,
+      });
+      toast({
+        title: "Inventory updated",
+        description: "Record has been updated.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/staff/inventory/manage");
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast({
+          title: "Inventory update failed",
+          description: error.body?.message ?? "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Inventory update failed",
+          description: "Unknown error",
+          status: "error",
+          duration: 5000,
+        });
+      }
+    }
   };
 
   return (
