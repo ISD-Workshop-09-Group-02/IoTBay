@@ -154,6 +154,22 @@ export default function ManageInventory() {
             >
               Search
             </Button>
+            <Button
+              colorScheme="yellow"
+              size="lg"
+              leftIcon={<Icon>{reactImage}</Icon>}
+              width="10%"
+              onClick={() => {
+                setSearch("");
+                setCategory("");
+                setFinalFilter({
+                  searchFilter: "",
+                  categoryFilter: "",
+                });
+              }}
+            >
+              Clear
+            </Button>
           </HStack>
         </Box>
 
