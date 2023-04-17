@@ -63,19 +63,20 @@ name?: string;
     }
 
     /**
-     * @param name 
+     * @param requestBody 
      * @returns CategorySchema Default Response
      * @throws ApiError
      */
     public createCategory(
-name: string,
+requestBody?: {
+name?: string;
+},
 ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'POST',
             url: '/api/categories/',
-            path: {
-                'name': name,
-            },
+            body: requestBody,
+            mediaType: 'application/json',
         });
     }
 

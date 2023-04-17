@@ -72,7 +72,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategorySchemaRef,
       },
-      params: {
+      body: {
         type: "object",
         properties: {
           name: { type: "string" },
