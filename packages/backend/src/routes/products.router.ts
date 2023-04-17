@@ -130,7 +130,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
       body: {
         type: "object",
         properties: {
-          products: { type: "array" },
+          products: { type: "array", items: { type: "string" } },
         },
       },
       operationId: "deleteProducts",

@@ -185,7 +185,7 @@ export const deleteCategories = async (
     return reply.internalServerError("Failed to delete categories");
   }
 
-  return reply.status(200).send(deletedCategories);
+  return reply.status(200).send(categories);
 };
 
 // updateCategory (PUT) /

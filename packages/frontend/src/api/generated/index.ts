@@ -9,10 +9,16 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { CategoryCollectionSchema } from './models/CategoryCollectionSchema';
+export type { CategorySchema } from './models/CategorySchema';
 export type { LoginSchema } from './models/LoginSchema';
+export type { ProductsCollectionSchema } from './models/ProductsCollectionSchema';
+export type { ProductsSchema } from './models/ProductsSchema';
 export type { RegisterSchema } from './models/RegisterSchema';
 export type { UserCollectionSchema } from './models/UserCollectionSchema';
 export { UserSchema } from './models/UserSchema';
 
 export { AuthenticationService } from './services/AuthenticationService';
+export { CategoriesService } from './services/CategoriesService';
+export { ProductsService } from './services/ProductsService';
 export { UsersService } from './services/UsersService';
