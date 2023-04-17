@@ -1,27 +1,20 @@
-import { Static, Type } from "@sinclair/typebox";
+import zod from 'zod';
+import validator from 'validator';
 
-export const UserSchema = Type.Object({
-  userId: Type.String({ format: "uuid" }),
-  email: Type.String({ format: "email" }),
-  name: Type.String(),
-  userType: Type.String({ enum: ["staff", "customer"] }),
-  shippingAddress: Type.Optional(Type.String()),
-  billingAddress: Type.Optional(Type.String()),
-  dob: Type.Optional(Type.String({ format: "date" })),
-}, {
-  description: "UserSchema",
-  $id: "UserSchema",
+export const userSchema = zod.object({
+    userId: zod.string().cuid(),
+    email: zod.string().refine((value) => validator.isEmail(value), {
+        message: 'Invalid email',
+    }),
+    name: zod.string(),
+    userType: zod.enum(["staff", "customer"]),
+    shippingAddress: zod.string().optional(),
+    billingAddress: zod.string().optional(),
+    dob: zod.string().datetime().optional(),
 });
 
-export const UserSchemaRef = Type.Ref(UserSchema);
+export const userCollectionSchema = zod.array(userSchema);
 
-export type UserSchemaType = Static<typeof UserSchema>;
+export type UserSchemaType = zod.infer<typeof userSchema>;
 
-export const UserCollectionSchema = Type.Array(UserSchemaRef, {
-    description: 'UserCollectionSchema',
-    $id: 'UserCollectionSchema',
-})
-
-export const UserCollectionSchemaRef = Type.Ref(UserCollectionSchema)
-
-export type UserCollectionSchemaType = Static<typeof UserCollectionSchema>
+export type UserCollectionSchemaType = zod.infer<typeof userCollectionSchema>;

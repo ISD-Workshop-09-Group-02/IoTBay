@@ -1,38 +1,25 @@
-import { Static, Type } from "@sinclair/typebox";
+import zod from 'zod'
+import validator from 'validator'
 
-/**
- * Login schema
- * Used for data validation and documentation
- */
-export const LoginSchema = Type.Object(
-  {
-    username: Type.String({ format: "email" }),
-    password: Type.String(),
-  },
-  {
-    description: "LoginSchema",
-    $id: "LoginSchema",
-  }
-);
 
-export const LoginSchemaRef = Type.Ref(LoginSchema);
+export const loginSchema = zod.object({
+    username: zod.string().refine((value) => validator.isEmail(value), {
+        message: 'Invalid email',
+    }),
+    password: zod.string(),
+})
 
-export type LoginSchemaType = Static<typeof LoginSchema>;
+export const registerSchema = zod.object({
+    email: zod.string().refine((value) => validator.isEmail(value), {
+        message: 'Invalid email',
+    }),
+    password: zod.string().min(8).max(255),
+    name: zod.string().min(3),
+    phone: zod.string().refine((value) => validator.isMobilePhone(value), {
+        message: 'Invalid phone number',
+    }),
+    address: zod.string(),
+})
 
-export const RegisterSchema = Type.Object(
-  {
-    email: Type.String({ format: "email" }),
-    password: Type.String(),
-    name: Type.String(),
-    phone: Type.String(),
-    address: Type.String(),
-  },
-  {
-    description: "RegisterSchema",
-    $id: "RegisterSchema",
-  }
-);
-
-export const RegisterSchemaRef = Type.Ref(RegisterSchema);
-
-export type RegisterSchemaType = Static<typeof RegisterSchema>;
+export type LoginSchemaType = zod.infer<typeof loginSchema>
+export type RegisterSchemaType = zod.infer<typeof registerSchema>

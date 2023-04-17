@@ -11,8 +11,16 @@ import authRouter from "./routes/auth.router";
 import usersRouter from "./routes/users.router";
 import fastify from 'fastify'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import { LoginSchema, RegisterSchema, UserCollectionSchema, UserSchema } from "./schema";
 import { env } from "./utils";
+
+import {
+  jsonSchemaTransform,
+  createJsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
+  ZodTypeProvider,
+} from 'fastify-type-provider-zod';
+
 // Load environment variables
 config();
 
@@ -23,7 +31,10 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
 // declare the server
-const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+const server = fastify().withTypeProvider<ZodTypeProvider>();
+
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
@@ -46,32 +57,15 @@ await server.register(await import("@fastify/swagger"), {
           in: "cookie",
         },
       },
-      schemas: {
-        UserSchema,
-        UserCollectionSchema,
-        LoginSchema,
-        RegisterSchema
-      },
     },
     info: {
       title: "IoTBay API",
       version: "0.1.0",
       description: "IoTBay API",
     },
-
   },
-  refResolver: {
-    buildLocalReference (json, baseUri, fragment, i) {
-      return json.$id?.toString() || `my-fragment-${i}`
-    }
-  }
+  transform: jsonSchemaTransform,
 });
-
-// Register schemas to swagger
-server.addSchema(UserSchema);
-server.addSchema(UserCollectionSchema);
-server.addSchema(LoginSchema);
-server.addSchema(RegisterSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",

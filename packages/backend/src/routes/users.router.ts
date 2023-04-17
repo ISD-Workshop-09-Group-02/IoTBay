@@ -1,13 +1,13 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { UserCollectionSchemaRef, UserSchemaRef } from "../schema";
+import { userCollectionSchema, userSchema } from "../schema";
 
 export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
     schema: {
       response: {
-        200: UserSchemaRef,
+        200: userSchema,
       },
       operationId: "getMe",
       tags: ["Users"],
@@ -20,7 +20,7 @@ export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
     schema: {
       response: {
-        200: UserSchemaRef,
+        200: userSchema,
       },
       params: {
         type: "object",
@@ -39,13 +39,13 @@ export default async function usersRouter(fastify: FastifyInstance) {
     method: "GET",
     url: "/:userId",
     preValidation: [isLoggedIn, isStaff],
-    handler: controllers.users,
+    handler: controllers.user,
   });
 
   fastify.route({
     schema: {
       response: {
-        200: UserCollectionSchemaRef,
+        200: userCollectionSchema,
       },
       operationId: "getUsers",
       tags: ["Users"],

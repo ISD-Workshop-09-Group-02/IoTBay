@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import argon2 from "argon2";
 import prisma from "../services/prisma.service";
-import { LoginSchemaType, RegisterSchemaType } from "../schema";
+import { LoginSchemaType, RegisterSchemaType } from "../schema/auth.schema";
 
 /**
  * Given the user successfully logged in, this function will return the user

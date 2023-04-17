@@ -1,3 +1,5 @@
+import zod from "zod";
+import { UserSchemaType, userSchema } from "../schema";
 import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
@@ -69,8 +71,14 @@ export const me = async (request: FastifyRequest, reply: FastifyReply) => {
   if (!request.user) {
     return reply.status(204).send();
   }
-
-  const { user } = request;
+  const user = userSchema.parseAsync(request.user)
+  console.log(user)
+  try {
+     userSchema.parseAsync(request.user)
+  } catch (error) {
+    console.error(error)
+  }
+  
 
   return reply.status(200).send(user);
 };

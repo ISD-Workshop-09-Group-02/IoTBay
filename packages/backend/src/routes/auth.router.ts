@@ -1,15 +1,16 @@
 import { FastifyInstance } from "fastify";
 import fastifyPassport from "@fastify/passport";
 import * as controllers from "../controllers";
-import { LoginSchemaRef, RegisterSchemaRef, UserSchemaRef } from "../schema";
+import { loginSchema, registerSchema } from "../schema/auth.schema";
+import { userSchema } from "../schema";
 
 export default async function authRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "POST",
     schema: {
-      body: LoginSchemaRef,
+      body: loginSchema,
       response: {
-        200: UserSchemaRef,
+        200: userSchema,
       },
       operationId: "login",
       tags: ["Authentication"],
@@ -41,9 +42,9 @@ export default async function authRouter(fastify: FastifyInstance) {
 
   fastify.route({
     schema: {
-      body: RegisterSchemaRef,
+      body: registerSchema,
       response: {
-        201: UserSchemaRef,
+        201: userSchema,
       },
       operationId: "register",
       tags: ["Authentication"],
