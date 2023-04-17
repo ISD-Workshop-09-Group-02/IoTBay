@@ -157,28 +157,29 @@ export default function ManageInventory() {
               </Thead>
 
               <Tbody>
-                {getProducts.data.map((element, index) => {
-                  return (
-                    <TableRow
-                      key={element.productId}
-                      productId={element.productId}
-                      name={element.name}
-                      price={element.price}
-                      stock={element.stock}
-                      description={element.description}
-                      image={element.image}
-                      category={element.category}
-                      categoryId={element.categoryId}
-                      lastUpdated={
-                        element.lastUpdated
-                          ? new Date(element.lastUpdated)
-                          : null
-                      }
-                      isSelect={selectedItems.includes(element.productId)}
-                      setSelectedItems={setSelectedItems}
-                    />
-                  );
-                })}
+                {getProducts.data.length > 0 &&
+                  getProducts.data.map((element, index) => {
+                    return (
+                      <TableRow
+                        key={element.productId}
+                        productId={element.productId}
+                        name={element.name}
+                        price={element.price}
+                        stock={element.stock}
+                        description={element.description}
+                        image={element.image}
+                        category={element.category}
+                        categoryId={element.categoryId}
+                        lastUpdated={
+                          element.lastUpdated
+                            ? new Date(element.lastUpdated)
+                            : null
+                        }
+                        isSelect={selectedItems.includes(element.productId)}
+                        setSelectedItems={setSelectedItems}
+                      />
+                    );
+                  })}
               </Tbody>
             </Table>
           </TableContainer>
