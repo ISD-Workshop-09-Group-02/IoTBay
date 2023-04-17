@@ -8,9 +8,9 @@ export const userSchema = zod.object({
     }),
     name: zod.string(),
     userType: zod.enum(["staff", "customer"]),
-    shippingAddress: zod.string().optional(),
-    billingAddress: zod.string().optional(),
-    dob: zod.string().datetime().optional(),
+    shippingAddress: zod.string().optional().nullable(),
+    billingAddress: zod.string().optional().nullable(),
+    dob: zod.string().datetime().optional().nullable(),
 });
 
 export const userCollectionSchema = zod.array(userSchema);

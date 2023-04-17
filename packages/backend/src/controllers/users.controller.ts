@@ -71,13 +71,7 @@ export const me = async (request: FastifyRequest, reply: FastifyReply) => {
   if (!request.user) {
     return reply.status(204).send();
   }
-  const user = userSchema.parseAsync(request.user)
-  console.log(user)
-  try {
-     userSchema.parseAsync(request.user)
-  } catch (error) {
-    console.error(error)
-  }
+  const { user } = request
   
 
   return reply.status(200).send(user);
