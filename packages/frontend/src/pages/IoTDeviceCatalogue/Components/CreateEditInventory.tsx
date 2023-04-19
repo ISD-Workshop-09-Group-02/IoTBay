@@ -36,6 +36,13 @@ import { Link } from "react-router-dom";
 import { useGetCategories } from "../../../hooks/useCategories";
 
 import { useState } from "react";
+import {
+  AddIcon,
+  CloseIcon,
+  DownloadIcon,
+  MinusIcon,
+  PlusSquareIcon,
+} from "@chakra-ui/icons";
 
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
@@ -140,7 +147,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   <Button
                     colorScheme="green"
                     size="lg"
-                    leftIcon={<Icon>{reactImage}</Icon>}
+                    leftIcon={<DownloadIcon />}
                     onClick={() => {
                       setPreviewImage(props.image);
                     }}
@@ -152,7 +159,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                     colorScheme="red"
                     variant={"outline"}
                     size="lg"
-                    leftIcon={<Icon>{reactImage}</Icon>}
+                    leftIcon={<MinusIcon />}
                     onClick={() => {
                       props.setImage("");
                       setPreviewImage(defaultPreviewImage);
@@ -237,7 +244,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               <Button
                 colorScheme="green"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                leftIcon={<AddIcon />}
                 onClick={props.createProduct}
               >
                 Create Product
@@ -246,7 +253,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               <Button
                 colorScheme="blue"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                leftIcon={<AddIcon />}
                 onClick={props.updateProduct}
               >
                 Update Product
@@ -256,7 +263,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               colorScheme="red"
               variant={"outline"}
               size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
+              leftIcon={<CloseIcon />}
               as={Link}
               to="/staff/inventory/manage"
             >

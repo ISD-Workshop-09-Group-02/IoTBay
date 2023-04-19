@@ -24,8 +24,6 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
-import reactImage from "../../assets/react.svg";
-import { Icon } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   useDeleteProduct,
@@ -34,6 +32,14 @@ import {
 } from "../../hooks/useProducts";
 import { Link } from "react-router-dom";
 import { useGetCategories } from "../../hooks/useCategories";
+import {
+  AddIcon,
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  MinusIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
@@ -83,7 +89,7 @@ export default function ManageInventory() {
               <Button
                 colorScheme="green"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                leftIcon={<AddIcon />}
                 as={Link}
                 to="/staff/inventory/create"
               >
@@ -92,7 +98,8 @@ export default function ManageInventory() {
               <Button
                 colorScheme="red"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                // leftIcon={<MinusIcon />}
+                leftIcon={<DeleteIcon />}
                 onClick={() => {
                   deleteProducts.mutate(selectedItems);
                 }}
@@ -144,8 +151,7 @@ export default function ManageInventory() {
             <Button
               colorScheme="green"
               size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
-              width="20%"
+              leftIcon={<SearchIcon />}
               onClick={() => {
                 setFinalFilter({
                   searchFilter: search,
@@ -158,8 +164,7 @@ export default function ManageInventory() {
             <Button
               colorScheme="yellow"
               size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
-              width="10%"
+              leftIcon={<CloseIcon />}
               onClick={() => {
                 setSearch("");
                 setCategory("");
@@ -352,6 +357,7 @@ const TableRow: React.FC<{
             colorScheme="yellow"
             size="sm"
             width="100%"
+            leftIcon={<EditIcon />}
             as={Link}
             to={{
               pathname: `/staff/inventory/edit/${props.productId}`,
@@ -363,6 +369,7 @@ const TableRow: React.FC<{
             colorScheme="red"
             size="sm"
             width="100%"
+            leftIcon={<DeleteIcon />}
             onClick={() => {
               deleteProduct.mutate(props.productId);
             }}

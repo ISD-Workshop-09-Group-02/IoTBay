@@ -19,8 +19,8 @@ import {
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
 import { UserSchema } from "../api/generated";
-import reactImage from "../assets/react.svg";
 import logo from "../../public/icon.svg";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -116,7 +116,7 @@ export default function Navbar() {
                       <MenuButton
                         isActive={isOpen}
                         as={Button}
-                        rightIcon={<Icon>{reactImage}</Icon>}
+                        rightIcon={<ChevronDownIcon />}
                       >
                         Manage Inventory
                       </MenuButton>
