@@ -14,6 +14,7 @@ import {
   Stack,
   Text,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
@@ -25,17 +26,18 @@ import logo from "../../public/icon.svg";
 
 export default function Navbar() {
   const { data, isError } = useMe();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Box>
       <Flex
-        bg="gray.800"
+        bg={colorMode === "light" ? "gray.100" : "gray.900"}
         minH="60px"
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={"solid"}
-        borderColor="gray.700"
+        borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         align={"center"}
       >
         <Flex
@@ -63,7 +65,7 @@ export default function Navbar() {
               <Text
                 textAlign={useBreakpointValue({ base: "center", md: "left" })}
                 fontFamily={"heading"}
-                color={"white"}
+                fontWeight={"semibold"}
               >
                 IoTBay -{" "}
                 {data?.userType === UserSchema.userType.STAFF
