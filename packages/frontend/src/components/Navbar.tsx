@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
 import { UserSchema } from "../api/generated";
 import reactImage from "../assets/react.svg";
+import logo from "../../public/icon.svg";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
@@ -37,19 +38,40 @@ export default function Navbar() {
         borderColor="gray.700"
         align={"center"}
       >
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={"white"}
-            as={Link}
-            to="/"
-          >
-            IoTBay -{" "}
-            {data?.userType === UserSchema.userType.STAFF
-              ? "Staff"
-              : "Customer"}
-          </Text>
+        <Flex
+          flex={{ base: 1 }}
+          justify={{ base: "center", md: "start" }}
+          alignItems={"center"}
+        >
+          <Link to="/">
+            <Stack
+              // flex={{ base: 1 }}
+              // justify={{ base: "center", md: "start" }}
+              // alignItems={"center"}
+              direction={"row"}
+              spacing={4}
+              alignItems={"center"}
+            >
+              {/* Image */}
+              <Image
+                src={logo}
+                alt="react"
+                width="50px"
+                height="50px"
+                // link
+              />
+              <Text
+                textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                fontFamily={"heading"}
+                color={"white"}
+              >
+                IoTBay -{" "}
+                {data?.userType === UserSchema.userType.STAFF
+                  ? "Staff"
+                  : "Customer"}
+              </Text>
+            </Stack>
+          </Link>
         </Flex>
         <Stack
           flex={{ base: 1, md: 0 }}
