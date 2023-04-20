@@ -28,6 +28,8 @@ import {
   NumberInputField,
   Textarea,
   useColorMode,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 
 import reactImage from "../../../assets/react.svg";
@@ -107,10 +109,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
             alignItems={"start"}
             justifyContent={"space-between"}
             w="100%"
-            p={4}
+            m={4}
           >
             {/* Preview Image */}
-            <Box width="100%">
+            <Box width="100%" margin={2}>
               <img
                 src={previewImage}
                 width="100%"
@@ -119,123 +121,122 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               />
             </Box>
 
-            <Box width="100%">
-              <Input
-                placeholder="Product Name"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-                onChange={(e) => {
-                  props.setName(e.target.value);
-                }}
-                value={props.name}
-              />
-              <Input
-                placeholder="Product URL"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-
-                onChange={(e) => {
-                  props.setImage(e.target.value);
-                }}
-                value={props.image}
-              />
-
-              <Box>
-                <HStack spacing={2} align="center">
-                  <Button
-                    colorScheme="green"
-                    size="lg"
-                    leftIcon={<DownloadIcon />}
-                    onClick={() => {
-                      setPreviewImage(props.image);
+            <Box width="100%" margin={2}>
+              <Stack spacing={4}>
+                <InputGroup>
+                  <InputLeftAddon children="Name" />
+                  <Input
+                    variant="filled"
+                    onChange={(e) => {
+                      props.setName(e.target.value);
                     }}
-                  >
-                    Upload Image
-                  </Button>
+                    value={props.name}
+                  />
+                </InputGroup>
 
-                  <Button
-                    colorScheme="red"
-                    variant={"outline"}
-                    size="lg"
-                    leftIcon={<MinusIcon />}
-                    onClick={() => {
-                      props.setImage("");
-                      setPreviewImage(defaultPreviewImage);
+                <InputGroup>
+                  <InputLeftAddon children="Image URL" />
+                  <Input
+                    variant="filled"
+                    onChange={(e) => {
+                      props.setImage(e.target.value);
                     }}
+                    value={props.image}
+                  />
+                </InputGroup>
+
+                <Box>
+                  <HStack spacing={2} align="center">
+                    <Button
+                      colorScheme="green"
+                      leftIcon={<DownloadIcon />}
+                      onClick={() => {
+                        setPreviewImage(props.image);
+                      }}
+                    >
+                      Upload Image
+                    </Button>
+
+                    <Button
+                      colorScheme="red"
+                      variant={"outline"}
+                      leftIcon={<MinusIcon />}
+                      onClick={() => {
+                        props.setImage("");
+                        setPreviewImage(defaultPreviewImage);
+                      }}
+                    >
+                      Clear
+                    </Button>
+                  </HStack>
+                </Box>
+
+                <InputGroup>
+                  <InputLeftAddon children="Stock" />
+                  <NumberInput
+                    width="100%"
+                    variant="filled"
+                    onChange={(e) => {
+                      props.setStock(parseInt(e) ? parseInt(e) : 0);
+                    }}
+                    value={props.stock}
                   >
-                    Clear
-                  </Button>
-                </HStack>
-              </Box>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </InputGroup>
 
-              <NumberInput
-                placeholder="Stock"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
+                {/* Price */}
+                <InputGroup>
+                  <InputLeftAddon children="Price" />
+                  <NumberInput
+                    width="100%"
+                    variant="filled"
+                    onChange={(e) => {
+                      props.setPrice(parseInt(e) ? parseInt(e) : 0);
+                    }}
+                    value={props.price}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </InputGroup>
 
-                onChange={(e) => {
-                  props.setStock(parseInt(e) ? parseInt(e) : 0);
-                }}
-                value={props.stock}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                {/* Category */}
+                <Select
+                  placeholder="Filter by category"
+                  // width={}
+                  variant="filled"
+                  onChange={(e) => {
+                    props.setCategory(e.target.value);
+                  }}
+                  value={props.category}
+                >
+                  {getCategories.data?.map((category) => {
+                    return (
+                      <option value={category.name}>{category.name}</option>
+                    );
+                  })}
+                </Select>
 
-              {/* Price */}
-              <NumberInput
-                placeholder="Price"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-                onChange={(e) => {
-                  props.setPrice(parseInt(e) ? parseInt(e) : 0);
-                }}
-                value={props.price}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-
-              <Select
-                placeholder="Filter by category"
-                size="lg"
-                // width={}
-                variant="filled"
-                onChange={(e) => {
-                  props.setCategory(e.target.value);
-                }}
-                value={props.category}
-              >
-                {getCategories.data?.map((category) => {
-                  return <option value={category.name}>{category.name}</option>;
-                })}
-              </Select>
+                <Textarea
+                  placeholder="Product Description"
+                  size={"lg"}
+                  variant="filled"
+                  onChange={(e) => {
+                    props.setDescription(e.target.value);
+                  }}
+                  value={props.description}
+                />
+              </Stack>
             </Box>
           </Flex>
-
-          <Box>
-            <Textarea
-              placeholder="Product Description"
-              size={"lg"}
-              variant="filled"
-              // leftIcon={<SearchIcon />}
-
-              onChange={(e) => {
-                props.setDescription(e.target.value);
-              }}
-              value={props.description}
-            />
-          </Box>
         </Box>
 
         <Box>
