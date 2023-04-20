@@ -10,7 +10,6 @@ import {
   Button,
   Table,
   HStack,
-  // Select,
   Input,
   Thead,
   Tr,
@@ -22,6 +21,8 @@ import {
   TableContainer,
   Checkbox,
   useColorMode,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 
 import React, { useState } from "react";
@@ -37,11 +38,10 @@ import {
   CloseIcon,
   DeleteIcon,
   EditIcon,
-  MinusIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 
-import { Select, CreatableSelect, AsyncSelect } from "chakra-react-select";
+import { Select } from "chakra-react-select";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
@@ -123,17 +123,21 @@ export default function ManageInventory() {
         {/* Search & Filter */}
         <Box>
           <HStack spacing={2} align="center" justify="space-between">
-            <Input
-              size="lg"
-              placeholder="Search for product"
-              variant="filled"
-              width="60%"
-              // leftIcon={<SearchIcon />}
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              value={search}
-            />
+            <InputGroup width="60%">
+              <InputLeftElement
+                pointerEvents="none"
+                children={<SearchIcon color="gray.300" />}
+              />
+              <Input
+                placeholder="Search for product"
+                variant="filled"
+                // leftIcon={<SearchIcon />}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                value={search}
+              />
+            </InputGroup>
             <Select
               isMulti
               options={getCategories.data.map((element) => {
