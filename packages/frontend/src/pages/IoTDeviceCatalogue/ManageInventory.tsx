@@ -90,7 +90,6 @@ export default function ManageInventory() {
             <HStack spacing={2} align="center" justify="flex-end">
               <Button
                 colorScheme="green"
-                size="lg"
                 leftIcon={<AddIcon />}
                 as={Link}
                 to="/staff/inventory/create"
@@ -99,7 +98,6 @@ export default function ManageInventory() {
               </Button>
               <Button
                 colorScheme="red"
-                size="lg"
                 // leftIcon={<MinusIcon />}
                 leftIcon={<DeleteIcon />}
                 onClick={() => {
@@ -160,7 +158,6 @@ export default function ManageInventory() {
             />
             <Button
               colorScheme="green"
-              size="lg"
               leftIcon={<SearchIcon />}
               onClick={() => {
                 setFinalFilter({
@@ -173,7 +170,6 @@ export default function ManageInventory() {
             </Button>
             <Button
               colorScheme="yellow"
-              size="lg"
               leftIcon={<CloseIcon />}
               onClick={() => {
                 setSearch("");
@@ -331,17 +327,12 @@ const TableRow: React.FC<{
           {/* {props.category &&
             props.category.map((element, index) => {
               return (
-                <Tag size="lg" variant="solid" colorScheme="purple" key={index}>
+                <Tag variant="solid" colorScheme="purple" key={index}>
                   {element}
                 </Tag>
               );
             })} */}
-          <Tag
-            size="lg"
-            variant="solid"
-            colorScheme="purple"
-            key={props.category}
-          >
+          <Tag variant="solid" colorScheme="purple" key={props.category}>
             {props.category}
           </Tag>
         </HStack>
