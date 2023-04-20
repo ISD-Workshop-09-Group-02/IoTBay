@@ -18,10 +18,6 @@ export default function CreateInventory() {
   const navigate = useNavigate();
 
   const createProductFunction = async () => {
-    if (!name || !description || !price || !stock || !category || !image) {
-      return;
-    }
-
     try {
       await createProduct.mutateAsync({
         name: name,
