@@ -10,7 +10,7 @@ import {
   Button,
   Table,
   HStack,
-  Select,
+  // Select,
   Input,
   Thead,
   Tr,
@@ -41,18 +41,20 @@ import {
   SearchIcon,
 } from "@chakra-ui/icons";
 
+import { Select, CreatableSelect, AsyncSelect } from "chakra-react-select";
+
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<string[]>([]);
 
   interface IFilter {
     searchFilter: string;
-    categoryFilter: string;
+    categoryFilter: string[];
   }
 
   const [finalFilter, setFinalFilter] = React.useState<IFilter>({
     searchFilter: "",
-    categoryFilter: "",
+    categoryFilter: [],
   });
 
   const getProducts = useGetProducts({
@@ -133,21 +135,25 @@ export default function ManageInventory() {
               value={search}
             />
             <Select
+              isMulti
+              options={getCategories.data.map((element) => {
+                return {
+                  label: element.name,
+                  value: element.name,
+                };
+              })}
               placeholder="Filter by category"
-              size="lg"
-              // width={}
-              width="30%"
-              variant="filled"
+              closeMenuOnSelect={false}
               onChange={(e) => {
-                setCategory(e.target.value);
+                setCategory(e.map((element) => element.value));
               }}
-              value={category}
-            >
-              {getCategories.data &&
-                getCategories.data.map((category) => (
-                  <option value={category.name}>{category.name}</option>
-                ))}
-            </Select>
+              value={category.map((element) => {
+                return {
+                  label: element,
+                  value: element,
+                };
+              })}
+            />
             <Button
               colorScheme="green"
               size="lg"
@@ -167,10 +173,10 @@ export default function ManageInventory() {
               leftIcon={<CloseIcon />}
               onClick={() => {
                 setSearch("");
-                setCategory("");
+                setCategory([]);
                 setFinalFilter({
                   searchFilter: "",
-                  categoryFilter: "",
+                  categoryFilter: [],
                 });
               }}
             >
