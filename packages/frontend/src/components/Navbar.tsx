@@ -14,43 +14,66 @@ import {
   Stack,
   Text,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
 import { UserSchema } from "../api/generated";
-import reactImage from "../assets/react.svg";
+import logo from "../../public/icon.svg";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
 export default function Navbar() {
   const { data, isError } = useMe();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Box>
       <Flex
-        bg="gray.800"
-        color="white"
+        bg={colorMode === "light" ? "gray.100" : "gray.900"}
         minH="60px"
         py={{ base: 2 }}
         px={{ base: 4 }}
         borderBottom={1}
         borderStyle={"solid"}
-        borderColor="gray.700"
+        borderColor={colorMode === "light" ? "gray.200" : "gray.700"}
         align={"center"}
       >
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={"white"}
-            as={Link}
-            to="/"
-          >
-            IoTBay -{" "}
-            {data?.userType === UserSchema.userType.STAFF
-              ? "Staff"
-              : "Customer"}
-          </Text>
+        <Flex
+          flex={{ base: 1 }}
+          justify={{ base: "center", md: "start" }}
+          alignItems={"center"}
+        >
+          <Link to="/">
+            <Stack
+              // flex={{ base: 1 }}
+              // justify={{ base: "center", md: "start" }}
+              // alignItems={"center"}
+              direction={"row"}
+              spacing={4}
+              alignItems={"center"}
+            >
+              {/* Image */}
+              <Image
+                src={logo}
+                alt="react"
+                width="50px"
+                height="50px"
+                // link
+              />
+              <Text
+                textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                fontFamily={"heading"}
+                fontWeight={"semibold"}
+              >
+                IoTBay -{" "}
+                {data?.userType === UserSchema.userType.STAFF
+                  ? "Staff"
+                  : "Customer"}
+              </Text>
+            </Stack>
+          </Link>
         </Flex>
         <Stack
           flex={{ base: 1, md: 0 }}
@@ -93,25 +116,16 @@ export default function Navbar() {
                       <MenuButton
                         isActive={isOpen}
                         as={Button}
-                        rightIcon={<Icon>{reactImage}</Icon>}
-                        color="black"
+                        rightIcon={<ChevronDownIcon />}
                       >
                         Manage Inventory
                       </MenuButton>
                       <MenuList>
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/manage"
-                          color="black"
-                        >
+                        <MenuItem as={"a"} href="/staff/inventory/manage">
                           Manage Inventory
                         </MenuItem>
 
-                        <MenuItem
-                          as={"a"}
-                          href="/staff/inventory/create"
-                          color="black"
-                        >
+                        <MenuItem as={"a"} href="/staff/inventory/create">
                           Create Inventory
                         </MenuItem>
                       </MenuList>

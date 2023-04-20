@@ -21,7 +21,7 @@ export function useGetProducts({
   categoryFilter,
 }: {
   searchFilter?: string;
-  categoryFilter?: string;
+  categoryFilter?: string[];
 }) {
   return useQuery<ProductsCollectionSchema, ApiError>(
     [productKey],
@@ -33,10 +33,10 @@ export function useGetProducts({
             product.name.toLowerCase().includes(searchFilter.toLowerCase())
           );
         }
-        if (categoryFilter) {
-          data = data.filter(
-            (product: ProductsSchema) => product.category === categoryFilter
-          );
+        if (categoryFilter && categoryFilter.length > 0) {
+          data = data.filter((product: ProductsSchema) => {
+            return categoryFilter.includes(product.category);
+          });
         }
         return data;
       },

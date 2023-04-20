@@ -8,18 +8,9 @@ import {
   BreadcrumbLink,
   Heading,
   Button,
-  Table,
   HStack,
   Select,
   Input,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  Tag,
-  Badge,
-  TableContainer,
   Flex,
   NumberInput,
   NumberInputStepper,
@@ -27,14 +18,25 @@ import {
   NumberDecrementStepper,
   NumberInputField,
   Textarea,
+  useColorMode,
+  FormErrorMessage,
+  FormControl,
+  FormLabel,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 
-import reactImage from "../../../assets/react.svg";
-import { Icon } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useGetCategories } from "../../../hooks/useCategories";
 
 import { useState } from "react";
+import {
+  AddIcon,
+  CloseIcon,
+  DownloadIcon,
+  InfoIcon,
+  MinusIcon,
+} from "@chakra-ui/icons";
 
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
@@ -64,6 +66,96 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
     defaultPreviewImage
   );
 
+  interface IFormErrorMessage {
+    name: IErrorMessage;
+    description: IErrorMessage;
+    price: IErrorMessage;
+    stock: IErrorMessage;
+    category: IErrorMessage;
+    image: IErrorMessage;
+  }
+
+  interface IErrorMessage {
+    isError: boolean;
+    message: string;
+  }
+
+  const initialFormErrorMessage: IFormErrorMessage = {
+    name: { isError: false, message: "" },
+    description: { isError: false, message: "" },
+    price: { isError: false, message: "" },
+    stock: { isError: false, message: "" },
+    category: { isError: false, message: "" },
+    image: { isError: false, message: "" },
+  };
+
+  const [formErrorMessage, setFormErrorMessage] = useState<IFormErrorMessage>(
+    initialFormErrorMessage
+  );
+
+  const validateForm = () => {
+    let newFormErrorMessage: IFormErrorMessage = initialFormErrorMessage;
+
+    if (props.name === "") {
+      newFormErrorMessage.name = {
+        isError: true,
+        message: "Name is required",
+      };
+    }
+
+    if (props.description === "") {
+      newFormErrorMessage.description = {
+        isError: true,
+        message: "Description is required",
+      };
+    }
+
+    if (props.price === 0) {
+      newFormErrorMessage.price = {
+        isError: true,
+        message: "Price is required",
+      };
+    }
+
+    if (props.stock === 0) {
+      newFormErrorMessage.stock = {
+        isError: true,
+        message: "Stock is required",
+      };
+    }
+
+    if (props.category === "") {
+      newFormErrorMessage.category = {
+        isError: true,
+        message: "Category is required",
+      };
+    }
+
+    if (props.image === "") {
+      newFormErrorMessage.image = {
+        isError: true,
+        message: "Image is required",
+      };
+    }
+
+    setFormErrorMessage(newFormErrorMessage);
+  };
+
+  const isFormValid = () => {
+    if (
+      formErrorMessage.name.isError ||
+      formErrorMessage.description.isError ||
+      formErrorMessage.price.isError ||
+      formErrorMessage.stock.isError ||
+      formErrorMessage.category.isError ||
+      formErrorMessage.image.isError
+    ) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
     <Container maxW={"container.xl"}>
       <Stack spacing={4}>
@@ -88,16 +180,21 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
         </Box>
 
         {/* Product Info */}
-        <Box bg="gray.800" padding={4}>
+        <Box
+          background={
+            useColorMode().colorMode === "light" ? "gray.100" : "gray.900"
+          }
+          padding={4}
+        >
           <Flex
             direction="row"
             alignItems={"start"}
             justifyContent={"space-between"}
             w="100%"
-            p={4}
+            m={4}
           >
             {/* Preview Image */}
-            <Box width="100%">
+            <Box width="100%" margin={2}>
               <img
                 src={previewImage}
                 width="100%"
@@ -106,122 +203,249 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               />
             </Box>
 
-            <Box width="100%">
-              <Input
-                placeholder="Product Name"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-                onChange={(e) => {
-                  props.setName(e.target.value);
-                }}
-                value={props.name}
-              />
-              <Input
-                placeholder="Product URL"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
+            <Box width="100%" margin={2}>
+              {/* Notification Message */}
+              {!isFormValid() && (
+                <Box
+                  borderWidth="2px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  borderColor={"red.400"}
+                  borderStyle={"solid"}
+                  padding={4}
+                >
+                  <Stack spacing={2}>
+                    {/* Header with icon */}
+                    <Flex
+                      direction="row"
+                      alignItems={"center"}
+                      justifyContent={"flex-start"}
+                    >
+                      <InfoIcon
+                        // color={"red.400"}
+                        marginRight={4}
+                        height="25px"
+                        width="25px"
+                      />
+                      <Heading as="h4" size="lg">
+                        Invalid Form
+                      </Heading>
+                    </Flex>
 
-                onChange={(e) => {
-                  props.setImage(e.target.value);
-                }}
-                value={props.image}
-              />
+                    <Heading as="h6" size="sm">
+                      Please fix the following errors:
+                    </Heading>
 
-              <Box>
-                <HStack spacing={2} align="center">
-                  <Button
-                    colorScheme="green"
-                    size="lg"
-                    leftIcon={<Icon>{reactImage}</Icon>}
-                    onClick={() => {
-                      setPreviewImage(props.image);
+                    <Box>
+                      <UnorderedList>
+                        {Object.keys(formErrorMessage).map((key) => {
+                          if (formErrorMessage[key].isError) {
+                            return (
+                              <ListItem key={key}>
+                                <Text>{formErrorMessage[key].message}</Text>
+                              </ListItem>
+                            );
+                          }
+                        })}
+                      </UnorderedList>
+                    </Box>
+                  </Stack>
+                </Box>
+              )}
+
+              <Stack spacing={4}>
+                {/* Name */}
+                <FormControl isInvalid={formErrorMessage.name.isError}>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    variant="filled"
+                    onChange={(e) => {
+                      let newFormErrorMessage: IFormErrorMessage = {
+                        ...formErrorMessage,
+                        name: {
+                          isError: false,
+                          message: "",
+                        },
+                      };
+
+                      setFormErrorMessage(newFormErrorMessage);
+
+                      props.setName(e.target.value);
                     }}
-                  >
-                    Upload Image
-                  </Button>
+                    value={props.name}
+                    isInvalid={formErrorMessage.name.isError}
+                  />
+                  <FormErrorMessage>Name is required.</FormErrorMessage>
+                </FormControl>
 
-                  <Button
-                    colorScheme="red"
-                    variant={"outline"}
-                    size="lg"
-                    leftIcon={<Icon>{reactImage}</Icon>}
-                    onClick={() => {
-                      props.setImage("");
-                      setPreviewImage(defaultPreviewImage);
+                {/* Image */}
+                <FormControl isInvalid={formErrorMessage.image.isError}>
+                  <FormLabel>Image URL</FormLabel>
+                  <Input
+                    variant="filled"
+                    onChange={(e) => {
+                      let newFormErrorMessage: IFormErrorMessage = {
+                        ...formErrorMessage,
+                        image: {
+                          isError: false,
+                          message: "",
+                        },
+                      };
+
+                      setFormErrorMessage(newFormErrorMessage);
+
+                      props.setImage(e.target.value);
                     }}
+                    value={props.image}
+                  />
+                  <FormErrorMessage>Image is required.</FormErrorMessage>
+                </FormControl>
+
+                <Box>
+                  <HStack spacing={2} align="center">
+                    <Button
+                      colorScheme="green"
+                      leftIcon={<DownloadIcon />}
+                      onClick={() => {
+                        setPreviewImage(props.image);
+                      }}
+                    >
+                      Upload Image
+                    </Button>
+
+                    <Button
+                      colorScheme="red"
+                      variant={"outline"}
+                      leftIcon={<MinusIcon />}
+                      onClick={() => {
+                        props.setImage("");
+                        setPreviewImage(defaultPreviewImage);
+                      }}
+                    >
+                      Clear
+                    </Button>
+                  </HStack>
+                </Box>
+
+                {/* Stock */}
+                <FormControl isInvalid={formErrorMessage.stock.isError}>
+                  <FormLabel>Stock</FormLabel>
+                  <NumberInput
+                    width="100%"
+                    variant="filled"
+                    onChange={(e) => {
+                      let newFormErrorMessage: IFormErrorMessage = {
+                        ...formErrorMessage,
+                        stock: {
+                          isError: false,
+                          message: "",
+                        },
+                      };
+
+                      setFormErrorMessage(newFormErrorMessage);
+
+                      props.setStock(parseInt(e) ? parseInt(e) : 0);
+                    }}
+                    value={props.stock}
                   >
-                    Clear
-                  </Button>
-                </HStack>
-              </Box>
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
 
-              <NumberInput
-                placeholder="Stock"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
+                  <FormErrorMessage>Stock is required.</FormErrorMessage>
+                </FormControl>
 
-                onChange={(e) => {
-                  props.setStock(parseInt(e) ? parseInt(e) : 0);
-                }}
-                value={props.stock}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                {/* Price */}
+                <FormControl isInvalid={formErrorMessage.price.isError}>
+                  <FormLabel>Price</FormLabel>
+                  <NumberInput
+                    width="100%"
+                    variant="filled"
+                    onChange={(e) => {
+                      let newFormErrorMessage: IFormErrorMessage = {
+                        ...formErrorMessage,
+                        price: {
+                          isError: false,
+                          message: "",
+                        },
+                      };
 
-              {/* Price */}
-              <NumberInput
-                placeholder="Price"
-                size={"lg"}
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-                onChange={(e) => {
-                  props.setPrice(parseInt(e) ? parseInt(e) : 0);
-                }}
-                value={props.price}
-              >
-                <NumberInputField />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
+                      setFormErrorMessage(newFormErrorMessage);
 
-              <Select
-                placeholder="Filter by category"
-                size="lg"
-                // width={}
-                variant="filled"
-                onChange={(e) => {
-                  props.setCategory(e.target.value);
-                }}
-                value={props.category}
-              >
-                {getCategories.data?.map((category) => {
-                  return <option value={category.name}>{category.name}</option>;
-                })}
-              </Select>
+                      props.setPrice(parseInt(e) ? parseInt(e) : 0);
+                    }}
+                    value={props.price}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+
+                  <FormErrorMessage>Price is required.</FormErrorMessage>
+                </FormControl>
+
+                {/* Category */}
+                <FormControl isInvalid={formErrorMessage.category.isError}>
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    placeholder="Filter by category"
+                    variant="filled"
+                    onChange={(e) => {
+                      let newFormErrorMessage: IFormErrorMessage = {
+                        ...formErrorMessage,
+                        category: {
+                          isError: false,
+                          message: "",
+                        },
+                      };
+
+                      setFormErrorMessage(newFormErrorMessage);
+
+                      props.setCategory(e.target.value);
+                    }}
+                    value={props.category}
+                  >
+                    {getCategories.data?.map((category) => {
+                      return (
+                        <option value={category.name}>{category.name}</option>
+                      );
+                    })}
+                  </Select>
+                  <FormErrorMessage>Category is required.</FormErrorMessage>
+                </FormControl>
+              </Stack>
             </Box>
           </Flex>
 
+          {/* Description */}
           <Box>
-            <Textarea
-              placeholder="Product Description"
-              size={"lg"}
-              variant="filled"
-              // leftIcon={<SearchIcon />}
+            <FormControl isInvalid={formErrorMessage.description.isError}>
+              <FormLabel>Description</FormLabel>
+              <Textarea
+                placeholder="Product Description"
+                variant="filled"
+                onChange={(e) => {
+                  let newFormErrorMessage: IFormErrorMessage = {
+                    ...formErrorMessage,
+                    description: {
+                      isError: false,
+                      message: "",
+                    },
+                  };
 
-              onChange={(e) => {
-                props.setDescription(e.target.value);
-              }}
-              value={props.description}
-            />
+                  setFormErrorMessage(newFormErrorMessage);
+
+                  props.setDescription(e.target.value);
+                }}
+                value={props.description}
+              />
+              <FormErrorMessage>Description is required.</FormErrorMessage>
+            </FormControl>
           </Box>
         </Box>
 
@@ -231,8 +455,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               <Button
                 colorScheme="green"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
-                onClick={props.createProduct}
+                leftIcon={<AddIcon />}
+                onClick={(e) => {
+                  validateForm();
+                  props.createProduct && props.createProduct();
+                }}
               >
                 Create Product
               </Button>
@@ -240,8 +467,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               <Button
                 colorScheme="blue"
                 size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
-                onClick={props.updateProduct}
+                leftIcon={<AddIcon />}
+                onClick={(e) => {
+                  validateForm();
+                  props.updateProduct && props.updateProduct();
+                }}
               >
                 Update Product
               </Button>
@@ -250,7 +480,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               colorScheme="red"
               variant={"outline"}
               size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
+              leftIcon={<CloseIcon />}
               as={Link}
               to="/staff/inventory/manage"
             >

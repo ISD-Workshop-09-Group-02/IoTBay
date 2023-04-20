@@ -10,7 +10,6 @@ import {
   Button,
   Table,
   HStack,
-  Select,
   Input,
   Thead,
   Tr,
@@ -21,10 +20,11 @@ import {
   Badge,
   TableContainer,
   Checkbox,
+  useColorMode,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 
-import reactImage from "../../assets/react.svg";
-import { Icon } from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
   useDeleteProduct,
@@ -33,19 +33,28 @@ import {
 } from "../../hooks/useProducts";
 import { Link } from "react-router-dom";
 import { useGetCategories } from "../../hooks/useCategories";
+import {
+  AddIcon,
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
+
+import { Select } from "chakra-react-select";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<string[]>([]);
 
   interface IFilter {
     searchFilter: string;
-    categoryFilter: string;
+    categoryFilter: string[];
   }
 
   const [finalFilter, setFinalFilter] = React.useState<IFilter>({
     searchFilter: "",
-    categoryFilter: "",
+    categoryFilter: [],
   });
 
   const getProducts = useGetProducts({
@@ -81,8 +90,7 @@ export default function ManageInventory() {
             <HStack spacing={2} align="center" justify="flex-end">
               <Button
                 colorScheme="green"
-                size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                leftIcon={<AddIcon />}
                 as={Link}
                 to="/staff/inventory/create"
               >
@@ -90,8 +98,8 @@ export default function ManageInventory() {
               </Button>
               <Button
                 colorScheme="red"
-                size="lg"
-                leftIcon={<Icon>{reactImage}</Icon>}
+                // leftIcon={<MinusIcon />}
+                leftIcon={<DeleteIcon />}
                 onClick={() => {
                   deleteProducts.mutate(selectedItems);
                 }}
@@ -113,38 +121,44 @@ export default function ManageInventory() {
         {/* Search & Filter */}
         <Box>
           <HStack spacing={2} align="center" justify="space-between">
-            <Input
-              size="lg"
-              placeholder="Search for product"
-              variant="filled"
-              width="60%"
-              // leftIcon={<SearchIcon />}
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              value={search}
-            />
+            <InputGroup width="60%">
+              <InputLeftElement
+                pointerEvents="none"
+                children={<SearchIcon color="gray.300" />}
+              />
+              <Input
+                placeholder="Search for product"
+                variant="filled"
+                // leftIcon={<SearchIcon />}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
+                value={search}
+              />
+            </InputGroup>
             <Select
+              isMulti
+              options={getCategories.data.map((element) => {
+                return {
+                  label: element.name,
+                  value: element.name,
+                };
+              })}
               placeholder="Filter by category"
-              size="lg"
-              // width={}
-              width="30%"
-              variant="filled"
+              closeMenuOnSelect={false}
               onChange={(e) => {
-                setCategory(e.target.value);
+                setCategory(e.map((element) => element.value));
               }}
-              value={category}
-            >
-              {getCategories.data &&
-                getCategories.data.map((category) => (
-                  <option value={category.name}>{category.name}</option>
-                ))}
-            </Select>
+              value={category.map((element) => {
+                return {
+                  label: element,
+                  value: element,
+                };
+              })}
+            />
             <Button
               colorScheme="green"
-              size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
-              width="20%"
+              leftIcon={<SearchIcon />}
               onClick={() => {
                 setFinalFilter({
                   searchFilter: search,
@@ -156,15 +170,13 @@ export default function ManageInventory() {
             </Button>
             <Button
               colorScheme="yellow"
-              size="lg"
-              leftIcon={<Icon>{reactImage}</Icon>}
-              width="10%"
+              leftIcon={<CloseIcon />}
               onClick={() => {
                 setSearch("");
-                setCategory("");
+                setCategory([]);
                 setFinalFilter({
                   searchFilter: "",
-                  categoryFilter: "",
+                  categoryFilter: [],
                 });
               }}
             >
@@ -184,8 +196,9 @@ export default function ManageInventory() {
 
         {/* Table */}
         <Box
-          background={"gray.800"}
-          // padding
+          background={
+            useColorMode().colorMode === "light" ? "gray.100" : "gray.900"
+          }
           padding={4}
         >
           <TableContainer>
@@ -314,17 +327,12 @@ const TableRow: React.FC<{
           {/* {props.category &&
             props.category.map((element, index) => {
               return (
-                <Tag size="lg" variant="solid" colorScheme="purple" key={index}>
+                <Tag variant="solid" colorScheme="purple" key={index}>
                   {element}
                 </Tag>
               );
             })} */}
-          <Tag
-            size="lg"
-            variant="solid"
-            colorScheme="purple"
-            key={props.category}
-          >
+          <Tag variant="solid" colorScheme="purple" key={props.category}>
             {props.category}
           </Tag>
         </HStack>
@@ -350,6 +358,7 @@ const TableRow: React.FC<{
             colorScheme="yellow"
             size="sm"
             width="100%"
+            leftIcon={<EditIcon />}
             as={Link}
             to={{
               pathname: `/staff/inventory/edit/${props.productId}`,
@@ -361,6 +370,7 @@ const TableRow: React.FC<{
             colorScheme="red"
             size="sm"
             width="100%"
+            leftIcon={<DeleteIcon />}
             onClick={() => {
               deleteProduct.mutate(props.productId);
             }}

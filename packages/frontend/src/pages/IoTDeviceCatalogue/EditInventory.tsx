@@ -32,10 +32,6 @@ export default function EditInventory() {
   }, [getProduct.isSuccess, getProduct.data]);
 
   const updateProductFunction = async () => {
-    if (!name || !description || !price || !stock || !category || !image) {
-      return;
-    }
-
     try {
       updateProduct.mutateAsync({
         productId: productId,
