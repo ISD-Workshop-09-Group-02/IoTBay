@@ -28,6 +28,7 @@ import { Select } from "chakra-react-select";
 import BreadCrumbRoute from "../components/BreadCrumbRoute";
 import TableRow from "../features/IoTDeviceCatalogue/TableRow";
 import PageTitle from "../components/PageTitle";
+import SearchAndFilterNavbar from "../features/IoTDeviceCatalogue/SearchAndFilterNavbar";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
@@ -99,80 +100,15 @@ export default function ManageInventory() {
         />
 
         {/* Search & Filter */}
-        <Box>
-          <HStack spacing={2} align="center" justify="space-between">
-            <InputGroup width="60%">
-              <InputLeftElement
-                pointerEvents="none"
-                children={<SearchIcon color="gray.300" />}
-              />
-              <Input
-                placeholder="Search for product"
-                variant="filled"
-                // leftIcon={<SearchIcon />}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                }}
-                value={search}
-              />
-            </InputGroup>
-            <Select
-              isMulti
-              options={getCategories.data.map((element) => {
-                return {
-                  label: element.name,
-                  value: element.name,
-                };
-              })}
-              placeholder="Filter by category"
-              closeMenuOnSelect={false}
-              onChange={(e) => {
-                setCategory(e.map((element) => element.value));
-              }}
-              value={category.map((element) => {
-                return {
-                  label: element,
-                  value: element,
-                };
-              })}
-            />
-            <Button
-              colorScheme="green"
-              leftIcon={<SearchIcon />}
-              onClick={() => {
-                setFinalFilter({
-                  searchFilter: search,
-                  categoryFilter: category,
-                });
-              }}
-            >
-              Search
-            </Button>
-            <Button
-              colorScheme="yellow"
-              leftIcon={<CloseIcon />}
-              onClick={() => {
-                setSearch("");
-                setCategory([]);
-                setFinalFilter({
-                  searchFilter: "",
-                  categoryFilter: [],
-                });
-              }}
-            >
-              Clear
-            </Button>
-          </HStack>
-        </Box>
-
-        {/* Number of Products Found */}
-        {getProducts.data.length !== 0 && (
-          <Box>
-            <Text fontSize="2xl">
-              {JSON.stringify(getProducts.data.length)} Products Found
-            </Text>
-          </Box>
-        )}
+        <SearchAndFilterNavbar
+          search={search}
+          setSearch={setSearch}
+          category={category}
+          setCategory={setCategory}
+          setFinalFilter={setFinalFilter}
+          getCategories={getCategories}
+          getProducts={getProducts}
+        />
 
         {/* Table */}
         <Box
