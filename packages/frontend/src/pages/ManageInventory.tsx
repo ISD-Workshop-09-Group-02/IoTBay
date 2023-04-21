@@ -1,32 +1,10 @@
-import {
-  Box,
-  Container,
-  Stack,
-  Text,
-  Heading,
-  Button,
-  Table,
-  HStack,
-  Input,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  TableContainer,
-  useColorMode,
-  InputGroup,
-  InputLeftElement,
-} from "@chakra-ui/react";
-
+import { Container, Stack, Text, Button, useColorMode } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDeleteProducts, useGetProducts } from "../hooks/useProducts";
 import { Link } from "react-router-dom";
 import { useGetCategories } from "../hooks/useCategories";
-import { AddIcon, CloseIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
-
-import { Select } from "chakra-react-select";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import BreadCrumbRoute from "../components/BreadCrumbRoute";
-import TableRow from "../features/IoTDeviceCatalogue/TableRow";
 import PageTitle from "../components/PageTitle";
 import SearchAndFilterNavbar from "../features/IoTDeviceCatalogue/SearchAndFilterNavbar";
 import ProductTable from "../features/IoTDeviceCatalogue/ProductTable";
@@ -72,7 +50,6 @@ export default function ManageInventory() {
     <Container maxW={"container.xl"}>
       <Stack spacing={4}>
         {/* Manage Inventory Header, Create, Delete */}
-
         <PageTitle title="Manage Inventory">
           <Button
             colorScheme="green"
