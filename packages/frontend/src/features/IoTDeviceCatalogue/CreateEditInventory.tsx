@@ -37,6 +37,7 @@ import {
   InfoIcon,
   MinusIcon,
 } from "@chakra-ui/icons";
+import BreadCrumbRoute from "../../components/BreadCrumbRoute";
 
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
@@ -170,20 +171,22 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
           <Heading>Create Product</Heading>
         </Box>
 
-        <Box>
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">Manage Inventory</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              {props.createOrUpdate === "create" ? (
-                <BreadcrumbLink href="#">Create A Product</BreadcrumbLink>
-              ) : (
-                <BreadcrumbLink href="#">Edit A Product</BreadcrumbLink>
-              )}
-            </BreadcrumbItem>
-          </Breadcrumb>
-        </Box>
+        {/* Breadcrumb */}
+        <BreadCrumbRoute
+          parameters={[
+            { paths: "Manage Inventory", links: "/staff/inventory/manage" },
+            {
+              paths:
+                props.createOrUpdate === "create"
+                  ? "Create A Product"
+                  : "Edit A Product",
+              links:
+                props.createOrUpdate === "create"
+                  ? "/staff/inventory/create"
+                  : "/staff/inventory/edit",
+            },
+          ]}
+        />
 
         {/* Product Info */}
         <Box

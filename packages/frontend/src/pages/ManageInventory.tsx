@@ -42,6 +42,7 @@ import {
 } from "@chakra-ui/icons";
 
 import { Select } from "chakra-react-select";
+import BreadCrumbRoute from "../components/BreadCrumbRoute";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
@@ -110,13 +111,11 @@ export default function ManageInventory() {
           </HStack>
         </Box>
 
-        <Box>
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">Manage Inventory</BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
-        </Box>
+        <BreadCrumbRoute
+          parameters={[
+            { paths: "Manage Inventory", links: "/staff/inventory/manage" },
+          ]}
+        />
 
         {/* Search & Filter */}
         <Box>
