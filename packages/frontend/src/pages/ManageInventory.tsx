@@ -30,9 +30,9 @@ import {
   useDeleteProduct,
   useDeleteProducts,
   useGetProducts,
-} from "../../hooks/useProducts";
+} from "../hooks/useProducts";
 import { Link } from "react-router-dom";
-import { useGetCategories } from "../../hooks/useCategories";
+import { useGetCategories } from "../hooks/useCategories";
 import {
   AddIcon,
   CloseIcon,

@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Link } from "react-router-dom";
-import { useGetCategories } from "../../../hooks/useCategories";
+import { useGetCategories } from "../../hooks/useCategories";
 
 import { useEffect, useState } from "react";
 import {

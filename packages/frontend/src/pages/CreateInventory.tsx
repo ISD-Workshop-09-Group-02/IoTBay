@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import CreateEditInventory from "./Components/CreateEditInventory";
-import { useCreateProduct } from "../../hooks/useProducts";
+import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory";
+import { useCreateProduct } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { ApiError } from "../../api/generated";
+import { ApiError } from "../api/generated";
 
 export default function CreateInventory() {
   const [name, setName] = useState("");
