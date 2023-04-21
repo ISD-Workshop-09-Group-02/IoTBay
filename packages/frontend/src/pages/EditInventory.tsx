@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory";
+import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
 import { useEffect, useState } from "react";
 import { useUpdateProduct, useGetProduct } from "../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";

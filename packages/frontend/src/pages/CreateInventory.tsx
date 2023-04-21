@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory";
+import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
 import { useCreateProduct } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
