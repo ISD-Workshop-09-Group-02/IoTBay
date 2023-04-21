@@ -86,6 +86,7 @@ export default function EditInventory() {
       image={image}
       setImage={setImage}
       updateProduct={updateProductFunction}
+      editId={productId}
     />
   );
 }

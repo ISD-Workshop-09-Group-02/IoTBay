@@ -27,6 +27,7 @@ import { AddIcon, CloseIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import { Select } from "chakra-react-select";
 import BreadCrumbRoute from "../components/BreadCrumbRoute";
 import TableRow from "../features/IoTDeviceCatalogue/TableRow";
+import PageTitle from "../components/PageTitle";
 
 export default function ManageInventory() {
   const [search, setSearch] = useState("");
@@ -69,31 +70,27 @@ export default function ManageInventory() {
     <Container maxW={"container.xl"}>
       <Stack spacing={4}>
         {/* Manage Inventory Header, Create, Delete */}
-        <Box>
-          <HStack spacing={2} align="center" justify="space-between">
-            <Heading>Manage Inventory</Heading>
-            <HStack spacing={2} align="center" justify="flex-end">
-              <Button
-                colorScheme="green"
-                leftIcon={<AddIcon />}
-                as={Link}
-                to="/staff/inventory/create"
-              >
-                Create Product
-              </Button>
-              <Button
-                colorScheme="red"
-                // leftIcon={<MinusIcon />}
-                leftIcon={<DeleteIcon />}
-                onClick={() => {
-                  deleteProducts.mutate(selectedItems);
-                }}
-              >
-                Delete Products
-              </Button>
-            </HStack>
-          </HStack>
-        </Box>
+
+        <PageTitle title="Manage Inventory" showSideActions={true}>
+          <Button
+            colorScheme="green"
+            leftIcon={<AddIcon />}
+            as={Link}
+            to="/staff/inventory/create"
+          >
+            Create Product
+          </Button>
+          <Button
+            colorScheme="red"
+            // leftIcon={<MinusIcon />}
+            leftIcon={<DeleteIcon />}
+            onClick={() => {
+              deleteProducts.mutate(selectedItems);
+            }}
+          >
+            Delete Products
+          </Button>
+        </PageTitle>
 
         <BreadCrumbRoute
           parameters={[
