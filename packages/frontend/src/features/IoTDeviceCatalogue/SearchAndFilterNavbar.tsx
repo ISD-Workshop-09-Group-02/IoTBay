@@ -45,72 +45,70 @@ const SearchAndFilterNavbar: React.FC<IProps> = ({
   getProducts,
 }) => {
   return (
-    <>
-      <Box>
-        <HStack spacing={2} align="center" justify="space-between">
-          <InputGroup width="60%">
-            <InputLeftElement
-              pointerEvents="none"
-              children={<SearchIcon color="gray.300" />}
-            />
-            <Input
-              placeholder="Search for product"
-              variant="filled"
-              // leftIcon={<SearchIcon />}
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              value={search}
-            />
-          </InputGroup>
-          <Select
-            isMulti
-            options={getCategories.data.map((element) => {
-              return {
-                label: element.name,
-                value: element.name,
-              };
-            })}
-            placeholder="Filter by category"
-            closeMenuOnSelect={false}
-            onChange={(e) => {
-              setCategory(e.map((element) => element.value));
-            }}
-            value={category.map((element) => {
-              return {
-                label: element,
-                value: element,
-              };
-            })}
+    <Box>
+      <HStack spacing={2} align="center" justify="space-between">
+        <InputGroup width="60%">
+          <InputLeftElement
+            pointerEvents="none"
+            children={<SearchIcon color="gray.300" />}
           />
-          <Button
-            colorScheme="green"
-            leftIcon={<SearchIcon />}
-            onClick={() => {
-              setFinalFilter({
-                searchFilter: search,
-                categoryFilter: category,
-              });
+          <Input
+            placeholder="Search for product"
+            variant="filled"
+            // leftIcon={<SearchIcon />}
+            onChange={(e) => {
+              setSearch(e.target.value);
             }}
-          >
-            Search
-          </Button>
-          <Button
-            colorScheme="yellow"
-            leftIcon={<CloseIcon />}
-            onClick={() => {
-              setSearch("");
-              setCategory([]);
-              setFinalFilter({
-                searchFilter: "",
-                categoryFilter: [],
-              });
-            }}
-          >
-            Clear
-          </Button>
-        </HStack>
-      </Box>
+            value={search}
+          />
+        </InputGroup>
+        <Select
+          isMulti
+          options={getCategories.data.map((element) => {
+            return {
+              label: element.name,
+              value: element.name,
+            };
+          })}
+          placeholder="Filter by category"
+          closeMenuOnSelect={false}
+          onChange={(e) => {
+            setCategory(e.map((element) => element.value));
+          }}
+          value={category.map((element) => {
+            return {
+              label: element,
+              value: element,
+            };
+          })}
+        />
+        <Button
+          colorScheme="green"
+          leftIcon={<SearchIcon />}
+          onClick={() => {
+            setFinalFilter({
+              searchFilter: search,
+              categoryFilter: category,
+            });
+          }}
+        >
+          Search
+        </Button>
+        <Button
+          colorScheme="yellow"
+          leftIcon={<CloseIcon />}
+          onClick={() => {
+            setSearch("");
+            setCategory([]);
+            setFinalFilter({
+              searchFilter: "",
+              categoryFilter: [],
+            });
+          }}
+        >
+          Clear
+        </Button>
+      </HStack>
 
       {getProducts.data && (
         <Box>
@@ -119,7 +117,7 @@ const SearchAndFilterNavbar: React.FC<IProps> = ({
           </Text>
         </Box>
       )}
-    </>
+    </Box>
   );
 };
 
