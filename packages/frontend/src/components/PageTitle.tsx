@@ -5,14 +5,13 @@ import { Link } from "react-router-dom";
 
 const PageTitle: React.FC<{
   title: string;
-  showSideActions?: boolean;
   children?: React.ReactNode;
-}> = ({ title, showSideActions = true, children }) => {
+}> = ({ title, children }) => {
   return (
     <Box>
       <HStack spacing={2} align="center" justify="space-between">
         <Heading>{title}</Heading>
-        {showSideActions && (
+        {children && (
           <HStack spacing={2} align="center" justify="flex-end">
             {children}
           </HStack>

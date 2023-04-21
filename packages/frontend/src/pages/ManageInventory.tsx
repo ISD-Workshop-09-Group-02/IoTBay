@@ -71,7 +71,7 @@ export default function ManageInventory() {
       <Stack spacing={4}>
         {/* Manage Inventory Header, Create, Delete */}
 
-        <PageTitle title="Manage Inventory" showSideActions={true}>
+        <PageTitle title="Manage Inventory">
           <Button
             colorScheme="green"
             leftIcon={<AddIcon />}
