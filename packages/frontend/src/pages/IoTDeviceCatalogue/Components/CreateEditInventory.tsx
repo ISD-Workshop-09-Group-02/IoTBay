@@ -29,7 +29,7 @@ import {
 import { Link } from "react-router-dom";
 import { useGetCategories } from "../../../hooks/useCategories";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AddIcon,
   CloseIcon,
@@ -63,8 +63,14 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
   const defaultPreviewImage: string = "https://via.placeholder.com/150";
 
   const [previewImage, setPreviewImage] = useState<string | undefined>(
-    defaultPreviewImage
+    props.image ? props.image : defaultPreviewImage
   );
+
+  useEffect(() => {
+    if (props.image) {
+      setPreviewImage(props.image);
+    }
+  }, [props.image]);
 
   interface IFormErrorMessage {
     name: IErrorMessage;
