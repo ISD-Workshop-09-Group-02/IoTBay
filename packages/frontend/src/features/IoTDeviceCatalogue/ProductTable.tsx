@@ -6,6 +6,7 @@ import {
   Tr,
   Th,
   Tbody,
+  Checkbox,
 } from "@chakra-ui/react";
 import TableRow from "./TableRow";
 import { ProductsSchema } from "../../api/generated";
@@ -31,6 +32,20 @@ const ProductTable: React.FC<IProductTableProps> = ({
         <Table variant={"simple"}>
           <Thead>
             <Tr>
+              <Th textAlign="center">
+                <Checkbox
+                  isChecked={selectedItems.length === getProducts.data.length}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedItems(
+                        getProducts.data.map((element) => element.productId)
+                      );
+                    } else {
+                      setSelectedItems([]);
+                    }
+                  }}
+                />
+              </Th>
               <Th textAlign="center">Image</Th>
               <Th textAlign="center">Name</Th>
               <Th textAlign="center">Stock</Th>

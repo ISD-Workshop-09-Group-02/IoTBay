@@ -50,6 +50,8 @@ interface IEditUpdateInventoryProps {
   editId?: string;
 }
 
+const defaultPreviewImage: string = "https://via.placeholder.com/150";
+
 const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
   const initialDefaultValues = {
     name: "",
@@ -57,7 +59,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
     price: 0,
     stock: 0,
     category: "",
-    image: "https://via.placeholder.com/150",
+    image: defaultPreviewImage,
   } as FormValues;
 
   const getCategories = useGetCategories();
@@ -84,9 +86,9 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
       : props.initialFormValues,
   });
 
-  const defaultPreviewImage: string = "https://via.placeholder.com/150";
-
-  const [imageURL, setImageURL] = useState<string | undefined>("");
+  const [imageURL, setImageURL] = useState<string | undefined>(
+    defaultPreviewImage
+  );
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     defaultValues.image ? defaultValues.image : defaultPreviewImage
   );

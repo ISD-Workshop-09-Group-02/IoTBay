@@ -1,4 +1,11 @@
-import { Container, Stack, Text, Button, useColorMode } from "@chakra-ui/react";
+import {
+  Container,
+  Stack,
+  Text,
+  Button,
+  useColorMode,
+  useToast,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useDeleteProducts, useGetProducts } from "../hooks/useProducts";
 import { Link } from "react-router-dom";
@@ -8,8 +15,11 @@ import BreadCrumbRoute from "../components/BreadCrumbRoute";
 import PageTitle from "../components/PageTitle";
 import SearchAndFilterNavbar from "../features/IoTDeviceCatalogue/SearchAndFilterNavbar";
 import ProductTable from "../features/IoTDeviceCatalogue/ProductTable";
+import { ApiError } from "../api/generated";
 
 export default function ManageInventory() {
+  const toast = useToast();
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<string[]>([]);
 
@@ -64,7 +74,36 @@ export default function ManageInventory() {
             // leftIcon={<MinusIcon />}
             leftIcon={<DeleteIcon />}
             onClick={() => {
-              deleteProducts.mutate(selectedItems);
+              try {
+                if (selectedItems.length === 0) return;
+
+                deleteProducts.mutate(selectedItems);
+
+                toast({
+                  title: "Products Deleted",
+                  description: "Products has been deleted.",
+                  status: "success",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              } catch (error) {
+                if (error instanceof ApiError) {
+                  toast({
+                    title: "Products deletion failed",
+                    description: error.body?.message ?? "Unknown error",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                } else {
+                  toast({
+                    title: "Products deletion failed",
+                    description: "Unknown error",
+                    status: "error",
+                    duration: 5000,
+                  });
+                }
+              }
             }}
           >
             Delete Products

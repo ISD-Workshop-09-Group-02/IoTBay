@@ -6,7 +6,7 @@ import { ApiError, ProductsSchema } from "../api/generated";
 
 export default function CreateInventory() {
   const createProduct = useCreateProduct();
-  
+
   const toast = useToast();
   const navigate = useNavigate();
 
