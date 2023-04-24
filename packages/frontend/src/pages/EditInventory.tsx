@@ -1,5 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
+import CreateEditInventory, {
+  FormValues,
+} from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
 import { useEffect, useState } from "react";
 import { useUpdateProduct, useGetProduct } from "../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
@@ -8,28 +10,10 @@ import { ApiError, ProductsSchema } from "../api/generated";
 export default function EditInventory() {
   const productId: string = useParams().id as string;
 
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState("");
-
   const getProduct = useGetProduct(productId);
   const updateProduct = useUpdateProduct();
   const toast = useToast();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (getProduct.isSuccess) {
-      setName(getProduct.data.name);
-      setDescription(getProduct.data.description);
-      setPrice(getProduct.data.price);
-      setStock(getProduct.data.stock);
-      setCategory(getProduct.data.category);
-      setImage(getProduct.data.image);
-    }
-  }, [getProduct.isSuccess, getProduct.data]);
 
   const updateProductFunction = async (data: ProductsSchema) => {
     try {
@@ -70,23 +54,26 @@ export default function EditInventory() {
     }
   };
 
+  if (getProduct.isLoading || !getProduct.data) {
+    return <div>Loading...</div>;
+  }
+
+  const initialDefaultValues = {
+    productId: getProduct.data.productId,
+    name: getProduct.data.name,
+    description: getProduct.data.description,
+    price: getProduct.data.price,
+    stock: getProduct.data.stock,
+    category: getProduct.data.category,
+    image: getProduct.data.image,
+  } as FormValues;
+
   return (
     <CreateEditInventory
       createOrUpdate="edit"
-      name={name}
-      setName={setName}
-      description={description}
-      setDescription={setDescription}
-      price={price}
-      setPrice={setPrice}
-      stock={stock}
-      setStock={setStock}
-      category={category}
-      setCategory={setCategory}
-      image={image}
-      setImage={setImage}
       updateProduct={updateProductFunction}
       editId={productId}
+      initialFormValues={initialDefaultValues}
     />
   );
 }

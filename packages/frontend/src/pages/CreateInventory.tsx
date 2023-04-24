@@ -19,7 +19,7 @@ export default function CreateInventory() {
 
   const createProductFunction = async (data: ProductsSchema) => {
     try {
-      await createProduct.mutateAsync({
+      createProduct.mutateAsync({
         name: data.name,
         price: data.price,
         image: data.image,
@@ -58,18 +58,6 @@ export default function CreateInventory() {
   return (
     <CreateEditInventory
       createOrUpdate="create"
-      name={name}
-      setName={setName}
-      description={description}
-      setDescription={setDescription}
-      price={price}
-      setPrice={setPrice}
-      stock={stock}
-      setStock={setStock}
-      category={category}
-      setCategory={setCategory}
-      image={image}
-      setImage={setImage}
       createProduct={createProductFunction}
     />
   );

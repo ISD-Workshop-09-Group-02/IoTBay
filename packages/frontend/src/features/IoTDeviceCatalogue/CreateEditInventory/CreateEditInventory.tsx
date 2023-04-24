@@ -44,55 +44,79 @@ import CreateEditCancelButtons from "./CreateEditCancelButtons";
 import FormErrorNotification from "../../../components/Form/FormErrorNotification";
 import { ProductsSchema } from "../../../api/generated";
 
+export type FormValues = {
+  name: string;
+  price: number;
+  stock: number;
+  description: string;
+  image: string;
+  category: string;
+};
+
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
-  name: string;
-  setName: (name: string) => void;
-  description: string;
-  setDescription: (description: string) => void;
-  price: number;
-  setPrice: (price: number) => void;
-  stock: number;
-  setStock: (stock: number) => void;
-  category: string;
-  setCategory: (category: string) => void;
-  image: string;
-  setImage: (image: string) => void;
 
   createProduct?: (data: ProductsSchema) => void;
   updateProduct?: (data: ProductsSchema) => void;
+
+  initialFormValues?: FormValues;
 
   editId?: string;
 }
 
 const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
+  const initialDefaultValues = {
+    name: "",
+    description: "",
+    price: 0,
+    stock: 0,
+    category: "",
+    image: "https://via.placeholder.com/150",
+  } as FormValues;
+
   const getCategories = useGetCategories();
 
-  const defaultPreviewImage: string = "https://via.placeholder.com/150";
+  const isPropsNull = () => {
+    if (!props.initialFormValues) return true;
+    if (Object.keys(props.initialFormValues).length === 0) return true;
 
-  const [previewImage, setPreviewImage] = useState<string | undefined>(
-    props.image ? props.image : defaultPreviewImage
-  );
+    const value = Object.values(props.initialFormValues).some(
+      (value) => value === null || value === undefined || value === ""
+    );
 
-  useEffect(() => {
-    if (props.image) {
-      setPreviewImage(props.image);
-    }
-  }, [props.image]);
+    return value;
+  };
 
   const {
     handleSubmit, // function to invoke when the form is submitted
     register, // register the input into the hook by invoking the "register" function
-    formState: { errors, isSubmitting }, // errors object contains all errors
-  } = useForm();
+    formState: { errors, isSubmitting, defaultValues }, // errors object contains all errors
+    reset,
+  } = useForm({
+    defaultValues: isPropsNull()
+      ? initialDefaultValues
+      : props.initialFormValues,
+    // defaultValues: defaultValue2,
+  });
+
+  const defaultPreviewImage: string = "https://via.placeholder.com/150";
+
+  const [previewImage, setPreviewImage] = useState<string | undefined>(
+    defaultValues.image ? defaultValues.image : defaultPreviewImage
+  );
 
   const onSubmit = (data: any) => {
-    // alert(JSON.stringify(errors));
-    // alert(JSON.stringify(data));
-
     props.createProduct && props.createProduct(data);
     props.updateProduct && props.updateProduct(data);
   };
+
+  useEffect(() => {
+    if (props.initialFormValues && props.createOrUpdate === "edit") {
+      reset(props.initialFormValues);
+    }
+  }, [props.initialFormValues]);
+
+  // if (!getCategories.isSuccess) return <div>Loading...</div>;
 
   return (
     <Container maxW={"container.xl"}>
@@ -167,7 +191,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           message: "Max length exceeded",
                         },
                       })}
-                      defaultValue={props.name}
+                      defaultValue={defaultValues.name}
                     />
                     <FormErrorMessage>
                       {errors.name && errors.name.message}
@@ -183,11 +207,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       {...register("image", {
                         required: "This is required",
                         maxLength: {
-                          value: 20,
+                          value: 255,
                           message: "Max length exceeded",
                         },
                       })}
-                      defaultValue={props.image}
+                      defaultValue={defaultValues.image}
                     />
                     <FormErrorMessage>
                       {errors.image && errors.image.message}
@@ -220,6 +244,8 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   </Box>
 
                   {/* Stock */}
+
+                  {/* Stock */}
                   <FormControl isInvalid={errors.stock}>
                     <FormLabel>Stock</FormLabel>
                     <NumberInput
@@ -235,7 +261,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         validate: (value) =>
                           value > 0 || "Stock must be greater than 0",
                       })}
-                      defaultValue={props.stock}
+                      defaultValue={defaultValues.stock}
                     >
                       <NumberInputField />
                       <NumberInputStepper>
@@ -265,7 +291,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         validate: (value) =>
                           value > 0 || "Price must be greater than 0",
                       })}
-                      defaultValue={props.price}
+                      defaultValue={defaultValues.price}
                     >
                       <NumberInputField />
                       <NumberInputStepper>
@@ -293,7 +319,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           message: "Max length exceeded",
                         },
                       })}
-                      defaultValue={props.category}
+                      defaultValue={defaultValues.category}
                     >
                       {getCategories.data?.map((category) => {
                         return (
@@ -324,7 +350,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       message: "Max length exceeded",
                     },
                   })}
-                  defaultValue={props.description}
+                  defaultValue={defaultValues.description}
                 />
                 <FormErrorMessage>
                   {errors.description && errors.description.message}
