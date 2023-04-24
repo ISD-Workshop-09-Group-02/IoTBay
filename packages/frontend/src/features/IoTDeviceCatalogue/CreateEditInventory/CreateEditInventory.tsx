@@ -2,11 +2,6 @@ import {
   Box,
   Container,
   Stack,
-  Text,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  Heading,
   Button,
   HStack,
   Select,
@@ -22,21 +17,12 @@ import {
   FormErrorMessage,
   FormControl,
   FormLabel,
-  UnorderedList,
-  ListItem,
 } from "@chakra-ui/react";
 
-import { Link } from "react-router-dom";
 import { useGetCategories } from "../../../hooks/useCategories";
 
 import { useEffect, useState } from "react";
-import {
-  AddIcon,
-  CloseIcon,
-  DownloadIcon,
-  InfoIcon,
-  MinusIcon,
-} from "@chakra-ui/icons";
+import { DownloadIcon, MinusIcon } from "@chakra-ui/icons";
 import BreadCrumbRoute from "../../../components/BreadCrumbRoute";
 import PageTitle from "../../../components/PageTitle";
 import { useForm } from "react-hook-form";
@@ -184,7 +170,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
               <Box width="100%" margin={2}>
                 {/* Notification Message */}
                 <FormErrorNotification errors={errors} />
-                {/* In other file */}
 
                 <Stack spacing={4}>
                   {/* Name */}
@@ -276,7 +261,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       defaultValue={defaultValues.stock}
                       value={stock}
                       onChange={(value) => {
-                        setStock(value);
+                        setStock(parseFloat(value));
                       }}
                     >
                       <NumberInputField />
@@ -310,7 +295,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       defaultValue={defaultValues.price}
                       value={price}
                       onChange={(value) => {
-                        setPrice(value);
+                        setPrice(parseFloat(value));
                       }}
                     >
                       <NumberInputField />

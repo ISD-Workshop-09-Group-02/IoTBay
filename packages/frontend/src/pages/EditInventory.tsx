@@ -2,16 +2,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import CreateEditInventory, {
   FormValues,
 } from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
-import { useEffect, useState } from "react";
 import { useUpdateProduct, useGetProduct } from "../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
 import { ApiError, ProductsSchema } from "../api/generated";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
-
   const getProduct = useGetProduct(productId);
   const updateProduct = useUpdateProduct();
+
   const toast = useToast();
   const navigate = useNavigate();
 
