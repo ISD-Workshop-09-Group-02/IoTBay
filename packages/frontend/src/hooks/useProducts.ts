@@ -78,6 +78,16 @@ export function useDeleteProduct() {
       onSuccess: () => {
         queryClient.invalidateQueries([productKey]);
       },
+      onMutate: async (productId) => {
+        await queryClient.cancelQueries([productKey]);
+        const previousProducts = queryClient.getQueryData([productKey]);
+        queryClient.setQueryData([productKey], (old: any) => {
+          return old.filter((product: ProductsSchema) => {
+            return product.productId !== productId;
+          });
+        });
+        return { previousProducts };
+      },
     }
   );
 }
@@ -93,6 +103,16 @@ export function useDeleteProducts() {
     {
       onSuccess: () => {
         queryClient.invalidateQueries([productKey]);
+      },
+      onMutate: async (productId) => {
+        await queryClient.cancelQueries([productKey]);
+        const previousProducts = queryClient.getQueryData([productKey]);
+        queryClient.setQueryData([productKey], (old: any) => {
+          return old.filter((product: ProductsSchema) => {
+            return !productId.includes(product.productId);
+          });
+        });
+        return { previousProducts };
       },
     }
   );

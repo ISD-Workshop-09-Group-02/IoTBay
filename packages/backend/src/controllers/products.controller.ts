@@ -238,8 +238,6 @@ export const deleteProducts = async (
     return response.badRequest("Some products do not exist");
   }
 
-  console.log(products);
-
   const deletedProducts = await prisma.product.deleteMany({
     where: {
       productId: {

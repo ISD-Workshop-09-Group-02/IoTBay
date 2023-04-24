@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from "react";
-import CreateEditInventory from "./Components/CreateEditInventory";
-import { useCreateProduct } from "../../hooks/useProducts";
+import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInventory/CreateEditInventory";
+import { useCreateProduct } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { ApiError } from "../../api/generated";
+import { ApiError, ProductsSchema } from "../api/generated";
 
 export default function CreateInventory() {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [category, setCategory] = useState("");
-  const [image, setImage] = useState("");
-
   const createProduct = useCreateProduct();
+
   const toast = useToast();
   const navigate = useNavigate();
 
-  const createProductFunction = async () => {
+  const createProductFunction = async (data: ProductsSchema) => {
     try {
-      await createProduct.mutateAsync({
-        name: name,
-        price: price,
-        image: image,
-        description: description,
-        stock: stock,
-        category: category,
+      createProduct.mutateAsync({
+        name: data.name,
+        price: data.price,
+        image: data.image,
+        description: data.description,
+        stock: data.stock,
+        category: data.category,
       });
       toast({
         title: "Inventory created",
@@ -58,18 +51,6 @@ export default function CreateInventory() {
   return (
     <CreateEditInventory
       createOrUpdate="create"
-      name={name}
-      setName={setName}
-      description={description}
-      setDescription={setDescription}
-      price={price}
-      setPrice={setPrice}
-      stock={stock}
-      setStock={setStock}
-      category={category}
-      setCategory={setCategory}
-      image={image}
-      setImage={setImage}
       createProduct={createProductFunction}
     />
   );
