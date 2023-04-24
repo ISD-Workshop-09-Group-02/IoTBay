@@ -5,14 +5,10 @@ import { Link } from "react-router-dom";
 
 interface CreateEditCancelButtonsProps {
   createOrUpdate: "create" | "edit";
-  createProduct?: () => void;
-  updateProduct?: () => void;
 }
 
 const CreateEditCancelButtons: React.FC<CreateEditCancelButtonsProps> = ({
   createOrUpdate,
-  createProduct,
-  updateProduct,
 }) => {
   return (
     <Box>

@@ -333,11 +333,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
             </Box>
           </Box>
 
-          <CreateEditCancelButtons
-            createOrUpdate={props.createOrUpdate}
-            createProduct={props.createProduct}
-            updateProduct={props.updateProduct}
-          />
+          <CreateEditCancelButtons createOrUpdate={props.createOrUpdate} />
         </form>
       </Stack>
     </Container>
