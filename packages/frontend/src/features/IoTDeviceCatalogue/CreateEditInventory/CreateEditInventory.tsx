@@ -90,29 +90,38 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
   const {
     handleSubmit, // function to invoke when the form is submitted
     register, // register the input into the hook by invoking the "register" function
-    formState: { errors, isSubmitting, defaultValues }, // errors object contains all errors
+    formState: { errors, defaultValues },
     reset,
   } = useForm({
     defaultValues: isPropsNull()
       ? initialDefaultValues
       : props.initialFormValues,
-    // defaultValues: defaultValue2,
   });
 
   const defaultPreviewImage: string = "https://via.placeholder.com/150";
 
+  const [imageURL, setImageURL] = useState<string | undefined>("");
   const [previewImage, setPreviewImage] = useState<string | undefined>(
     defaultValues.image ? defaultValues.image : defaultPreviewImage
   );
 
+  const [stock, setStock] = useState<number>(0);
+  const [price, setPrice] = useState<number>(0);
+
   const onSubmit = (data: any) => {
-    props.createProduct && props.createProduct(data);
-    props.updateProduct && props.updateProduct(data);
+    const dataFormatted = { ...data, image: previewImage };
+    props.createProduct && props.createProduct(dataFormatted);
+    props.updateProduct && props.updateProduct(dataFormatted);
   };
 
   useEffect(() => {
     if (props.initialFormValues && props.createOrUpdate === "edit") {
       reset(props.initialFormValues);
+      setPreviewImage(props.initialFormValues.image);
+      setImageURL(props.initialFormValues.image);
+
+      setStock(props.initialFormValues.stock);
+      setPrice(props.initialFormValues.price);
     }
   }, [props.initialFormValues]);
 
@@ -212,6 +221,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         },
                       })}
                       defaultValue={defaultValues.image}
+                      onChange={(e) => {
+                        setImageURL(e.target.value);
+                      }}
+                      value={imageURL}
                     />
                     <FormErrorMessage>
                       {errors.image && errors.image.message}
@@ -224,7 +237,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         colorScheme="green"
                         leftIcon={<DownloadIcon />}
                         onClick={() => {
-                          setPreviewImage(props.image);
+                          setPreviewImage(imageURL);
                         }}
                       >
                         Upload Image
@@ -236,14 +249,13 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                         leftIcon={<MinusIcon />}
                         onClick={() => {
                           setPreviewImage(defaultPreviewImage);
+                          setImageURL(defaultPreviewImage);
                         }}
                       >
                         Clear
                       </Button>
                     </HStack>
                   </Box>
-
-                  {/* Stock */}
 
                   {/* Stock */}
                   <FormControl isInvalid={errors.stock}>
@@ -262,6 +274,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value > 0 || "Stock must be greater than 0",
                       })}
                       defaultValue={defaultValues.stock}
+                      value={stock}
+                      onChange={(value) => {
+                        setStock(value);
+                      }}
                     >
                       <NumberInputField />
                       <NumberInputStepper>
@@ -292,6 +308,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value > 0 || "Price must be greater than 0",
                       })}
                       defaultValue={defaultValues.price}
+                      value={price}
+                      onChange={(value) => {
+                        setPrice(value);
+                      }}
                     >
                       <NumberInputField />
                       <NumberInputStepper>
