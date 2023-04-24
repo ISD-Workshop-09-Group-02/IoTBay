@@ -42,6 +42,7 @@ import PageTitle from "../../../components/PageTitle";
 import { useForm } from "react-hook-form";
 import CreateEditCancelButtons from "./CreateEditCancelButtons";
 import FormErrorNotification from "../../../components/Form/FormErrorNotification";
+import { ProductsSchema } from "../../../api/generated";
 
 interface IEditUpdateInventoryProps {
   createOrUpdate: "create" | "edit";
@@ -58,8 +59,8 @@ interface IEditUpdateInventoryProps {
   image: string;
   setImage: (image: string) => void;
 
-  createProduct?: () => void;
-  updateProduct?: () => void;
+  createProduct?: (data: ProductsSchema) => void;
+  updateProduct?: (data: ProductsSchema) => void;
 
   editId?: string;
 }
@@ -86,8 +87,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    alert(JSON.stringify(errors));
-    alert(JSON.stringify(data));
+    // alert(JSON.stringify(errors));
+    // alert(JSON.stringify(data));
+
+    props.createProduct && props.createProduct(data);
+    props.updateProduct && props.updateProduct(data);
   };
 
   return (

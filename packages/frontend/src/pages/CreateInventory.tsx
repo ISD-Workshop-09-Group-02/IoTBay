@@ -3,7 +3,7 @@ import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInvent
 import { useCreateProduct } from "../hooks/useProducts";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@chakra-ui/react";
-import { ApiError } from "../api/generated";
+import { ApiError, ProductsSchema } from "../api/generated";
 
 export default function CreateInventory() {
   const [name, setName] = useState("");
@@ -17,15 +17,15 @@ export default function CreateInventory() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const createProductFunction = async () => {
+  const createProductFunction = async (data: ProductsSchema) => {
     try {
       await createProduct.mutateAsync({
-        name: name,
-        price: price,
-        image: image,
-        description: description,
-        stock: stock,
-        category: category,
+        name: data.name,
+        price: data.price,
+        image: data.image,
+        description: data.description,
+        stock: data.stock,
+        category: data.category,
       });
       toast({
         title: "Inventory created",

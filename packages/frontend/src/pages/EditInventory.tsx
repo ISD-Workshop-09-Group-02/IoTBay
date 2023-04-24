@@ -3,7 +3,7 @@ import CreateEditInventory from "../features/IoTDeviceCatalogue/CreateEditInvent
 import { useEffect, useState } from "react";
 import { useUpdateProduct, useGetProduct } from "../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
-import { ApiError } from "../api/generated";
+import { ApiError, ProductsSchema } from "../api/generated";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
@@ -31,16 +31,16 @@ export default function EditInventory() {
     }
   }, [getProduct.isSuccess, getProduct.data]);
 
-  const updateProductFunction = async () => {
+  const updateProductFunction = async (data: ProductsSchema) => {
     try {
       updateProduct.mutateAsync({
-        productId: productId,
-        name: name,
-        price: price,
-        image: image,
-        description: description,
-        stock: stock,
-        category: category,
+        productId: data.productId,
+        name: data.name,
+        price: data.price,
+        image: data.image,
+        description: data.description,
+        stock: data.stock,
+        category: data.category,
       });
       toast({
         title: "Inventory updated",

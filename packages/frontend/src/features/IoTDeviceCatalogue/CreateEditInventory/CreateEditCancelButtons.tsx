@@ -23,9 +23,6 @@ const CreateEditCancelButtons: React.FC<CreateEditCancelButtonsProps> = ({
             size="lg"
             leftIcon={<AddIcon />}
             type="submit"
-            onClick={(e) => {
-              // props.createProduct && props.createProduct();
-            }}
           >
             Create Product
           </Button>
@@ -35,9 +32,6 @@ const CreateEditCancelButtons: React.FC<CreateEditCancelButtonsProps> = ({
             size="lg"
             leftIcon={<AddIcon />}
             type="submit"
-            onClick={(e) => {
-              // props.updateProduct && props.updateProduct();
-            }}
           >
             Update Product
           </Button>
