@@ -80,6 +80,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
     register, // register the input into the hook by invoking the "register" function
     formState: { errors, defaultValues },
     reset,
+    setValue,
   } = useForm({
     defaultValues: isPropsNull()
       ? initialDefaultValues
@@ -164,7 +165,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                 <img
                   src={previewImage}
                   width="100%"
-                  height="100%"
+                  height="auto"
                   alt="Preview Image"
                 />
               </Box>
@@ -264,6 +265,13 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       value={stock}
                       onChange={(value) => {
                         setStock(parseFloat(value) ? parseFloat(value) : 0);
+                        setValue(
+                          "stock",
+                          parseFloat(value) ? parseFloat(value) : 0,
+                          {
+                            shouldValidate: true,
+                          }
+                        );
                       }}
                     >
                       <NumberInputField />
@@ -298,6 +306,13 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       value={price}
                       onChange={(value) => {
                         setPrice(parseFloat(value) ? parseFloat(value) : 0);
+                        setValue(
+                          "price",
+                          parseFloat(value) ? parseFloat(value) : 0,
+                          {
+                            shouldValidate: true,
+                          }
+                        );
                       }}
                     >
                       <NumberInputField />
