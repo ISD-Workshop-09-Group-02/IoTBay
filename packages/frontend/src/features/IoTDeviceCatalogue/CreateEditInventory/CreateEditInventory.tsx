@@ -263,7 +263,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       defaultValue={defaultValues.stock}
                       value={stock}
                       onChange={(value) => {
-                        setStock(parseFloat(value));
+                        setStock(parseFloat(value) ? parseFloat(value) : 0);
                       }}
                     >
                       <NumberInputField />
@@ -297,7 +297,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       defaultValue={defaultValues.price}
                       value={price}
                       onChange={(value) => {
-                        setPrice(parseFloat(value));
+                        setPrice(parseFloat(value) ? parseFloat(value) : 0);
                       }}
                     >
                       <NumberInputField />

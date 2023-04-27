@@ -35,7 +35,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/:productId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [],
     handler: controllers.product,
   });
 
@@ -59,7 +59,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [],
     handler: controllers.products,
   });
 
@@ -78,7 +78,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
           image: { type: "string" },
           description: { type: "string" },
           category: { type: "string" },
-          // categoryId: { type: "string" },
         },
       },
       operationId: "createProduct",
@@ -91,7 +90,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "POST",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.createProduct,
   });
 
@@ -117,7 +116,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/:productId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.deleteProduct,
   });
 
@@ -143,7 +142,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.deleteProducts,
   });
 
@@ -168,7 +167,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
           image: { type: "string" },
           description: { type: "string" },
           category: { type: "string" },
-          // categoryId: { type: "string" },
         },
       },
       operationId: "updateProduct",
@@ -181,7 +179,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
     },
     method: "PUT",
     url: "/:productId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.updateProduct,
   });
 }

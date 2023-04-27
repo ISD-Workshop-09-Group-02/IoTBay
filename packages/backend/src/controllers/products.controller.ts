@@ -60,10 +60,6 @@ export const products = async (
     },
   });
 
-  if (!products) {
-    return reply.notFound("Products not found");
-  }
-
   let productMappedWithDate = products.map((product) => {
     return {
       ...product,

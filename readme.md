@@ -1,14 +1,17 @@
 # Getting Started
 
 ## Prerequisites
+
 - [Node.js](https://nodejs.org/en/)
 - [Yarn](https://yarnpkg.com/en/docs/install)
 
 ## Installation
+
 - Clone the repository
 - Run `yarn install` to install dependencies
 
 ## Running the app
+
 - Run `yarn migrate` to migrate the database
 - Run `yarn dev` to start the app (backend and frontend)
 
@@ -50,7 +53,7 @@ Fastify has the ability to manipulate sessions, get the currently logged in user
 
 ## Frontend
 
-Frontend is built using react and regularly sends data to the server using queries. 
+Frontend is built using react and regularly sends data to the server using queries.
 
 # Glossary
 
