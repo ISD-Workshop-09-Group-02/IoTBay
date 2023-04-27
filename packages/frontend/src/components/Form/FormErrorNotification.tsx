@@ -45,6 +45,7 @@ const FormErrorNotification: React.FC<FormErrorNotificationProps> = ({
       borderColor={"red.400"}
       borderStyle={"solid"}
       padding={4}
+      marginBottom={4}
     >
       <Stack spacing={2}>
         {/* Header with icon */}
