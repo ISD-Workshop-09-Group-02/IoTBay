@@ -1,12 +1,16 @@
+import {
+  CreateCategoryBodySchemaType,
+  DeleteCategoriesBodySchemaType,
+  DeleteCategoryParamsSchemaType,
+  GetCategoryParamsSchemaType,
+  UpdateCategoryBodySchemaType,
+  UpdateCategoryParamsSchemaType,
+} from "../schema";
 import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
 
 // getCategory (GET) /:categoryId
-
-interface ICategoryRouteParams {
-  categoryId: string;
-}
 
 /**
  * Get a category by its categoryId
@@ -15,7 +19,7 @@ interface ICategoryRouteParams {
  * @returns The category with the given categoryId
  */
 export const category = async (
-  request: FastifyRequest<{ Params: ICategoryRouteParams }>,
+  request: FastifyRequest<{ Params: GetCategoryParamsSchemaType }>,
   reply: FastifyReply
 ) => {
   const { categoryId } = request.params;
@@ -39,7 +43,7 @@ export const category = async (
 
 // getCategories (GET) /
 export const categories = async (
-  request: FastifyRequest,
+  request: FastifyRequest<{}>,
   reply: FastifyReply
 ) => {
   const categories = await prisma.productCategory.findMany({
@@ -52,13 +56,9 @@ export const categories = async (
   return reply.status(200).send(categories);
 };
 
-interface ICreateCategory {
-  name: string;
-}
-
 // createCategory (POST) /
 export const createCategory = async (
-  request: FastifyRequest<{ Body: ICreateCategory }>,
+  request: FastifyRequest<{ Body: CreateCategoryBodySchemaType }>,
   reply: FastifyReply
 ) => {
   const { name } = request.body;
@@ -98,7 +98,7 @@ export const createCategory = async (
 
 // deleteCategory (DELETE) /
 export const deleteCategory = async (
-  request: FastifyRequest<{ Params: ICategoryRouteParams }>,
+  request: FastifyRequest<{ Params: DeleteCategoryParamsSchemaType }>,
   reply: FastifyReply
 ) => {
   const { categoryId } = request.params;
@@ -137,9 +137,7 @@ export const deleteCategory = async (
 // deleteCategories (DELETE) /
 export const deleteCategories = async (
   request: FastifyRequest<{
-    Body: {
-      categoryIds: string[];
-    };
+    Body: DeleteCategoriesBodySchemaType;
   }>,
   reply: FastifyReply
 ) => {
@@ -187,8 +185,8 @@ export const deleteCategories = async (
 // updateCategory (PUT) /
 export const updateCategory = async (
   request: FastifyRequest<{
-    Params: ICategoryRouteParams;
-    Body: ICreateCategory;
+    Params: UpdateCategoryParamsSchemaType;
+    Body: UpdateCategoryBodySchemaType;
   }>,
   reply: FastifyReply
 ) => {
