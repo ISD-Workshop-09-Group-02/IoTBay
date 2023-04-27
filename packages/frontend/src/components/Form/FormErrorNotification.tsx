@@ -15,6 +15,25 @@ interface FormErrorNotificationProps {
   errors: FieldErrors<FieldValues>;
 }
 
+const MapKeyToMessage = (key: string) => {
+  switch (key) {
+    case "name":
+      return "Name";
+    case "image":
+      return "Image";
+    case "stock":
+      return "Stock";
+    case "price":
+      return "Price";
+    case "category":
+      return "Category";
+    case "description":
+      return "Description";
+    default:
+      return "Unknown";
+  }
+};
+
 const FormErrorNotification: React.FC<FormErrorNotificationProps> = ({
   errors,
 }) => {
@@ -56,8 +75,13 @@ const FormErrorNotification: React.FC<FormErrorNotificationProps> = ({
               //   Check if empty object
               if (error) {
                 return (
-                  <ListItem key={key}>
-                    <Text>{error.message}</Text>
+                  <ListItem key={key} style={{ marginLeft: "20px" }}>
+                    <Text>{MapKeyToMessage(key)}</Text>
+                    <UnorderedList>
+                      <ListItem key={key}>
+                        <Text>{error.message}</Text>
+                      </ListItem>
+                    </UnorderedList>
                   </ListItem>
                 );
               }
