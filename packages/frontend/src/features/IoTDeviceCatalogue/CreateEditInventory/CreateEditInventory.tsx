@@ -80,6 +80,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
     register, // register the input into the hook by invoking the "register" function
     formState: { errors, defaultValues },
     reset,
+    setValue,
   } = useForm({
     defaultValues: isPropsNull()
       ? initialDefaultValues
@@ -114,6 +115,33 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
   }, [props.initialFormValues]);
 
   // if (!getCategories.isSuccess) return <div>Loading...</div>;
+
+  /*
+    Validation Rules:
+      - Name
+        - Required
+        - Max Length: 40 as defined in data dictionary
+      - Image URL
+        - Required
+        - Valid URL
+        - Max Length: 1000 as defined in data dictionary
+      - Stock
+        - Required
+        - Min: 0 value
+        - Max: 9999 value
+      - Price
+        - Required
+        - Min: 0
+        - Max: 9999 value
+        - Data Type: Float, 2 decimal places -> NOT IMPLEMENTED TET
+      - Category
+        - Required
+        - No validation for data as it's a dropdown
+      - Description
+        - Optional
+        - Max Length: 5000 as defined in data dictionary
+        - Min Length: N/A
+  */
 
   return (
     <Container maxW={"container.xl"}>
@@ -164,7 +192,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                 <img
                   src={previewImage}
                   width="100%"
-                  height="100%"
+                  height="auto"
                   alt="Preview Image"
                 />
               </Box>
@@ -181,10 +209,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="name"
                       {...register("name", {
-                        required: "This is required",
+                        required: "Name is required",
                         maxLength: {
-                          value: 20,
-                          message: "Max length exceeded",
+                          value: 40,
+                          message: "Name cannot exceed 40 characters",
                         },
                       })}
                       defaultValue={defaultValues.name}
@@ -201,10 +229,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="image"
                       {...register("image", {
-                        required: "This is required",
+                        required: "Image URL is required",
                         maxLength: {
-                          value: 255,
-                          message: "Max length exceeded",
+                          value: 1000,
+                          message: "Image URL cannot exceed 1000 characters",
                         },
                       })}
                       defaultValue={defaultValues.image}
@@ -252,18 +280,27 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="stock"
                       {...register("stock", {
-                        required: "This is required",
-                        maxLength: {
-                          value: 20,
-                          message: "Max length exceeded",
+                        required: "Stock is required",
+                        max: {
+                          value: 9999,
+                          message: "Stock must be less than 9999",
                         },
-                        validate: (value) =>
-                          value > 0 || "Stock must be greater than 0",
+                        min: {
+                          value: 0,
+                          message: "Stock must be greater than or equal to 0",
+                        },
                       })}
                       defaultValue={defaultValues.stock}
                       value={stock}
                       onChange={(value) => {
                         setStock(parseFloat(value) ? parseFloat(value) : 0);
+                        setValue(
+                          "stock",
+                          parseFloat(value) ? parseFloat(value) : 0,
+                          {
+                            shouldValidate: true,
+                          }
+                        );
                       }}
                     >
                       <NumberInputField />
@@ -286,18 +323,27 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="price"
                       {...register("price", {
-                        required: "This is required",
-                        maxLength: {
-                          value: 20,
-                          message: "Max length exceeded",
+                        required: "Price is required",
+                        max: {
+                          value: 9999,
+                          message: "Price must be less than 9999",
                         },
-                        validate: (value) =>
-                          value > 0 || "Price must be greater than 0",
+                        min: {
+                          value: 0,
+                          message: "Price must be greater than or equal to 0",
+                        },
                       })}
                       defaultValue={defaultValues.price}
                       value={price}
                       onChange={(value) => {
                         setPrice(parseFloat(value) ? parseFloat(value) : 0);
+                        setValue(
+                          "price",
+                          parseFloat(value) ? parseFloat(value) : 0,
+                          {
+                            shouldValidate: true,
+                          }
+                        );
                       }}
                     >
                       <NumberInputField />
@@ -320,11 +366,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="category"
                       {...register("category", {
-                        required: "This is required",
-                        maxLength: {
-                          value: 20,
-                          message: "Max length exceeded",
-                        },
+                        required: "Category is required",
                       })}
                       defaultValue={defaultValues.category}
                     >
@@ -351,10 +393,9 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   variant="filled"
                   id="description"
                   {...register("description", {
-                    required: "This is required",
                     maxLength: {
-                      value: 20,
-                      message: "Max length exceeded",
+                      value: 5000,
+                      message: "Description must be less than 5000 characters",
                     },
                   })}
                   defaultValue={defaultValues.description}
