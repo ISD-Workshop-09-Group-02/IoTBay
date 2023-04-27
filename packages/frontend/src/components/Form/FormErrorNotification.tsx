@@ -72,7 +72,7 @@ const FormErrorNotification: React.FC<FormErrorNotificationProps> = ({
         <Box>
           <UnorderedList>
             {Object.keys(errors).map((key) => {
-              let error: FieldError = errors[key];
+              const error = errors[key] as FieldError;
               //   Check if empty object
               if (error) {
                 return (
