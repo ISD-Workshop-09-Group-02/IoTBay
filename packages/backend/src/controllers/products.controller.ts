@@ -32,6 +32,7 @@ export const product = async (
       image: true,
       category: true,
       categoryId: true,
+      lastUpdated: true,
     },
   });
 
@@ -57,17 +58,11 @@ export const products = async (
       image: true,
       category: true,
       categoryId: true,
+      lastUpdated: true,
     },
   });
 
-  let productMappedWithDate = products.map((product) => {
-    return {
-      ...product,
-      lastUpdated: "2021-05-01T00:00:00.000Z",
-    };
-  });
-
-  return reply.status(200).send(productMappedWithDate);
+  return reply.status(200).send(products);
 };
 
 interface ICreateProduct {
@@ -85,25 +80,9 @@ export const createProduct = async (
   request: FastifyRequest<{ Body: ICreateProduct }>,
   reply: FastifyReply
 ) => {
-  const {
-    name,
-    price,
-    stock,
-    description,
-    image,
-    category,
-    // categoryId,
-  } = request.body;
+  const { name, price, stock, description, image, category } = request.body;
 
-  if (
-    !name ||
-    !price ||
-    !stock ||
-    !description ||
-    !image ||
-    !category
-    // !categoryId ||
-  ) {
+  if (!name || !price || !stock || !description || !image || !category) {
     return reply.badRequest("Missing fields");
   }
 
@@ -115,7 +94,6 @@ export const createProduct = async (
       description,
       image,
       category,
-      // categoryId,
     },
   });
 
@@ -130,7 +108,6 @@ export const createProduct = async (
       stock,
       description,
       image,
-      // categoryId,
       category,
     },
     select: {
@@ -141,7 +118,6 @@ export const createProduct = async (
       description: true,
       image: true,
       category: true,
-      // categoryId: true,
     },
   });
 
@@ -187,7 +163,7 @@ export const deleteProduct = async (
       description: true,
       image: true,
       category: true,
-      // categoryId: true,
+      lastUpdated: true,
     },
   });
 
@@ -226,7 +202,7 @@ export const deleteProducts = async (
       description: true,
       image: true,
       category: true,
-      // categoryId: true,
+      lastUpdated: true,
     },
   });
 
@@ -264,15 +240,7 @@ export const updateProduct = async (
     return reply.badRequest("No productId provided");
   }
 
-  if (
-    !name ||
-    !price ||
-    !stock ||
-    !description ||
-    !image ||
-    !category
-    // !categoryId ||
-  ) {
+  if (!name || !price || !stock || !description || !image || !category) {
     return reply.badRequest("Missing fields");
   }
 
@@ -297,7 +265,7 @@ export const updateProduct = async (
       description,
       image,
       category,
-      // categoryId,
+      lastUpdated: new Date(),
     },
     select: {
       productId: true,
@@ -307,7 +275,7 @@ export const updateProduct = async (
       description: true,
       image: true,
       category: true,
-      // categoryId: true,
+      lastUpdated: true,
     },
   });
 
