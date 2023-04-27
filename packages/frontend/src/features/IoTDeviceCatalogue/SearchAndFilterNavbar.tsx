@@ -111,7 +111,7 @@ const SearchAndFilterNavbar: React.FC<IProps> = ({
       </HStack>
 
       {getProducts.data && (
-        <Box>
+        <Box style={{ marginTop: "1rem" }}>
           <Text fontSize="2xl">
             {JSON.stringify(getProducts.data.length)} Products Found
           </Text>
