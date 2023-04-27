@@ -2,7 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 
 export const CategorySchema = Type.Object(
   {
-    categoryId: Type.String({ format: "uuid" }),
+    categoryId: Type.String(),
     name: Type.String(),
   },
   {
@@ -31,7 +31,7 @@ export type CategoryCollectionSchemaType = Static<
 // getCategory (GET) /:categoryId
 export const GetCategoryParamsSchema = Type.Object(
   {
-    categoryId: Type.String({ format: "uuid" }),
+    categoryId: Type.String(),
   },
   {
     description: "GetCategoryParamsSchema",
@@ -65,7 +65,7 @@ export type CreateCategoryBodySchemaType = Static<
 // deleteCategory (DELETE) /:productId
 export const DeleteCategoryParamsSchema = Type.Object(
   {
-    categoryId: Type.String({ format: "uuid" }),
+    categoryId: Type.String(),
   },
   {
     description: "DeleteCategoryParamsSchema",
@@ -84,7 +84,7 @@ export type DeleteCategoryParamsSchemaType = Static<
 // deleteCategories (DELETE) /
 export const DeleteCategoriesBodySchema = Type.Object(
   {
-    categoryIds: Type.Array(Type.String({ format: "uuid" })),
+    categoryIds: Type.Array(Type.String()),
   },
   {
     description: "DeleteCategoriesBodySchema",
@@ -103,7 +103,7 @@ export type DeleteCategoriesParamsSchemaType = Static<
 // updateCategory (PUT) /:productId
 export const UpdateCategoryParamsSchema = Type.Object(
   {
-    categoryId: Type.String({ format: "uuid" }),
+    categoryId: Type.String(),
   },
   {
     description: "UpdateCategoryParamsSchema",
