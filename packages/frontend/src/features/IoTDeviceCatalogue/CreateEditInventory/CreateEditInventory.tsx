@@ -96,9 +96,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
       : defaultPreviewImage
   );
 
-  const [stock, setStock] = useState<number>(0);
-  const [price, setPrice] = useState<number>(0);
-
   const onSubmit = (data: any) => {
     const dataFormatted = { ...data, image: previewImage };
     props.createProduct && props.createProduct(dataFormatted);
@@ -110,9 +107,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
       reset(props.initialFormValues);
       setPreviewImage(props.initialFormValues.image);
       setImageURL(props.initialFormValues.image);
-
-      setStock(props.initialFormValues.stock);
-      setPrice(props.initialFormValues.price);
     }
   }, [props.initialFormValues]);
 
@@ -135,7 +129,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
         - Required
         - Min: 0
         - Max: 9999 value
-        - Data Type: Float, 2 decimal places -> NOT IMPLEMENTED TET
+        - Data Type: Float, 2 decimal places
       - Category
         - Required
         - No validation for data as it's a dropdown
@@ -285,8 +279,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   {/* Stock */}
                   <FormControl isInvalid={errors.stock ? true : false}>
                     <FormLabel>Stock</FormLabel>
-                    <NumberInput
-                      width="100%"
+                    <Input
                       variant="filled"
                       id="stock"
                       {...register("stock", {
@@ -299,31 +292,17 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value: 0,
                           message: "Stock must be greater than or equal to 0",
                         },
+                        pattern: {
+                          value: /^[0-9]*$/,
+                          message: "Stock must be a whole number",
+                        },
                       })}
                       defaultValue={
                         defaultValues !== undefined && defaultValues.stock
                           ? defaultValues.stock
                           : initialDefaultValues.stock
                       }
-                      value={stock}
-                      onChange={(value) => {
-                        setStock(parseFloat(value) ? parseFloat(value) : 0);
-                        setValue(
-                          "stock",
-                          parseFloat(value) ? parseFloat(value) : 0,
-                          {
-                            shouldValidate: true,
-                          }
-                        );
-                      }}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-
+                    />
                     <FormErrorMessage>
                       {errors.stock && errors.stock.message}
                     </FormErrorMessage>
@@ -332,8 +311,8 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   {/* Price */}
                   <FormControl isInvalid={errors.price ? true : false}>
                     <FormLabel>Price</FormLabel>
-                    <NumberInput
-                      width="100%"
+
+                    <Input
                       variant="filled"
                       id="price"
                       {...register("price", {
@@ -346,31 +325,18 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value: 0,
                           message: "Price must be greater than or equal to 0",
                         },
+                        pattern: {
+                          value: /^\d+(\.\d{1,2})?$/,
+                          message:
+                            "Price must be a number with a maximum of 2 decimal places",
+                        },
                       })}
                       defaultValue={
                         defaultValues !== undefined && defaultValues.price
                           ? defaultValues.price
                           : initialDefaultValues.price
                       }
-                      value={price}
-                      onChange={(value) => {
-                        setPrice(parseFloat(value) ? parseFloat(value) : 0);
-                        setValue(
-                          "price",
-                          parseFloat(value) ? parseFloat(value) : 0,
-                          {
-                            shouldValidate: true,
-                          }
-                        );
-                      }}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-
+                    />
                     <FormErrorMessage>
                       {errors.price && errors.price.message}
                     </FormErrorMessage>
