@@ -39,14 +39,17 @@ const router = createBrowserRouter([
       },
       {
         path: "/staff/inventory/manage",
+        loader: profileLoader(queryClient),
         element: <ManageInventory />,
       },
       {
         path: "/staff/inventory/create",
+        loader: profileLoader(queryClient),
         element: <CreateInventory />,
       },
       {
         path: "/staff/inventory/edit/:id",
+        loader: profileLoader(queryClient),
         element: <EditInventory />,
       },
       {
