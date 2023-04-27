@@ -21,6 +21,12 @@ import {
   UserSchema,
   CategorySchema,
   CategoryCollectionSchema,
+  GetCategoryParamsSchema,
+  CreateCategoryBodySchema,
+  DeleteCategoryParamsSchema,
+  DeleteCategoriesBodySchema,
+  UpdateCategoryParamsSchema,
+  UpdateCategoryBodySchema,
   ProductsSchema,
   ProductsCollectionSchema,
 } from "./schema";
@@ -65,6 +71,12 @@ await server.register(await import("@fastify/swagger"), {
         RegisterSchema,
         CategorySchema,
         CategoryCollectionSchema,
+        GetCategoryParamsSchema,
+        CreateCategoryBodySchema,
+        DeleteCategoryParamsSchema,
+        DeleteCategoriesBodySchema,
+        UpdateCategoryParamsSchema,
+        UpdateCategoryBodySchema,
         ProductsSchema,
         ProductsCollectionSchema,
       },
@@ -89,6 +101,12 @@ server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
 server.addSchema(CategorySchema);
 server.addSchema(CategoryCollectionSchema);
+server.addSchema(GetCategoryParamsSchema);
+server.addSchema(CreateCategoryBodySchema);
+server.addSchema(DeleteCategoryParamsSchema);
+server.addSchema(DeleteCategoriesBodySchema);
+server.addSchema(UpdateCategoryParamsSchema);
+server.addSchema(UpdateCategoryBodySchema);
 server.addSchema(ProductsSchema);
 server.addSchema(ProductsCollectionSchema);
 

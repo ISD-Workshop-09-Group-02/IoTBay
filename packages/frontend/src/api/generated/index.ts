@@ -11,10 +11,16 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { CategoryCollectionSchema } from './models/CategoryCollectionSchema';
 export type { CategorySchema } from './models/CategorySchema';
+export type { CreateCategoryBodySchema } from './models/CreateCategoryBodySchema';
+export type { DeleteCategoriesBodySchema } from './models/DeleteCategoriesBodySchema';
+export type { DeleteCategoryParamsSchema } from './models/DeleteCategoryParamsSchema';
+export type { GetCategoryParamsSchema } from './models/GetCategoryParamsSchema';
 export type { LoginSchema } from './models/LoginSchema';
 export type { ProductsCollectionSchema } from './models/ProductsCollectionSchema';
 export type { ProductsSchema } from './models/ProductsSchema';
 export type { RegisterSchema } from './models/RegisterSchema';
+export type { UpdateCategoryBodySchema } from './models/UpdateCategoryBodySchema';
+export type { UpdateCategoryParamsSchema } from './models/UpdateCategoryParamsSchema';
 export type { UserCollectionSchema } from './models/UserCollectionSchema';
 export { UserSchema } from './models/UserSchema';
 

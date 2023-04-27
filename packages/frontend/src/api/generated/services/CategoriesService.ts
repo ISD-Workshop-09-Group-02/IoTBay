@@ -3,6 +3,9 @@
 /* eslint-disable */
 import type { CategoryCollectionSchema } from '../models/CategoryCollectionSchema';
 import type { CategorySchema } from '../models/CategorySchema';
+import type { CreateCategoryBodySchema } from '../models/CreateCategoryBodySchema';
+import type { DeleteCategoriesBodySchema } from '../models/DeleteCategoriesBodySchema';
+import type { UpdateCategoryBodySchema } from '../models/UpdateCategoryBodySchema';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -53,9 +56,7 @@ categoryId: string,
      */
     public updateCategory(
 categoryId: string,
-requestBody?: {
-name?: string;
-},
+requestBody?: UpdateCategoryBodySchema,
 ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'PUT',
@@ -85,9 +86,7 @@ name?: string;
      * @throws ApiError
      */
     public createCategory(
-requestBody?: {
-name?: string;
-},
+requestBody?: CreateCategoryBodySchema,
 ): CancelablePromise<CategorySchema> {
         return this.httpRequest.request({
             method: 'POST',
@@ -103,9 +102,7 @@ name?: string;
      * @throws ApiError
      */
     public deleteCategories(
-requestBody?: {
-categoryIds?: Array<string>;
-},
+requestBody?: DeleteCategoriesBodySchema,
 ): CancelablePromise<CategoryCollectionSchema> {
         return this.httpRequest.request({
             method: 'DELETE',
