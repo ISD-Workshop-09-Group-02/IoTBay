@@ -1,15 +1,19 @@
+import {
+  CreateProductBodySchemaType,
+  DeleteProductParamsSchemaType,
+  DeleteProductsBodySchemaType,
+  GetProductParamsSchemaType,
+  UpdateProductBodySchemaType,
+  UpdateProductParamSchemaType,
+} from "../schema";
 import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
 
-interface IProduct {
-  productId: string;
-}
-
 // getProduct (GET) /:productId
 export const product = async (
   request: FastifyRequest<{
-    Params: IProduct;
+    Params: GetProductParamsSchemaType;
   }>,
   reply: FastifyReply
 ) => {
@@ -45,7 +49,7 @@ export const product = async (
 
 // getProducts (GET) /
 export const products = async (
-  request: FastifyRequest,
+  request: FastifyRequest<{}>,
   reply: FastifyReply
 ) => {
   const products = await prisma.product.findMany({
@@ -65,18 +69,9 @@ export const products = async (
   return reply.status(200).send(products);
 };
 
-interface ICreateProduct {
-  name: string;
-  price: number;
-  stock: number;
-  description: string;
-  image: string;
-  category: string;
-}
-
 // createProduct (POST) /
 export const createProduct = async (
-  request: FastifyRequest<{ Body: ICreateProduct }>,
+  request: FastifyRequest<{ Body: CreateProductBodySchemaType }>,
   reply: FastifyReply
 ) => {
   const { name, price, stock, description, image, category } = request.body;
@@ -130,7 +125,7 @@ export const createProduct = async (
 // deleteProduct (DELETE) /
 export const deleteProduct = async (
   request: FastifyRequest<{
-    Params: IProduct;
+    Params: DeleteProductParamsSchemaType;
   }>,
   reply: FastifyReply
 ) => {
@@ -169,14 +164,10 @@ export const deleteProduct = async (
   return reply.status(200).send(product);
 };
 
-interface IDeleteProducts {
-  products: string[];
-}
-
 // deleteProducts (DELETE) /
 export const deleteProducts = async (
   request: FastifyRequest<{
-    Body: IDeleteProducts;
+    Body: DeleteProductsBodySchemaType;
   }>,
   response: FastifyReply
 ) => {
@@ -227,8 +218,8 @@ export const deleteProducts = async (
 // updateProduct (PUT) /:productId
 export const updateProduct = async (
   request: FastifyRequest<{
-    Params: IProduct;
-    Body: ICreateProduct;
+    Params: UpdateProductParamSchemaType;
+    Body: UpdateProductBodySchemaType;
   }>,
   reply: FastifyReply
 ) => {
