@@ -49,10 +49,6 @@ export const categories = async (
     },
   });
 
-  if (categories.length === 0) {
-    return reply.notFound("No categories found");
-  }
-
   return reply.status(200).send(categories);
 };
 

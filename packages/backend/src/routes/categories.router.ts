@@ -38,7 +38,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/:categoryId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [],
     handler: controllers.category,
   });
 
@@ -62,7 +62,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "GET",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [],
     handler: controllers.categories,
   });
 
@@ -88,14 +88,11 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "POST",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.createCategory,
   });
 
-  // deleteCategory (DELETE) /:categoryId AND deleteCategories (DELETE) /
-  // TO FIX LATER IDK WHY IT'S HALF WORKING
-
-  // deleteProduct (DELETE) /
+  // deleteCategory (DELETE) /:productId
   fastify.route({
     schema: {
       response: {
@@ -117,11 +114,11 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/:categoryId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.deleteCategory,
   });
 
-  // deleteProducts (DELETE) /
+  // deleteCategories (DELETE) /
   fastify.route({
     schema: {
       response: {
@@ -143,7 +140,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "DELETE",
     url: "/",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.deleteCategories,
   });
 
@@ -175,7 +172,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     },
     method: "PUT",
     url: "/:categoryId",
-    // preValidation: [isLoggedIn, isStaff],
+    preValidation: [isLoggedIn, isStaff],
     handler: controllers.updateCategory,
   });
 }
