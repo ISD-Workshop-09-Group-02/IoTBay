@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { convertToDDMMYYYY } from "../../utils/dateFormatter";
 import { convertToCurrency } from "../../utils/currencyFormatter";
 import { ApiError } from "../../api/generated";
+import { generateCategoryColor } from "../../utils/generateCategoryColor";
 
 const TableRow: React.FC<{
   productId: string;
@@ -79,15 +80,11 @@ const TableRow: React.FC<{
       <Td>
         {/* Tags */}
         <HStack spacing={2} align="center" justify="flex-start">
-          {/* {props.category &&
-              props.category.map((element, index) => {
-                return (
-                  <Tag variant="solid" colorScheme="purple" key={index}>
-                    {element}
-                  </Tag>
-                );
-              })} */}
-          <Tag variant="solid" colorScheme="purple" key={props.category}>
+          <Tag
+            variant="solid"
+            style={{ backgroundColor: generateCategoryColor(props.category) }}
+            key={props.category}
+          >
             {props.category}
           </Tag>
         </HStack>
