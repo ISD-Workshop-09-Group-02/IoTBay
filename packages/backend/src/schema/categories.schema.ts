@@ -96,7 +96,7 @@ export const DeleteCategoriesBodySchemaRef = Type.Ref(
   DeleteCategoriesBodySchema
 );
 
-export type DeleteCategoriesParamsSchemaType = Static<
+export type DeleteCategoriesBodySchemaType = Static<
   typeof DeleteCategoriesBodySchema
 >;
 
