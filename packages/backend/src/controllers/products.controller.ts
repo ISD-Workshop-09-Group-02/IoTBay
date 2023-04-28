@@ -72,7 +72,6 @@ interface ICreateProduct {
   description: string;
   image: string;
   category: string;
-  // categoryId: string;
 }
 
 // createProduct (POST) /
@@ -265,7 +264,6 @@ export const updateProduct = async (
       description,
       image,
       category,
-      lastUpdated: new Date(),
     },
     select: {
       productId: true,
@@ -275,7 +273,6 @@ export const updateProduct = async (
       description: true,
       image: true,
       category: true,
-      lastUpdated: true,
     },
   });
 
