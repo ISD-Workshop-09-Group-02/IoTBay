@@ -17,6 +17,7 @@ import CreateInventory from "./pages/CreateInventory";
 import ManageInventory from "./pages/ManageInventory";
 import EditInventory from "./pages/EditInventory";
 import DarkLightModeToggle from "./components/DarkLightModeToggle";
+import staffLoader from "./loaders/staffLoader";
 
 const queryClient = new QueryClient();
 
@@ -38,19 +39,22 @@ const router = createBrowserRouter([
         element: <Landing />,
       },
       {
-        path: "/staff/inventory/manage",
-        loader: profileLoader(queryClient),
-        element: <ManageInventory />,
-      },
-      {
-        path: "/staff/inventory/create",
-        loader: profileLoader(queryClient),
-        element: <CreateInventory />,
-      },
-      {
-        path: "/staff/inventory/edit/:id",
-        loader: profileLoader(queryClient),
-        element: <EditInventory />,
+        path: "staff",
+        loader: staffLoader(queryClient),
+        children: [
+          {
+            path: "inventory/manage",
+            element: <ManageInventory />,
+          },
+          {
+            path: "inventory/create",
+            element: <CreateInventory />,
+          },
+          {
+            path: "inventory/edit/:id",
+            element: <EditInventory />,
+          },
+        ],
       },
       {
         path: "/login",
