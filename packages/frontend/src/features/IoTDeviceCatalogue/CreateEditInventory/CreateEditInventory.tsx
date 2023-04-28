@@ -91,11 +91,10 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
     defaultPreviewImage
   );
   const [previewImage, setPreviewImage] = useState<string | undefined>(
-    defaultValues.image ? defaultValues.image : defaultPreviewImage
+    defaultValues !== undefined && defaultValues.image
+      ? defaultValues.image
+      : defaultPreviewImage
   );
-
-  const [stock, setStock] = useState<number>(0);
-  const [price, setPrice] = useState<number>(0);
 
   const onSubmit = (data: any) => {
     const dataFormatted = { ...data, image: previewImage };
@@ -108,9 +107,6 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
       reset(props.initialFormValues);
       setPreviewImage(props.initialFormValues.image);
       setImageURL(props.initialFormValues.image);
-
-      setStock(props.initialFormValues.stock);
-      setPrice(props.initialFormValues.price);
     }
   }, [props.initialFormValues]);
 
@@ -133,7 +129,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
         - Required
         - Min: 0
         - Max: 9999 value
-        - Data Type: Float, 2 decimal places -> NOT IMPLEMENTED TET
+        - Data Type: Float, 2 decimal places
       - Category
         - Required
         - No validation for data as it's a dropdown
@@ -203,7 +199,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
 
                 <Stack spacing={4}>
                   {/* Name */}
-                  <FormControl isInvalid={errors.name}>
+                  <FormControl isInvalid={errors.name ? true : false}>
                     <FormLabel>Name</FormLabel>
                     <Input
                       variant="filled"
@@ -215,7 +211,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           message: "Name cannot exceed 40 characters",
                         },
                       })}
-                      defaultValue={defaultValues.name}
+                      defaultValue={
+                        defaultValues !== undefined && defaultValues.name
+                          ? defaultValues.name
+                          : initialDefaultValues.name
+                      }
                     />
                     <FormErrorMessage>
                       {errors.name && errors.name.message}
@@ -223,7 +223,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   </FormControl>
 
                   {/* Image */}
-                  <FormControl isInvalid={errors.image}>
+                  <FormControl isInvalid={errors.image ? true : false}>
                     <FormLabel>Image URL</FormLabel>
                     <Input
                       variant="filled"
@@ -235,7 +235,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           message: "Image URL cannot exceed 1000 characters",
                         },
                       })}
-                      defaultValue={defaultValues.image}
+                      defaultValue={
+                        defaultValues !== undefined && defaultValues.image
+                          ? defaultValues.image
+                          : initialDefaultValues.image
+                      }
                       onChange={(e) => {
                         setImageURL(e.target.value);
                       }}
@@ -273,10 +277,9 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                   </Box>
 
                   {/* Stock */}
-                  <FormControl isInvalid={errors.stock}>
+                  <FormControl isInvalid={errors.stock ? true : false}>
                     <FormLabel>Stock</FormLabel>
-                    <NumberInput
-                      width="100%"
+                    <Input
                       variant="filled"
                       id="stock"
                       {...register("stock", {
@@ -289,37 +292,27 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value: 0,
                           message: "Stock must be greater than or equal to 0",
                         },
+                        pattern: {
+                          value: /^[0-9]*$/,
+                          message: "Stock must be a whole number",
+                        },
                       })}
-                      defaultValue={defaultValues.stock}
-                      value={stock}
-                      onChange={(value) => {
-                        setStock(parseFloat(value) ? parseFloat(value) : 0);
-                        setValue(
-                          "stock",
-                          parseFloat(value) ? parseFloat(value) : 0,
-                          {
-                            shouldValidate: true,
-                          }
-                        );
-                      }}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-
+                      defaultValue={
+                        defaultValues !== undefined && defaultValues.stock
+                          ? defaultValues.stock
+                          : initialDefaultValues.stock
+                      }
+                    />
                     <FormErrorMessage>
                       {errors.stock && errors.stock.message}
                     </FormErrorMessage>
                   </FormControl>
 
                   {/* Price */}
-                  <FormControl isInvalid={errors.price}>
+                  <FormControl isInvalid={errors.price ? true : false}>
                     <FormLabel>Price</FormLabel>
-                    <NumberInput
-                      width="100%"
+
+                    <Input
                       variant="filled"
                       id="price"
                       {...register("price", {
@@ -332,34 +325,25 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                           value: 0,
                           message: "Price must be greater than or equal to 0",
                         },
+                        pattern: {
+                          value: /^\d+(\.\d{1,2})?$/,
+                          message:
+                            "Price must be a number with a maximum of 2 decimal places",
+                        },
                       })}
-                      defaultValue={defaultValues.price}
-                      value={price}
-                      onChange={(value) => {
-                        setPrice(parseFloat(value) ? parseFloat(value) : 0);
-                        setValue(
-                          "price",
-                          parseFloat(value) ? parseFloat(value) : 0,
-                          {
-                            shouldValidate: true,
-                          }
-                        );
-                      }}
-                    >
-                      <NumberInputField />
-                      <NumberInputStepper>
-                        <NumberIncrementStepper />
-                        <NumberDecrementStepper />
-                      </NumberInputStepper>
-                    </NumberInput>
-
+                      defaultValue={
+                        defaultValues !== undefined && defaultValues.price
+                          ? defaultValues.price
+                          : initialDefaultValues.price
+                      }
+                    />
                     <FormErrorMessage>
                       {errors.price && errors.price.message}
                     </FormErrorMessage>
                   </FormControl>
 
                   {/* Category */}
-                  <FormControl isInvalid={errors.category}>
+                  <FormControl isInvalid={errors.category ? true : false}>
                     <FormLabel>Category</FormLabel>
                     <Select
                       placeholder="Filter by category"
@@ -368,7 +352,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       {...register("category", {
                         required: "Category is required",
                       })}
-                      defaultValue={defaultValues.category}
+                      defaultValue={
+                        defaultValues !== undefined && defaultValues.category
+                          ? defaultValues.category
+                          : initialDefaultValues.category
+                      }
                     >
                       {getCategories.data?.map((category) => {
                         return (
@@ -386,7 +374,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
 
             {/* Description */}
             <Box>
-              <FormControl isInvalid={errors.description}>
+              <FormControl isInvalid={errors.description ? true : false}>
                 <FormLabel>Description</FormLabel>
                 <Textarea
                   placeholder="Product Description"
@@ -398,7 +386,11 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       message: "Description must be less than 5000 characters",
                     },
                   })}
-                  defaultValue={defaultValues.description}
+                  defaultValue={
+                    defaultValues !== undefined && defaultValues.description
+                      ? defaultValues.description
+                      : initialDefaultValues.description
+                  }
                 />
                 <FormErrorMessage>
                   {errors.description && errors.description.message}
