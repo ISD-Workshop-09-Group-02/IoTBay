@@ -23,15 +23,14 @@ import { generateCategoryColor } from "../../utils/generateCategoryColor";
 
 const TableRow: React.FC<{
   productId: string;
-  image?: string;
-  name?: string;
-  description?: string;
-  stock?: number;
-  category?: string;
-  categoryId?: string;
-  lastUpdated?: Date | null;
-  price?: number;
-  isSelect?: boolean;
+  image: string;
+  name: string;
+  description: string;
+  stock: number;
+  category: string;
+  lastUpdated: Date | null;
+  price: number;
+  isSelect: boolean;
   setSelectedItems?: React.Dispatch<React.SetStateAction<string[]>>;
 }> = (props) => {
   const toast = useToast();

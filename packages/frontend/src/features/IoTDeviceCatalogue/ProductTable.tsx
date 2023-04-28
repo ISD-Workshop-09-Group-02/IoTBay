@@ -69,7 +69,6 @@ const ProductTable: React.FC<IProductTableProps> = ({
                     description={element.description}
                     image={element.image}
                     category={element.category}
-                    categoryId={element.categoryId}
                     lastUpdated={
                       element.lastUpdated ? new Date(element.lastUpdated) : null
                     }
