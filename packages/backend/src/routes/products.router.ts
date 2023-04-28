@@ -1,7 +1,16 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { ProductSchemaRef, ProductsCollectionSchemaRef } from "../schema";
+import {
+  CreateProductBodySchemaRef,
+  DeleteProductParamsSchemaRef,
+  DeleteProductsBodySchemaRef,
+  GetProductParamsSchemaRef,
+  ProductSchemaRef,
+  ProductsCollectionSchemaRef,
+  UpdateProductBodySchemaRef,
+  UpdateProductParamSchemaRef,
+} from "../schema";
 
 /*
   getProduct (GET) /:productId
@@ -19,12 +28,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
       response: {
         200: ProductSchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          productId: { type: "string" },
-        },
-      },
+      params: GetProductParamsSchemaRef,
       operationId: "getProduct",
       tags: ["Products"],
       security: [
@@ -44,10 +48,6 @@ export default async function productsRouter(fastify: FastifyInstance) {
     schema: {
       response: {
         200: ProductsCollectionSchemaRef,
-      },
-      params: {
-        type: "object",
-        properties: {},
       },
       operationId: "getProducts",
       tags: ["Products"],
@@ -69,17 +69,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
       response: {
         200: ProductSchemaRef,
       },
-      body: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          price: { type: "number" },
-          stock: { type: "number" },
-          image: { type: "string" },
-          description: { type: "string" },
-          category: { type: "string" },
-        },
-      },
+      body: CreateProductBodySchemaRef,
       operationId: "createProduct",
       tags: ["Products"],
       security: [
@@ -94,18 +84,13 @@ export default async function productsRouter(fastify: FastifyInstance) {
     handler: controllers.createProduct,
   });
 
-  // deleteProduct (DELETE) /
+  // deleteProduct (DELETE) /:productId
   fastify.route({
     schema: {
       response: {
         200: ProductSchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          productId: { type: "string" },
-        },
-      },
+      params: DeleteProductParamsSchemaRef,
       operationId: "deleteProduct",
       tags: ["Products"],
       security: [
@@ -126,12 +111,7 @@ export default async function productsRouter(fastify: FastifyInstance) {
       response: {
         200: ProductsCollectionSchemaRef,
       },
-      body: {
-        type: "object",
-        properties: {
-          products: { type: "array", items: { type: "string" } },
-        },
-      },
+      body: DeleteProductsBodySchemaRef,
       operationId: "deleteProducts",
       tags: ["Products"],
       security: [
@@ -152,23 +132,8 @@ export default async function productsRouter(fastify: FastifyInstance) {
       response: {
         200: ProductSchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          productId: { type: "string" },
-        },
-      },
-      body: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-          price: { type: "number" },
-          stock: { type: "number" },
-          image: { type: "string" },
-          description: { type: "string" },
-          category: { type: "string" },
-        },
-      },
+      params: UpdateProductParamSchemaRef,
+      body: UpdateProductBodySchemaRef,
       operationId: "updateProduct",
       tags: ["Products"],
       security: [

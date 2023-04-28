@@ -1,7 +1,16 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { CategoryCollectionSchemaRef, CategorySchemaRef } from "../schema";
+import {
+  CategoryCollectionSchemaRef,
+  CategorySchemaRef,
+  CreateCategoryBodySchemaRef,
+  DeleteCategoriesBodySchemaRef,
+  DeleteCategoryParamsSchema,
+  GetCategoryParamsSchemaRef,
+  UpdateCategoryBodySchemaRef,
+  UpdateCategoryParamsSchemaRef,
+} from "../schema";
 
 /*
   getCategory (GET) /:categoryId
@@ -22,12 +31,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategorySchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          categoryId: { type: "string" },
-        },
-      },
+      params: GetCategoryParamsSchemaRef,
       operationId: "getCategory",
       tags: ["Categories"],
       security: [
@@ -47,10 +51,6 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
     schema: {
       response: {
         200: CategoryCollectionSchemaRef,
-      },
-      params: {
-        type: "object",
-        properties: {},
       },
       operationId: "getCategories",
       tags: ["Categories"],
@@ -72,12 +72,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategorySchemaRef,
       },
-      body: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-        },
-      },
+      body: CreateCategoryBodySchemaRef,
       operationId: "createCategory",
       tags: ["Categories"],
       security: [
@@ -98,12 +93,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategorySchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          categoryId: { type: "string" },
-        },
-      },
+      params: DeleteCategoryParamsSchema,
       operationId: "deleteCategory",
       tags: ["Categories"],
       security: [
@@ -124,12 +114,7 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategoryCollectionSchemaRef,
       },
-      body: {
-        type: "object",
-        properties: {
-          categoryIds: { type: "array", items: { type: "string" } },
-        },
-      },
+      body: DeleteCategoriesBodySchemaRef,
       operationId: "deleteCategories",
       tags: ["Categories"],
       security: [
@@ -150,18 +135,8 @@ export default async function categoriesRouter(fastify: FastifyInstance) {
       response: {
         200: CategorySchemaRef,
       },
-      params: {
-        type: "object",
-        properties: {
-          categoryId: { type: "string" },
-        },
-      },
-      body: {
-        type: "object",
-        properties: {
-          name: { type: "string" },
-        },
-      },
+      params: UpdateCategoryParamsSchemaRef,
+      body: UpdateCategoryBodySchemaRef,
       operationId: "updateCategory",
       tags: ["Categories"],
       security: [

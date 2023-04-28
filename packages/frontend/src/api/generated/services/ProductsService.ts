@@ -1,8 +1,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { CreateProductBodySchema } from '../models/CreateProductBodySchema';
+import type { DeleteProductsBodySchema } from '../models/DeleteProductsBodySchema';
 import type { ProductsCollectionSchema } from '../models/ProductsCollectionSchema';
 import type { ProductsSchema } from '../models/ProductsSchema';
+import type { UpdateProductBodySchema } from '../models/UpdateProductBodySchema';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -53,14 +56,7 @@ productId: string,
      */
     public updateProduct(
 productId: string,
-requestBody?: {
-name?: string;
-price?: number;
-stock?: number;
-image?: string;
-description?: string;
-category?: string;
-},
+requestBody?: UpdateProductBodySchema,
 ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'PUT',
@@ -90,14 +86,7 @@ category?: string;
      * @throws ApiError
      */
     public createProduct(
-requestBody?: {
-name?: string;
-price?: number;
-stock?: number;
-image?: string;
-description?: string;
-category?: string;
-},
+requestBody?: CreateProductBodySchema,
 ): CancelablePromise<ProductsSchema> {
         return this.httpRequest.request({
             method: 'POST',
@@ -113,9 +102,7 @@ category?: string;
      * @throws ApiError
      */
     public deleteProducts(
-requestBody?: {
-products?: Array<string>;
-},
+requestBody?: DeleteProductsBodySchema,
 ): CancelablePromise<ProductsCollectionSchema> {
         return this.httpRequest.request({
             method: 'DELETE',

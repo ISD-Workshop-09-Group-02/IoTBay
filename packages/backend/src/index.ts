@@ -21,8 +21,20 @@ import {
   UserSchema,
   CategorySchema,
   CategoryCollectionSchema,
+  GetCategoryParamsSchema,
+  CreateCategoryBodySchema,
+  DeleteCategoryParamsSchema,
+  DeleteCategoriesBodySchema,
+  UpdateCategoryParamsSchema,
+  UpdateCategoryBodySchema,
   ProductsSchema,
   ProductsCollectionSchema,
+  CreateProductBodySchema,
+  DeleteProductParamsSchema,
+  DeleteProductsBodySchema,
+  GetProductParamsSchema,
+  UpdateProductBodySchema,
+  UpdateProductParamSchema,
 } from "./schema";
 import { env } from "./utils";
 // Load environment variables
@@ -65,8 +77,20 @@ await server.register(await import("@fastify/swagger"), {
         RegisterSchema,
         CategorySchema,
         CategoryCollectionSchema,
+        GetCategoryParamsSchema,
+        CreateCategoryBodySchema,
+        DeleteCategoryParamsSchema,
+        DeleteCategoriesBodySchema,
+        UpdateCategoryParamsSchema,
+        UpdateCategoryBodySchema,
         ProductsSchema,
         ProductsCollectionSchema,
+        CreateProductBodySchema,
+        DeleteProductParamsSchema,
+        DeleteProductsBodySchema,
+        GetProductParamsSchema,
+        UpdateProductBodySchema,
+        UpdateProductParamSchema,
       },
     },
     info: {
@@ -89,8 +113,20 @@ server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
 server.addSchema(CategorySchema);
 server.addSchema(CategoryCollectionSchema);
+server.addSchema(GetCategoryParamsSchema);
+server.addSchema(CreateCategoryBodySchema);
+server.addSchema(DeleteCategoryParamsSchema);
+server.addSchema(DeleteCategoriesBodySchema);
+server.addSchema(UpdateCategoryParamsSchema);
+server.addSchema(UpdateCategoryBodySchema);
 server.addSchema(ProductsSchema);
 server.addSchema(ProductsCollectionSchema);
+server.addSchema(CreateProductBodySchema);
+server.addSchema(DeleteProductParamsSchema);
+server.addSchema(DeleteProductsBodySchema);
+server.addSchema(GetProductParamsSchema);
+server.addSchema(UpdateProductBodySchema);
+server.addSchema(UpdateProductParamSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
