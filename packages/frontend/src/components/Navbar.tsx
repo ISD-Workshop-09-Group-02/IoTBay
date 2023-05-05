@@ -18,9 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useMe from "../hooks/useMe";
-import { UserSchema } from "../api/generated";
 import logo from "../assets/icon.svg";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { UserSchema } from "../api/generated";
 
 // Path: packages\frontend\src\components\Navbar.tsx
 
