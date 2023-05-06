@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import * as controllers from "../controllers";
 import { isLoggedIn, isStaff } from "../helpers/auth";
-import { UserCollectionSchemaRef, UserSchemaRef } from "../schema";
+import { UpdateUserParamsSchemaRef, UpdateUserParamsSchemaType, UpdateUserSchema, UpdateUserSchemaRef, UpdateUserSchemaType, UserCollectionSchemaRef, UserSchemaRef } from "../schema";
 
 export default async function usersRouter(fastify: FastifyInstance) {
   fastify.route({
@@ -59,5 +59,48 @@ export default async function usersRouter(fastify: FastifyInstance) {
     url: "",
     preValidation: [isLoggedIn, isStaff],
     handler: controllers.users,
+  });
+
+  fastify.route({
+    schema: {
+      response: {
+        200: UserSchemaRef,
+      },
+      body: UpdateUserSchemaRef,
+      params: UpdateUserParamsSchemaRef,
+      operationId: "updateUser",
+      tags: ["Users"],
+      security: [
+        {
+          sessionid: [],
+        },
+      ],
+    
+    },
+    url: "/:userId",
+    method: "PATCH",
+    preValidation: [isLoggedIn, isStaff],
+    handler: controllers.updateUser,
+
+  })
+
+  fastify.route({
+    schema: {
+      response: {
+        200: UserSchemaRef,
+      },
+      operationId: "updateMe",
+      body: UpdateUserSchemaRef,
+      tags: ["Users"],
+      security: [
+        {
+          sessionid: [],
+        },
+      ],
+    },
+    url: "/me",
+    method: "PATCH",
+    preValidation: [isLoggedIn],
+    handler: controllers.updateMe,
   });
 }

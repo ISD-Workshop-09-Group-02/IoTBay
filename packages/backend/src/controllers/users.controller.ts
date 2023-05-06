@@ -1,3 +1,4 @@
+import { UpdateUserSchemaType } from "../schema";
 import prisma from "../services/prisma.service";
 
 import { FastifyRequest, FastifyReply } from "fastify";
@@ -73,4 +74,50 @@ export const me = async (request: FastifyRequest, reply: FastifyReply) => {
   const { user } = request;
 
   return reply.status(200).send(user);
+};
+
+export const updateMe = async (
+  request: FastifyRequest<{ Body: UpdateUserSchemaType }>,
+  reply: FastifyReply
+) => {
+  if (!request.user) {
+    return reply.status(204).send();
+  }
+
+  const { user } = request;
+
+  const { password, ...updatedUser } = await prisma.user.update({
+    where: {
+      userId: user.userId,
+    },
+    data: request.body,
+  });
+
+  return reply.status(200).send(updatedUser);
+};
+
+export const updateUser = async (
+  request: FastifyRequest<{ Params: UserRouteParams, Body: UpdateUserSchemaType }>,
+  reply: FastifyReply
+) => {
+  const { userId } = request.params;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!user) {
+    return reply.notFound("User not found");
+  }
+
+  const { password, ...updatedUser } = await prisma.user.update({
+    where: {
+      userId,
+    },
+    data: request.body,
+  });
+
+  return reply.status(200).send(updatedUser);
 };

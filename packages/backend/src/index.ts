@@ -35,6 +35,8 @@ import {
   GetProductParamsSchema,
   UpdateProductBodySchema,
   UpdateProductParamSchema,
+  UpdateUserSchema,
+  UpdateUserParamsSchema
 } from "./schema";
 import { env } from "./utils";
 // Load environment variables
@@ -91,6 +93,8 @@ await server.register(await import("@fastify/swagger"), {
         GetProductParamsSchema,
         UpdateProductBodySchema,
         UpdateProductParamSchema,
+        UpdateUserSchema,
+        UpdateUserParamsSchema
       },
     },
     info: {
@@ -127,6 +131,8 @@ server.addSchema(DeleteProductsBodySchema);
 server.addSchema(GetProductParamsSchema);
 server.addSchema(UpdateProductBodySchema);
 server.addSchema(UpdateProductParamSchema);
+server.addSchema(UpdateUserSchema);
+server.addSchema(UpdateUserParamsSchema);
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
