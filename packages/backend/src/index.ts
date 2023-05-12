@@ -12,7 +12,7 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 
 import { env } from "./utils";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import { AppRouter, appRouter } from "./trpc/root.router";
+import { AppRouter, appRouter } from "./routers/root.router";
 import { createContext } from "./trpc/context";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 // Load environment variables
@@ -144,7 +144,7 @@ console.log(
     .join("\n")}`
 );
 
-export { type AppRouter} from './trpc/root.router'
+export { type AppRouter} from './routers/root.router'
 
 export type RouterInput = inferRouterInputs<AppRouter>;
 export type RouterOutput = inferRouterOutputs<AppRouter>;

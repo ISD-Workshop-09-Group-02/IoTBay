@@ -1,4 +1,4 @@
-import { t } from '.';
+import { t } from '../trpc';
 import { authRouterDefinition } from './auth.router';
 import { categoryRouterDefinition } from './categories.router';
 import { productsRouterDefinition } from './products.router';

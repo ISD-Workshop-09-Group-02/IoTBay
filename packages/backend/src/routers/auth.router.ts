@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { t } from ".";
-import { loggedInProcedure, publicProcedure } from "./utils";
+import { t } from "../trpc";
+import { loggedInProcedure, publicProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
 import argon2 from "argon2";
 

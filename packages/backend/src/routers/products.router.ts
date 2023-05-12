@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { t } from ".";
-import { publicProcedure, staffProcedure } from "./utils";
+import { t } from "../trpc";
+import { publicProcedure, staffProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
 
 export const productsRouterDefinition = t.router({
