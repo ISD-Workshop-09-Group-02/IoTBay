@@ -37,6 +37,9 @@ import {
   UpdateProductParamSchema,
 } from "./schema";
 import { env } from "./utils";
+import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+import { appRouter } from "./trpc/router";
+import { createContext } from "./trpc/context";
 // Load environment variables
 config();
 
@@ -47,7 +50,9 @@ const root = path.join(fileURLToPath(import.meta.url), "../..");
 const publicRoot = path.join(root, "public");
 
 // declare the server
-const server = fastify().withTypeProvider<TypeBoxTypeProvider>();
+const server = fastify({
+  maxParamLength: 5000,
+}).withTypeProvider<TypeBoxTypeProvider>();
 
 // Register nice error messages
 await server.register(await import("@fastify/sensible"));
@@ -172,6 +177,11 @@ fastifyPassport.registerUserDeserializer(async (userId: string, request) => {
   return user;
 });
 
+server.register(fastifyTRPCPlugin, {
+  prefix: '/api/trpc',
+  trpcOptions: { router: appRouter, createContext },
+});
+
 // Register the auth router
 await server.register(authRouter, { prefix: "/api/auth" });
 
@@ -202,3 +212,5 @@ console.log(
     )
     .join("\n")}`
 );
+
+export { type AppRouter} from './trpc/router'

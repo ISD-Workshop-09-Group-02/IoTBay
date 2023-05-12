@@ -5,10 +5,10 @@ export default defineConfig(({ watch }) => ({
   splitting: true,
   sourcemap: true,
   clean: true,
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   platform: 'node',
   minify: false,
-  dts: false,
+  dts: true,
   bundle: true,
   metafile: true,
   onSuccess: watch
