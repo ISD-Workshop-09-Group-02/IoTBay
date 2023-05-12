@@ -15,7 +15,6 @@ import BreadCrumbRoute from "../../../components/BreadCrumbRoute";
 import PageTitle from "../../../components/PageTitle";
 import SearchAndFilterNavbar from "../components/SearchAndFilterNavbar";
 import ProductTable from "../components/ProductTable";
-import { ApiError } from "../../../api/generated";
 
 export default function ManageInventory() {
   const toast = useToast();
@@ -87,22 +86,14 @@ export default function ManageInventory() {
                   isClosable: true,
                 });
               } catch (error) {
-                if (error instanceof ApiError) {
-                  toast({
-                    title: "Products deletion failed",
-                    description: error.body?.message ?? "Unknown error",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                  });
-                } else {
+                
                   toast({
                     title: "Products deletion failed",
                     description: "Unknown error",
                     status: "error",
                     duration: 5000,
                   });
-                }
+                
               }
             }}
           >

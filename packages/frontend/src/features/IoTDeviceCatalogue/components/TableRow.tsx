@@ -18,7 +18,6 @@ import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { convertToDDMMYYYY } from "../../../utils/dateFormatter";
 import { convertToCurrency } from "../../../utils/currencyFormatter";
-import { ApiError } from "../../../api/generated";
 import { generateCategoryColor } from "../../../utils/generateCategoryColor";
 
 const TableRow: React.FC<{
@@ -134,15 +133,7 @@ const TableRow: React.FC<{
                   isClosable: true,
                 });
               } catch (error) {
-                if (error instanceof ApiError) {
-                  toast({
-                    title: "Product deletion failed",
-                    description: error.body?.message ?? "Unknown error",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                  });
-                } else {
+               
                   toast({
                     title: "Product deletion failed",
                     description: "Unknown error",
@@ -150,7 +141,7 @@ const TableRow: React.FC<{
                     duration: 5000,
                   });
                 }
-              }
+              
             }}
           >
             Delete

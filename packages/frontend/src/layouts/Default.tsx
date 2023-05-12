@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 import { Outlet } from "react-router-dom";
-import { trpc } from "../App";
+import { trpcReact } from "../App";
 
 export default function DefaultLayout() {
-  const user = trpc.order.getMyOrder.useQuery({})
-  console.log(user.data)
+  // const user = trpcReact.order.getMyOrder.useQuery({})
+  // console.log(user.data)
   return (
     <Flex h="full" flexDir={"column"}>
       <Navbar />

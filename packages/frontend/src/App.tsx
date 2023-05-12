@@ -26,7 +26,7 @@ import { createTRPCReact } from "@trpc/react-query";
 
 const queryClient = new QueryClient();
 
-const client = createTRPCProxyClient<AppRouter>({
+export const trpcClient = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: '/api/trpc',
@@ -35,9 +35,9 @@ const client = createTRPCProxyClient<AppRouter>({
   ],
 });
 
-export const trpc = createTRPCReact<AppRouter>();
+export const trpcReact = createTRPCReact<AppRouter>();
 
-const trpcClient = trpc.createClient({
+export const client = trpcReact.createClient({
   links: [
     httpBatchLink({
       url: '/api/trpc',
@@ -125,7 +125,7 @@ export default function App() {
   }, []);
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <trpcReact.Provider client={client} queryClient={queryClient}>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} />
@@ -137,6 +137,6 @@ export default function App() {
 
       <DarkLightModeToggle />
     </QueryClientProvider>
-    </trpc.Provider>
+    </trpcReact.Provider>
   );
 }

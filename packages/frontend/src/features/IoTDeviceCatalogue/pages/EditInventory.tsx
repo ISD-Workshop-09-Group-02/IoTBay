@@ -4,7 +4,7 @@ import CreateEditInventory, {
 } from "../components/CreateEditInventory";
 import { useUpdateProduct, useGetProduct } from "../../../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
-import { ApiError, ProductsSchema } from "../../../api/generated";
+import { RouterInput } from "backend";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
@@ -14,7 +14,7 @@ export default function EditInventory() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const updateProductFunction = async (data: ProductsSchema) => {
+  const updateProductFunction = async (data: RouterInput["products"]["update"]) => {
     try {
       updateProduct.mutateAsync({
         productId: data.productId,
@@ -34,22 +34,14 @@ export default function EditInventory() {
       });
       navigate("/staff/inventory");
     } catch (error) {
-      if (error instanceof ApiError) {
-        toast({
-          title: "Inventory update failed",
-          description: error.body?.message ?? "Unknown error",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      } else {
+     
         toast({
           title: "Inventory update failed",
           description: "Unknown error",
           status: "error",
           duration: 5000,
         });
-      }
+      
     }
   };
 
