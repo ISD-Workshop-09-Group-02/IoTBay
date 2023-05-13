@@ -1,11 +1,11 @@
 import { z } from "zod";
-import isMobilePhone from 'validator/es/lib/isMobilePhone'
+import validator from 'validator'
 
 export const RegisterSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(100),
   name: z.string(),
-  phone: z.string().refine(isMobilePhone, {
+  phone: z.string().refine(validator.isMobilePhone, {
     message: 'Invalid phone number',
   }),
   address: z.string(),
