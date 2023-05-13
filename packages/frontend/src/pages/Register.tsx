@@ -32,7 +32,7 @@ export default function Register() {
 
   const toast = useToast();
 
-  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+  const onSubmit: SubmitHandler<Zod.infer<typeof RegisterSchema>> = async (data) => {
     try {
       await registerMutation.mutateAsync(data);
       toast({

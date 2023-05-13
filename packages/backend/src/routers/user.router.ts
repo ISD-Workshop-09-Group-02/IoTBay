@@ -8,6 +8,7 @@ export const userRouterDefinition = t.router({
   me: publicProcedure.query(({ ctx }) => {
     return ctx.req.user;
   }),
+
   user: staffProcedure.input(UserSchema).query(async ({ ctx, input }) => {
     const user = await ctx.prisma.user.findUnique({
       where: {
@@ -24,6 +25,7 @@ export const userRouterDefinition = t.router({
 
     return user;
   }),
+  
   users: staffProcedure.query(async ({ ctx }) => {
     const users = await ctx.prisma.user.findMany();
 
