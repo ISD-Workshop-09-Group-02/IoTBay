@@ -70,6 +70,7 @@ export const register = async (
       userType: true,
       shippingAddress: true,
       billingAddress: true,
+      name: true,
     },
   });
 

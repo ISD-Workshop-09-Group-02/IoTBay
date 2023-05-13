@@ -31,3 +31,19 @@ export const isStaff = async (
     reply.forbidden("You are not a staff member");
   }
 };
+
+/**
+ * Authentication function
+ * This checks to see if the user is a staff member
+ */
+export const isAdmin = async (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: () => void
+) => {
+  if (request.user && request.user.userType === "admin") {
+    done();
+  } else {
+    reply.forbidden("You are not an admin");
+  }
+};

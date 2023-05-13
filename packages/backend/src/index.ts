@@ -13,6 +13,8 @@ import fastify from 'fastify'
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { LoginSchema, RegisterSchema, UserCollectionSchema, UserSchema } from "./schema";
 import { env } from "./utils";
+import staffRouter from "./routes/staff.router";
+import { CreateStaffRecordSchema, CreateStaffSchema, StaffSchema } from "./schema/staff.schema";
 // Load environment variables
 config();
 
@@ -50,7 +52,10 @@ await server.register(await import("@fastify/swagger"), {
         UserSchema,
         UserCollectionSchema,
         LoginSchema,
-        RegisterSchema
+        RegisterSchema,
+        StaffSchema,
+        CreateStaffSchema,
+        CreateStaffRecordSchema
       },
     },
     info: {
@@ -72,6 +77,9 @@ server.addSchema(UserSchema);
 server.addSchema(UserCollectionSchema);
 server.addSchema(LoginSchema);
 server.addSchema(RegisterSchema);
+server.addSchema(StaffSchema);
+server.addSchema(CreateStaffSchema);
+server.addSchema(CreateStaffRecordSchema)
 
 await server.register(await import("@fastify/swagger-ui"), {
   routePrefix: "/docs",
@@ -122,6 +130,9 @@ await server.register(authRouter, { prefix: "/api/auth" });
 
 // Register the users router
 await server.register(usersRouter, {prefix: "/api/users"});
+
+// Register the staff router
+await server.register(staffRouter, {prefix: "/api/staff"});
 
 // If there's no route, send the index.html file
 await server.setNotFoundHandler((req, res) => {
