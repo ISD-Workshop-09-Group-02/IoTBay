@@ -65,5 +65,20 @@ export default async function staffRouter(fastify: FastifyInstance) {
     handler: controllers.createStaffRecord,
   });
 
+  fastify.route({
+    schema: {
+      params: StaffSchemaRef,
+      response: {
+        200: UserSchemaRef,
+      },
+      operationId: "deleteStaff",
+      tags: ["Staff"],
+    },
+    preValidation: [isLoggedIn],
+    method: "DELETE",
+    url: "/Staff/deleteStaff",
+    handler: controllers.deleteStaff,
+  });
+
   
 }

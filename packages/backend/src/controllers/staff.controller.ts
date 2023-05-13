@@ -137,6 +137,22 @@ export const createStaffRecord = async (
   // return reply.status(200).send(user);
 };
 
+export const deleteStaff = async (
+  request: FastifyRequest<{ Params: StaffSchemaType  }>,
+  reply: FastifyReply
+) => {
+  const userId = request.params.userId;
+
+  const user = await prisma.user.delete({
+    where: {
+      userId: userId,
+    },
+  });
+  
+
+  return reply.status(200).send(user);
+};
+
 // export const register = async (
 //   request: FastifyRequest<{ Body: RegisterSchemaType }>,
 //   reply: FastifyReply
@@ -176,3 +192,5 @@ export const createStaffRecord = async (
 
 //   return reply.status(201).send(user);
 // };
+
+

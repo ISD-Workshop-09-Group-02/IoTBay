@@ -41,6 +41,13 @@ model CustomerDetails {
   sex           String
 }
 
+model StaffDetails{ 
+  userId        String          @id @default(cuid())
+  name  String  
+  address String
+  position String  
+}
+
 model CouponsAndDiscounts {
   couponId   String  @id @default(cuid())
   isUsed     Boolean @default(false)
