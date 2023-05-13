@@ -30,6 +30,8 @@ jobs:
         run: yarn workspace frontend tsc --noEmit
   vitest:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: file:./dev.db
     steps:
       - uses: actions/checkout@v3
       - name: Setup Yarn
