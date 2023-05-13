@@ -2,12 +2,13 @@ import { z } from "zod";
 import { t } from "../trpc";
 import { loggedInProcedure, publicProcedure, staffProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
+import { UserSchema } from "../schema/user.schema";
 
 export const userRouterDefinition = t.router({
   me: publicProcedure.query(({ ctx }) => {
     return ctx.req.user;
   }),
-  user: staffProcedure.input(z.string()).query(async ({ ctx, input }) => {
+  user: staffProcedure.input(UserSchema).query(async ({ ctx, input }) => {
     const user = await ctx.prisma.user.findUnique({
       where: {
         userId: input,

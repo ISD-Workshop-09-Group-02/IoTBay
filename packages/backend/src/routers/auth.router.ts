@@ -1,8 +1,8 @@
-import { z } from "zod";
 import { t } from "../trpc";
 import { loggedInProcedure, publicProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
 import argon2 from "argon2";
+import { LoginSchema, RegisterSchema } from "../schema/auth.schema";
 
 const authRouter = t.router({
   // login: publicProcedure.input(),
@@ -14,15 +14,7 @@ const authRouter = t.router({
     };
   }),
   register: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string().min(8).max(100),
-        name: z.string(),
-        phone: z.string(),
-        address: z.string(),
-      })
-    )
+    .input(RegisterSchema)
     .mutation(async ({ ctx, input }) => {
       const { email, password: passwordInput, name, phone, address } = input;
 
@@ -56,40 +48,33 @@ const authRouter = t.router({
       return user;
     }),
 
-  login: publicProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-        password: z.string().min(8).max(100),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.findUnique({
-        where: {
-          email: input.email,
-        },
+  login: publicProcedure.input(LoginSchema).mutation(async ({ ctx, input }) => {
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        email: input.email,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User does not exist",
       });
+    }
 
-      if (!user) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "User does not exist",
-        });
-      }
+    const validPassword = await argon2.verify(user.password, input.password);
 
-      const validPassword = await argon2.verify(user.password, input.password);
+    if (!validPassword) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid password",
+      });
+    }
 
-      if (!validPassword) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Invalid password",
-        });
-      }
+    ctx.req.session.set("passport", user.userId);
 
-      ctx.req.session.set("passport", user.userId);
-
-      return user;
-    }),
+    return user;
+  }),
 });
 
 export const authRouterDefinition = authRouter;

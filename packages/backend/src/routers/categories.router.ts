@@ -1,25 +1,33 @@
-import { z } from "zod";
 import { t } from "../trpc";
 import { publicProcedure, staffProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
+import {
+  CategorySchema,
+  CategoryDeleteManySchema,
+  CategoryDeleteSchema,
+  CategoryUpdateSchema,
+} from "../schema/categories.schema";
+import { CategoryCreateSchema } from "../schema/categories.schema";
 
 export const categoryRouterDefinition = t.router({
-  category: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    const category = await ctx.prisma.productCategory.findUnique({
-      where: {
-        categoryId: input,
-      },
-    });
-
-    if (!category) {
-      throw new TRPCError({
-        code: "BAD_REQUEST",
-        message: "Category not found",
+  category: publicProcedure
+    .input(CategorySchema)
+    .query(async ({ ctx, input }) => {
+      const category = await ctx.prisma.productCategory.findUnique({
+        where: {
+          categoryId: input,
+        },
       });
-    }
 
-    return category;
-  }),
+      if (!category) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Category not found",
+        });
+      }
+
+      return category;
+    }),
 
   categories: publicProcedure.query(async ({ ctx }) => {
     const categories = await ctx.prisma.productCategory.findMany();
@@ -28,7 +36,7 @@ export const categoryRouterDefinition = t.router({
   }),
 
   create: staffProcedure
-    .input(z.string().describe("name"))
+    .input(CategoryCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const name = input;
 
@@ -42,7 +50,7 @@ export const categoryRouterDefinition = t.router({
     }),
 
   delete: staffProcedure
-    .input(z.string().describe("categoryId"))
+    .input(CategoryDeleteSchema)
     .mutation(async ({ ctx, input }) => {
       const categoryId = input;
 
@@ -69,7 +77,7 @@ export const categoryRouterDefinition = t.router({
     }),
 
   deleteMany: staffProcedure
-    .input(z.array(z.string()).describe("categoryIds"))
+    .input(CategoryDeleteManySchema)
     .mutation(async ({ ctx, input }) => {
       const categoryIds = input;
 
@@ -100,12 +108,7 @@ export const categoryRouterDefinition = t.router({
     }),
 
   update: staffProcedure
-    .input(
-      z.object({
-        categoryId: z.string(),
-        name: z.string(),
-      })
-    )
+    .input(CategoryUpdateSchema)
     .mutation(async ({ ctx, input }) => {
       const { categoryId, name } = input;
 
