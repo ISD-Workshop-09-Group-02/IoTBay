@@ -76,7 +76,7 @@ export default function Register() {
         </Text>
         <FormControl isInvalid={!!errors.address}>
           <FormLabel>Address</FormLabel>
-          <Input {...register("address", { required: true })} />
+          <Input {...register("address", { required: "Address is required." })} />
           {errors.address ? (
             <FormErrorMessage>{errors.address.message}</FormErrorMessage>
           ) : (
@@ -85,7 +85,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>Name</FormLabel>
-          <Input {...register("name", { required: true })} />
+          <Input {...register("name", { required: "Name is required" })} />
           {errors.name ? (
             <FormErrorMessage>{errors.name.message}</FormErrorMessage>
           ) : (
@@ -94,7 +94,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.phone}>
           <FormLabel>Phone</FormLabel>
-          <Input {...register("phone", { required: true })} />
+          <Input {...register("phone", { required: "Phone is required" })} />
           {errors.phone ? (
             <FormErrorMessage>{errors.phone.message}</FormErrorMessage>
           ) : (
@@ -103,7 +103,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" {...register("email", { required: true })} />
+          <Input type="email" {...register("email", { required: "Email is required" })} />
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
@@ -114,7 +114,7 @@ export default function Register() {
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "Password is required" })}
           />
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>

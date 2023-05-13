@@ -74,7 +74,7 @@ export default function Login() {
         </Text>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email address</FormLabel>
-          <Input type="email" {...register("email", { required: true })} />
+          <Input type="email" {...register("email", { required: "Email address is required" })} />
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
@@ -85,7 +85,7 @@ export default function Login() {
           <FormLabel>Password</FormLabel>
           <Input
             type="password"
-            {...register("password", { required: true })}
+            {...register("password", { required: "A password is required" })}
           />
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>
