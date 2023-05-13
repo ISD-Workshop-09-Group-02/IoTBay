@@ -14,14 +14,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
 import { isTRPCClientError } from "../utils/trpc";
-
-interface LoginData {
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  phone: string;
-}
+import useZodForm from "../hooks/useZodForm";
+import { RegisterSchema } from "backend/schema";
 
 export default function Register() {
   const registerMutation = useRegister();
@@ -30,7 +24,9 @@ export default function Register() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginData>();
+  } = useZodForm({
+    schema: RegisterSchema
+  });
 
   const navigate = useNavigate();
 

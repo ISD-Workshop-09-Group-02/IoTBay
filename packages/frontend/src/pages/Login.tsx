@@ -14,11 +14,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
 import { isTRPCClientError } from "../utils/trpc";
+import useZodForm from "../hooks/useZodForm";
+import { LoginSchema } from "backend/schema";
 
-interface LoginData {
-  email: string;
-  password: string;
-}
 
 export default function Login() {
   const loginMutation = useLogin();
@@ -29,9 +27,11 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginData>();
+  } = useZodForm({
+    schema: LoginSchema
+  });
 
-  const onSubmit: SubmitHandler<LoginData> = async (data) => {
+  const onSubmit: SubmitHandler<Zod.infer<typeof LoginSchema>> = async (data) => {
     try {
       await loginMutation.mutateAsync({
         email: data.email,

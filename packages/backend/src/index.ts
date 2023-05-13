@@ -146,7 +146,5 @@ console.log(
 
 export { type AppRouter} from './routers/root.router'
 
-export * from './schema'
-
 export type RouterInput = inferRouterInputs<AppRouter>;
 export type RouterOutput = inferRouterOutputs<AppRouter>;
