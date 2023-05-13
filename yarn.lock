@@ -2538,11 +2538,6 @@ checkpoint-client@1.1.21:
     node-fetch "2.6.7"
     uuid "8.3.2"
 
-child-process-toolbox@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/child-process-toolbox/-/child-process-toolbox-3.0.4.tgz#8d6f637bed67ab9395682b3f836775566bb4d64c"
-  integrity sha512-XSLiGXoN3hVGJUcC96pEP1FaoHqvo/O7BLgAzbHG0AhExw7NgwOUg8BSDDY2tPCPc/ZQhbsDfuN2aumZ43CBfw==
-
 chokidar@^3.5.1:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"

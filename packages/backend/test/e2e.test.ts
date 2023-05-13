@@ -5,7 +5,6 @@ import { faker } from "@faker-js/faker";
 import childProcess from "child_process";
 import path from 'path'
 import { fileURLToPath } from "node:url";
-import tools from "child-process-toolbox";
 
 import fetchCookie from "fetch-cookie";
 
