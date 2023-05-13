@@ -5,6 +5,8 @@ import CreateEditInventory, {
 import { useUpdateProduct, useGetProduct } from "../../../hooks/useProducts";
 import { useToast } from "@chakra-ui/react";
 import { RouterInput } from "backend";
+import { TRPCClientError } from "@trpc/client";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 export default function EditInventory() {
   const productId: string = useParams().id as string;
@@ -34,13 +36,21 @@ export default function EditInventory() {
       });
       navigate("/staff/inventory");
     } catch (error) {
-     
+      if (isTRPCClientError(error)) {
+        toast({
+          title: "Inventory update failed",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+        });
+      } else {
         toast({
           title: "Inventory update failed",
           description: "Unknown error",
           status: "error",
           duration: 5000,
         });
+      }
       
     }
   };

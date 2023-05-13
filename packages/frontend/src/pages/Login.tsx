@@ -13,6 +13,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useLogin from "../hooks/useLogin";
 import { useNavigate } from "react-router-dom";
+import { isTRPCClientError } from "../utils/trpc";
 
 interface LoginData {
   email: string;
@@ -45,7 +46,15 @@ export default function Login() {
       });
       navigate(`/profile`);
     } catch (error) {
-     
+      if (isTRPCClientError(error)) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
         toast({
           title: "Login failed",
           description: "Unknown error",
@@ -53,7 +62,7 @@ export default function Login() {
           duration: 5000,
           isClosable: true,
         });
-      
+      }
     }
   };
 

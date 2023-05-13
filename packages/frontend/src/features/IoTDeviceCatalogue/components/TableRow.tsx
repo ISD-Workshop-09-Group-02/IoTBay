@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { convertToDDMMYYYY } from "../../../utils/dateFormatter";
 import { convertToCurrency } from "../../../utils/currencyFormatter";
 import { generateCategoryColor } from "../../../utils/generateCategoryColor";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 const TableRow: React.FC<{
   productId: string;
@@ -133,7 +134,14 @@ const TableRow: React.FC<{
                   isClosable: true,
                 });
               } catch (error) {
-               
+                if (isTRPCClientError(error)) {
+                  toast({
+                    title: "Product deletion failed",
+                    description: error.message,
+                    status: "error",
+                    duration: 5000,
+                  });
+                } else {
                   toast({
                     title: "Product deletion failed",
                     description: "Unknown error",
@@ -141,7 +149,7 @@ const TableRow: React.FC<{
                     duration: 5000,
                   });
                 }
-              
+              }
             }}
           >
             Delete

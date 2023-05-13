@@ -13,6 +13,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegister";
 import { useNavigate } from "react-router-dom";
+import { isTRPCClientError } from "../utils/trpc";
 
 interface LoginData {
   name: string;
@@ -47,7 +48,7 @@ export default function Register() {
       });
       navigate(`/profile`);
     } catch (error) {
-      
+      if (isTRPCClientError(error)) {
         toast({
           title: "Login failed",
           description: "Unknown error",
@@ -55,7 +56,15 @@ export default function Register() {
           duration: 5000,
           isClosable: true,
         });
-      
+      } else {
+        toast({
+          title: "Login failed",
+          description: "Unknown error",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     }
   };
 
@@ -67,7 +76,7 @@ export default function Register() {
         </Text>
         <FormControl isInvalid={!!errors.address}>
           <FormLabel>Address</FormLabel>
-          <Input  {...register("address", { required: true })} />
+          <Input {...register("address", { required: true })} />
           {errors.address ? (
             <FormErrorMessage>{errors.address.message}</FormErrorMessage>
           ) : (
@@ -76,7 +85,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.name}>
           <FormLabel>Name</FormLabel>
-          <Input  {...register("name", { required: true })} />
+          <Input {...register("name", { required: true })} />
           {errors.name ? (
             <FormErrorMessage>{errors.name.message}</FormErrorMessage>
           ) : (
@@ -85,7 +94,7 @@ export default function Register() {
         </FormControl>
         <FormControl isInvalid={!!errors.phone}>
           <FormLabel>Phone</FormLabel>
-          <Input  {...register("phone", { required: true })} />
+          <Input {...register("phone", { required: true })} />
           {errors.phone ? (
             <FormErrorMessage>{errors.phone.message}</FormErrorMessage>
           ) : (

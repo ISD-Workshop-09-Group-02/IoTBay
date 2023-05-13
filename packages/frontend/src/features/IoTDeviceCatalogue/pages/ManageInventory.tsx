@@ -15,6 +15,7 @@ import BreadCrumbRoute from "../../../components/BreadCrumbRoute";
 import PageTitle from "../../../components/PageTitle";
 import SearchAndFilterNavbar from "../components/SearchAndFilterNavbar";
 import ProductTable from "../components/ProductTable";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 export default function ManageInventory() {
   const toast = useToast();
@@ -72,11 +73,11 @@ export default function ManageInventory() {
             colorScheme="red"
             // leftIcon={<MinusIcon />}
             leftIcon={<DeleteIcon />}
-            onClick={() => {
+            onClick={async () => {
               try {
                 if (selectedItems.length === 0) return;
 
-                deleteProducts.mutate(selectedItems);
+                await deleteProducts.mutateAsync(selectedItems);
 
                 toast({
                   title: "Products Deleted",
@@ -86,14 +87,21 @@ export default function ManageInventory() {
                   isClosable: true,
                 });
               } catch (error) {
-                
+                if (isTRPCClientError(error)) {
+                  toast({
+                    title: "Products deletion failed",
+                    description: error.message,
+                    status: "error",
+                    duration: 5000,
+                  });
+                } else {
                   toast({
                     title: "Products deletion failed",
                     description: "Unknown error",
                     status: "error",
                     duration: 5000,
                   });
-                
+                }
               }
             }}
           >
