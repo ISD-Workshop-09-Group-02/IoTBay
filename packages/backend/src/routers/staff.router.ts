@@ -1,8 +1,8 @@
 import { t } from "../trpc";
-import { z } from "zod";
 import { staffProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
 import argon2 from "argon2";
+import { StaffActivateSchema, StaffCreateSchema, StaffDeactivateSchema, StaffDeleteSchema, StaffListSchema } from "../schema/staff.schema";
 
 export const staffRouterDefinition = t.router({
   /**
@@ -10,10 +10,7 @@ export const staffRouterDefinition = t.router({
    */
   activate: staffProcedure
     .input(
-      z.object({
-        userId: z.string(),
-        position: z.string(),
-      })
+      StaffActivateSchema
     )
     .mutation(async ({ ctx, input }) => {
       const { password, ...user } = await ctx.prisma.user.update({
@@ -24,8 +21,8 @@ export const staffRouterDefinition = t.router({
           userType: "staff",
           staffDetails: {
             create: {
-              position: input.position,
-              isActivated: true,
+                position: input.position,
+                isActivated: true,
             },
           },
         },
@@ -40,7 +37,7 @@ export const staffRouterDefinition = t.router({
    * Remove a staff user from an existing account
    */
   deactivate: staffProcedure
-    .input(z.string())
+    .input(StaffDeactivateSchema)
     .mutation(async ({ ctx, input }) => {
       const { password, ...user } = await ctx.prisma.user.update({
         where: {
@@ -66,11 +63,7 @@ export const staffRouterDefinition = t.router({
    */
   staff: staffProcedure
     .input(
-      z
-        .object({
-          position: z.string().optional(),
-        })
-        .optional()
+      StaffListSchema
     )
     .query(async ({ ctx, input }) => {
       const user = await ctx.prisma.user.findMany({
@@ -90,14 +83,7 @@ export const staffRouterDefinition = t.router({
    */
   create: staffProcedure
     .input(
-      z.object({
-        name: z.string(),
-        address: z.string(),
-        position: z.string(),
-        email: z.string().email(),
-        password: z.string(),
-        phone: z.string(),
-      })
+      StaffCreateSchema
     )
     .mutation(async ({ ctx, input }) => {
       const password = await argon2.hash(input.password);
@@ -124,7 +110,7 @@ export const staffRouterDefinition = t.router({
         return user;
     }),
 
-  delete: staffProcedure.input(z.string().describe("userId")).mutation(async ({ctx, input}) => {
+  delete: staffProcedure.input(StaffDeleteSchema).mutation(async ({ctx, input}) => {
     // the userId from the input
     const userId = input;
 
