@@ -116,16 +116,29 @@ export const categoryRouterDefinition = t.router({
     .mutation(async ({ ctx, input }) => {
       const { newName, oldName } = input;
 
-      const existingCategory = await ctx.prisma.productCategory.findUnique({
+      const oldExistingCategory = await ctx.prisma.productCategory.findUnique({
         where: {
           name: oldName,
         },
       });
 
-      if (!existingCategory) {
+      if (!oldExistingCategory) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "Category not found",
+        });
+      }
+
+      const newExistingCategory = await ctx.prisma.productCategory.findUnique({
+        where: {
+          name: newName,
+        },
+      });
+
+      if (newExistingCategory) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Category already exists",
         });
       }
 
