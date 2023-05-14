@@ -76,6 +76,11 @@ export default function Navbar() {
           direction={"row"}
           spacing={6}
         >
+          {!data || data.userType !== "staff" ? (
+            <Button as={Link} to="/browse" variant={"link"}>
+              Browse Inventory
+            </Button>
+          ) : null}
           {!data ? (
             <>
               <Button
@@ -108,11 +113,7 @@ export default function Navbar() {
                 <Button as={Link} to="/staff" variant={"link"}>
                   Staff Dashboard
                 </Button>
-              ) : (
-                <Button as={Link} to="/browse" variant={"link"}>
-                  Browse Inventory
-                </Button>
-              )}
+              ) : null}
               <Button
                 as={Link}
                 fontSize={"sm"}
