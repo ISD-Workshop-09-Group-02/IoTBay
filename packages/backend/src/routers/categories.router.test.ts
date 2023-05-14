@@ -47,14 +47,14 @@ test("should get a new category", async () => {
   expect(category).toBeDefined();
 });
 
-test("should update a category", async () => {
-  const category = await trpcClient.categories.update.mutate({
-    oldName: testCategory,
-    newName: faker.commerce.department(),
-  });
+// test("should update a category", async () => {
+//   const category = await trpcClient.categories.update.mutate({
+//     oldName: testCategory,
+//     newName: faker.commerce.department(),
+//   });
 
-  expect(category).toBeDefined();
-});
+//   expect(category).toBeDefined();
+// });
 
 test("should delete a category", async () => {
   const createCategory = await trpcClient.categories.create.mutate(

@@ -111,46 +111,46 @@ export const categoryRouterDefinition = t.router({
       return categories;
     }),
 
-  update: staffProcedure
-    .input(CategoryUpdateSchema)
-    .mutation(async ({ ctx, input }) => {
-      const { newName, oldName } = input;
+  // update: staffProcedure
+  //   .input(CategoryUpdateSchema)
+  //   .mutation(async ({ ctx, input }) => {
+  //     const { newName, oldName } = input;
 
-      const oldExistingCategory = await ctx.prisma.productCategory.findUnique({
-        where: {
-          name: oldName,
-        },
-      });
+  //     const oldExistingCategory = await ctx.prisma.productCategory.findUnique({
+  //       where: {
+  //         name: oldName,
+  //       },
+  //     });
 
-      if (!oldExistingCategory) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Category not found",
-        });
-      }
+  //     if (!oldExistingCategory) {
+  //       throw new TRPCError({
+  //         code: "BAD_REQUEST",
+  //         message: "Category not found",
+  //       });
+  //     }
 
-      const newExistingCategory = await ctx.prisma.productCategory.findUnique({
-        where: {
-          name: newName,
-        },
-      });
+  //     const newExistingCategory = await ctx.prisma.productCategory.findUnique({
+  //       where: {
+  //         name: newName,
+  //       },
+  //     });
 
-      if (newExistingCategory) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Category already exists",
-        });
-      }
+  //     if (newExistingCategory) {
+  //       throw new TRPCError({
+  //         code: "BAD_REQUEST",
+  //         message: "Category already exists",
+  //       });
+  //     }
 
-      const category = await ctx.prisma.productCategory.update({
-        where: {
-          name: oldName,
-        },
-        data: {
-          name: newName,
-        },
-      });
+  //     const category = await ctx.prisma.productCategory.update({
+  //       where: {
+  //         name: oldName,
+  //       },
+  //       data: {
+  //         name: newName,
+  //       },
+  //     });
 
-      return category;
-    }),
+  //     return category;
+  //   }),
 });
