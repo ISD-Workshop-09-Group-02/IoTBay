@@ -34,7 +34,6 @@ test("login as staff", async () => {
 });
 
 const testCategory = faker.commerce.department();
-const newTestCategory = faker.commerce.department();
 
 test("should create a new category", async () => {
   const category = await trpcClient.categories.create.mutate(testCategory);
@@ -42,17 +41,28 @@ test("should create a new category", async () => {
   expect(category).toBeDefined();
 });
 
+test("should get a new category", async () => {
+  const category = await trpcClient.categories.category.query(testCategory);
+
+  expect(category).toBeDefined();
+});
+
 test("should update a category", async () => {
   const category = await trpcClient.categories.update.mutate({
     oldName: testCategory,
-    newName: newTestCategory,
+    newName: faker.commerce.department(),
   });
 
   expect(category).toBeDefined();
 });
 
 test("should delete a category", async () => {
-  const category = await trpcClient.categories.delete.mutate(newTestCategory);
+  const createCategory = await trpcClient.categories.create.mutate(
+    faker.commerce.department()
+  );
+  const category = await trpcClient.categories.delete.mutate(
+    createCategory.name
+  );
 
   expect(category).toBeDefined();
 });
