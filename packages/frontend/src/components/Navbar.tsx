@@ -65,10 +65,7 @@ export default function Navbar() {
                 fontFamily={"heading"}
                 fontWeight={"semibold"}
               >
-                IoTBay -{" "}
-                {data?.userType === "staff"
-                  ? "Staff"
-                  : "Customer"}
+                IoTBay - {data?.userType === "staff" ? "Staff" : "Customer"}
               </Text>
             </Stack>
           </Link>
@@ -111,7 +108,11 @@ export default function Navbar() {
                 <Button as={Link} to="/staff" variant={"link"}>
                   Staff Dashboard
                 </Button>
-              ) : null}
+              ) : (
+                <Button as={Link} to="/browse" variant={"link"}>
+                  Browse Inventory
+                </Button>
+              )}
               <Button
                 as={Link}
                 fontSize={"sm"}
