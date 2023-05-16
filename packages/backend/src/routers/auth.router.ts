@@ -40,6 +40,11 @@ const authRouter = t.router({
           name,
           phone,
           address,
+          customerDetails: {
+            create: {
+              sex: input.sex,
+            },
+          }
         },
       });
 

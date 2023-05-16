@@ -6,6 +6,7 @@ import {
   FormHelperText,
   FormLabel,
   Input,
+  Select,
   Stack,
   Text,
   useToast,
@@ -118,6 +119,24 @@ export default function Register() {
             <FormHelperText>Enter your password.</FormHelperText>
           )}
         </FormControl>
+        <FormControl isInvalid={!!errors.sex } isRequired>
+                    <FormLabel>Sex</FormLabel>
+                    <Select
+                      variant="filled"
+                      id="category"
+                      {...register("sex", {
+                        required: "Sex is required",
+                      })}
+                      
+                    >
+                     <option value="male">Male</option>
+                     <option value="female">Female</option>
+                     <option value={"other"}>Other</option>
+                    </Select>
+                    <FormErrorMessage>
+                      {errors.sex && errors.sex.message}
+                    </FormErrorMessage>
+                  </FormControl>
         <Button type="submit" isLoading={isSubmitting}>
           Submit
         </Button>
