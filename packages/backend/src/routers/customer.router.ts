@@ -1,7 +1,7 @@
 import { t } from "../trpc";
 import { staffProcedure, customerProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
-import argon2 from "argon2";
+//import argon2 from "argon2";
 import {
   CustomerAnonymousSchema,
   CustomerEditMyDetails,
@@ -18,7 +18,7 @@ export const customerRouterDefinition = t.router({
   myCustomer: customerProcedure.query(async ({ ctx }) => {
     const customer = await ctx.prisma.customerDetails.findUnique({
       where: {
-        customerId: ctx.user?.userId,
+        userId: ctx.user?.userId,
       },
     });
 
@@ -40,7 +40,7 @@ export const customerRouterDefinition = t.router({
     .mutation(async ({ ctx, input }) => {
       const existingCustomer = await ctx.prisma.customerDetails.findUnique({
         where: {
-          customerId: ctx.user?.userId,
+          userId: ctx.user?.userId,
         },
       });
 
@@ -53,7 +53,7 @@ export const customerRouterDefinition = t.router({
 
       const customer = await ctx.prisma.customerDetails.update({
         where: {
-          customerId: ctx.user?.userId,
+          userId: ctx.user?.userId,
         },
         data: {
           isAnonymous: input.isAnonymous,
@@ -74,7 +74,7 @@ export const customerRouterDefinition = t.router({
   .query(async ({ ctx, input }) => {
     const customer = await ctx.prisma.customerDetails.findUnique({
       where: {
-        customerId: input,
+        userId: input,
       },
     });
 
@@ -96,7 +96,7 @@ export const customerRouterDefinition = t.router({
     edit: staffProcedure.input(CustomerEditSchema).mutation(async ({ctx, input}) => {
       const existingCustomer = await ctx.prisma.customerDetails.findUnique({
         where: {
-          customerId: input.customerId,
+          userId: input.customerId,
         },
       });
 
@@ -109,7 +109,7 @@ export const customerRouterDefinition = t.router({
 
       const customer = await ctx.prisma.customerDetails.update({
         where: {
-          customerId: input.customerId,
+          userId: input.customerId,
         },
         data: {
         isAnonymous: input.isAnonymous,
@@ -128,7 +128,7 @@ export const customerRouterDefinition = t.router({
 
       const existingDetails = await ctx.prisma.customerDetails.findUnique({
         where: {
-          customerId: ctx.user?.userId
+          userId: ctx.user?.userId
         },
       })
 
