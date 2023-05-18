@@ -25,6 +25,7 @@ import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 import BrowseInventory from "./features/IoTPublicCatalogue/pages/BrowseInventory";
+import TestPage from "./features/OrderManagement/pages/TestPage";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
+      },
+      {
+        path: "testPage",
+        element: <TestPage/>
       },
       {
         path: "staff",
