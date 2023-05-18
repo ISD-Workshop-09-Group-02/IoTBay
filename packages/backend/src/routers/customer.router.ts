@@ -1,14 +1,12 @@
 import { t } from "../trpc";
 import { staffProcedure, customerProcedure } from "../trpc/utils";
 import { TRPCError } from "@trpc/server";
-//import argon2 from "argon2";
 import {
   CustomerAnonymousSchema,
   CustomerEditMyDetails,
   CustomerEditSchema,
   CustomerSchema,
 } from "../schema/customer.schema";
-import { CustomerDetails, User } from "@prisma/client";
 
 export const customerRouterDefinition = t.router({
 
@@ -96,7 +94,7 @@ export const customerRouterDefinition = t.router({
     edit: staffProcedure.input(CustomerEditSchema).mutation(async ({ctx, input}) => {
       const existingCustomer = await ctx.prisma.customerDetails.findUnique({
         where: {
-          userId: input.customerId,
+          userId: input.userId,
         },
       });
 
@@ -109,7 +107,7 @@ export const customerRouterDefinition = t.router({
 
       const customer = await ctx.prisma.customerDetails.update({
         where: {
-          userId: input.customerId,
+          userId: input.userId,
         },
         data: {
         isAnonymous: input.isAnonymous,
@@ -159,6 +157,7 @@ export const customerRouterDefinition = t.router({
       const customers = await ctx.prisma.customerDetails.findMany();
 
       return customers;
+
     })
 
 });

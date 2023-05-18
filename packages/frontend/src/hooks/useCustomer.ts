@@ -4,8 +4,13 @@ import React from "react";
 const customerKey = "customer";
 
 // getMycustomer (currenty logged in)
-export function useGetMyCustomer() {
+export function useMyCustomer() {
+  const context = trpcReact.useContext();
   return trpcReact.customer.myCustomer.useQuery();
+}
+// getCustomer (Get customer :/ customerId)
+export function useGetCustomer(customerId: string) {
+  return trpcReact.customer.customer.useQuery(customerId);
 }
 
 // getCustomers (GET for customers management by staffs) /
@@ -31,69 +36,58 @@ export function useGetCustomers({
   };
 }
 
-// createCustomer (CREATE) /
-export function useCreateProduct() {
+// deleteCustomer by userself (DELETE) /
+export function useDeleteMyCustomer() {
   const context = trpcReact.useContext();
 
-  return trpcReact.products.create.useMutation({
+  return trpcReact.users.deleteMe.useMutation({
     onSuccess: () => {
-      context.products.products.invalidate();
-    }
-  });
-}
-
-// deleteProduct (DELETE) /
-export function useDeleteProduct() {
-  const context = trpcReact.useContext();
-
-  return trpcReact.products.delete.useMutation({
-    onSuccess: () => {
-      context.products.products.invalidate();
+      context.customer.customers.invalidate();
     },
   });
 }
 
-// deleteProducts (DELETE) /
-export function useDeleteProducts() {
-  // const queryClient = useQueryClient();
-  // return useMutation<ProductsCollectionSchema, ApiError, string[]>(
-  //   (productId) =>
-  //     api.products.deleteProducts({
-  //       products: productId,
-  //     }),
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries([productKey]);
-  //     },
-  //     onMutate: async (productId) => {
-  //       await queryClient.cancelQueries([productKey]);
-  //       const previousProducts = queryClient.getQueryData([productKey]);
-  //       queryClient.setQueryData([productKey], (old: any) => {
-  //         return old.filter((product: ProductsSchema) => {
-  //           return !productId.includes(product.productId);
-  //         });
-  //       });
-  //       return { previousProducts };
-  //     },
-  //   }
-  // );
+// deleteCustomer by staff (DELETE) 
+export function useDeleteCustomer() {
+  const context = trpcReact.useContext();
+
+  return trpcReact.users.deleteUser.useMutation({
+    onSuccess: () => {
+      context.customer.customers.invalidate();
+    },
+  });
+}
+
+// deleteManyCustomer by staff (DELETE) 
+/*export function useDeleteCustomers() {
 
   const context = trpcReact.useContext();
 
-  return trpcReact.products.deleteMany.useMutation({
+  return trpcReact.users.deleteMany.useMutation({
     onSuccess: () => {
-      context.products.products.invalidate();
+      context.customer.customers.invalidate();
+    }
+  });
+}*/
+
+// editCustomer by customer-self (UPDATE) /
+export function useEditMyCustomer() {
+  const context = trpcReact.useContext();
+
+  return trpcReact.customer.editMyCustomer.useMutation({
+    onSuccess: () => {
+      context.customer.customers.invalidate();
     }
   });
 }
 
-// updateProduct (PUT) /
-export function useUpdateProduct() {
+// editCustomers by staff (UPDATE) /
+export function useEditCustomers() {
   const context = trpcReact.useContext();
 
-  return trpcReact.products.update.useMutation({
+  return trpcReact.customer.edit.useMutation({
     onSuccess: () => {
-      context.products.products.invalidate();
+      context.customer.customers.invalidate();
     }
   });
 }

@@ -11,7 +11,7 @@ export const CustomerEditMyDetails = z.object({
 })
 
 export const CustomerEditSchema = z.object({
-  customerId: z.string(),
+  userId: z.string().optional(),
   isAnonymous: z.boolean().optional(),
   sex: z.string().optional(),
 })
