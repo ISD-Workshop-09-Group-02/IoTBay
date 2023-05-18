@@ -13,9 +13,9 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import useRegister from "../hooks/useRegistering";
 import { useNavigate } from "react-router-dom";
-import useZodForm from "../hooks/useZocForm";
 import { RegisterSchema, StaffCreateSchema } from "backend/src/schema";
 import { isTRPCClientError } from "../../../utils/trpc";
+import useZodForm from "../../../hooks/useZodForm";
 
 export default function StaffRegister() {
   const registerMutation = useRegister();

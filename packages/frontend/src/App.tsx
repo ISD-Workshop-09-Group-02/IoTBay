@@ -110,10 +110,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
-      {
-        path: "/CreateStaff",
-        element: <CreateStaff />,
-      },
+      
       {
         path: "/profile",
         loader: profileLoader(queryClient),
@@ -126,6 +123,10 @@ const router = createBrowserRouter([
       {
         path: "/browse",
         element: <BrowseInventory />,
+      },
+      {
+        path: "/CreateStaff",
+        element: <CreateStaff />,
       },
     ],
   },
