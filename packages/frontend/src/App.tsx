@@ -26,6 +26,8 @@ import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCProxyClient, createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import SuperJSON from "superjson";
 import BrowseInventory from "./features/IoTPublicCatalogue/pages/BrowseInventory";
+import StaffManagement from "./features/StaffManagement/pages/StaffManagement";
+import CreateStaff from "./features/StaffManagement/pages/CreateStaff";
 
 const queryClient = new QueryClient();
 
@@ -105,6 +107,11 @@ const router = createBrowserRouter([
             }
             ]
           },
+          {
+            path: "staff",
+            element: <StaffManagement />,
+          },
+          
         ],
       },
       {
@@ -115,6 +122,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      
       {
         path: "/profile",
         loader: profileLoader(queryClient),
@@ -127,6 +135,10 @@ const router = createBrowserRouter([
       {
         path: "/browse",
         element: <BrowseInventory />,
+      },
+      {
+        path: "/CreateStaff",
+        element: <CreateStaff />,
       },
     ],
   },
