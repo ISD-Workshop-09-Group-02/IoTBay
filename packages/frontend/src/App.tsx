@@ -26,6 +26,8 @@ import { createTRPCReact } from "@trpc/react-query";
 import SuperJSON from "superjson";
 import BrowseInventory from "./features/IoTPublicCatalogue/pages/BrowseInventory";
 import TestPage from "./features/OrderManagement/pages/TestPage";
+import StaffManagement from "./features/StaffManagement/pages/StaffManagement";
+import CreateStaff from "./features/StaffManagement/pages/CreateStaff";
 
 const queryClient = new QueryClient();
 
@@ -70,7 +72,7 @@ const router = createBrowserRouter([
       },
       {
         path: "testPage",
-        element: <TestPage/>
+        element: <TestPage />,
       },
       {
         path: "staff",
@@ -98,6 +100,10 @@ const router = createBrowserRouter([
             path: "users",
             element: <UserManagement />,
           },
+          {
+            path: "staff",
+            element: <StaffManagement />,
+          },
         ],
       },
       {
@@ -108,6 +114,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+
       {
         path: "/profile",
         loader: profileLoader(queryClient),
@@ -120,6 +127,10 @@ const router = createBrowserRouter([
       {
         path: "/browse",
         element: <BrowseInventory />,
+      },
+      {
+        path: "/CreateStaff",
+        element: <CreateStaff />,
       },
     ],
   },

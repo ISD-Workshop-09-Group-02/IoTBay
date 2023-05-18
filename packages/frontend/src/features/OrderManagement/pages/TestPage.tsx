@@ -1,11 +1,11 @@
 import { Button, Text } from "@chakra-ui/react";
 import React from "react";
 import { useCreateOrder } from "../../../hooks/useOrders";
-import {useMe} from "../../../hooks/useMe"
+import useMe from "../../../hooks/useMe";
 
 const TestPage = () => {
-const createOrder = useCreateOrder();
-const me = useMe();
+  const createOrder = useCreateOrder();
+  const me = useMe();
 
   return (
     <div>
