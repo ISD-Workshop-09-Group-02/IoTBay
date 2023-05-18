@@ -19,7 +19,7 @@ export function useGetCustomers({
   const filteredData = React.useMemo(() => {
     if (customerFilter) {
       return data?.filter((customer) =>
-        customer.customerId.toLowerCase().includes(customerFilter.toLowerCase())
+        customer.userId.toLowerCase().includes(customerFilter.toLowerCase())
       ) || [];
     }
     return data || [];
