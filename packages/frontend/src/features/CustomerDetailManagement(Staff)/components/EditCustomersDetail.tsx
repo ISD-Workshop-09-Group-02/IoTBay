@@ -50,12 +50,15 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
   } = useForm<FormValues>({
     defaultValues: {
       isAnonymous: props.initialCustomer.isAnonymous,
-      sex: props.initialCustomer.sex,
+      sex: props.initialCustomer.sex ?? undefined,
     },
   });
 
   useEffect(() => {
-    reset(customer.data)
+    reset({
+      isAnonymous: customer.data?.isAnonymous,
+      sex: customer.data?.sex ?? undefined,
+    })
   }, [customer.data])
 
   return (

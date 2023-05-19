@@ -60,7 +60,7 @@ const CustomerTable: React.FC<ICustomerTableProps> = ({
                   <TableRow
                     key={element.userId}
                     userId={element.userId}
-                    sex={element.sex}
+                    sex={element.sex ?? "Unknown"}
                     isAnonymous={element.isAnonymous}
                     isSelect={selectedItems.includes(element.userId)}
                     setSelectedItems={setSelectedItems}
