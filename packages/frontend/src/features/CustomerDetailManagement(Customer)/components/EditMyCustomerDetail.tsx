@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import useZodForm from "../../../hooks/useZodForm";
 import { CustomerEditSchema } from "backend/src/schema";
 import { SubmitHandler } from "react-hook-form";
-import { useEditCustomers, useGetCustomer } from "../../../hooks/useCustomer";
+import { useEditMyCustomer, useGetCustomer } from "../../../hooks/useCustomer";
 import { isTRPCClientError } from "../../../utils/trpc";
 
 export type FormValues = {
@@ -31,13 +31,13 @@ export type FormValues = {
 };
 
 interface IEditUpdateCustomerProps {
-  initialCustomer: RouterOutput["customer"]["customer"];
+  initialCustomer: RouterOutput["customer"]["myCustomer"];
 }
 
-const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
+const EditMyCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
   const customer = useGetCustomer(props.initialCustomer.userId);
 
-  const updateCustomer = useEditCustomers();
+  const updateCustomer = useEditMyCustomer();
 
   const toast = useToast()
 
@@ -61,16 +61,16 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
   return (
     <Container maxW={"container.xl"}>
       <Stack spacing={4}>
-        <PageTitle title={"Edit Customer"} />
+        <PageTitle title={"Edit My Detail"} />
         <BreadCrumbRoute
           parameters={[
             {
-              paths: "Manage Customers Detail",
-              links: "/staff/customerDetail",
+              paths: "My Detail",
+              links: "/profile/myDetail",
             },
             {
               paths: "Edit Customer",
-              links: `/staff/customerDetail/edit/${props.initialCustomer.userId}`,
+              links: "/profile/myDetail/edit",
             },
           ]}
         />
@@ -80,11 +80,10 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
             try {
               await updateCustomer.mutateAsync({
                 ...data,
-                userId: props.initialCustomer.userId,
               });
               toast({
                 title: "Success",
-                description: "Successfully updated customer",
+                description: "Successfully updated detail",
                 colorScheme: "green"
               })
   
@@ -136,7 +135,7 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
                 type="submit"
                 isLoading={isSubmitting}
               >
-                Update Customer
+                Update Detail
               </Button>
               <Button
                 colorScheme="red"
@@ -144,7 +143,7 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
                 size="lg"
                 leftIcon={<CloseIcon />}
                 as={Link}
-                to="/staff/customerDetail"
+                to="/profile/myDetail"
               >
                 Cancel
               </Button>
@@ -156,4 +155,4 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
   );
 };
 
-export default EditCustomersDetail;
+export default EditMyCustomersDetail;

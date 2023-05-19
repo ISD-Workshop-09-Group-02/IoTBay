@@ -22,6 +22,8 @@ import UserManagement from "./features/UserManagement/pages/UserManagement";
 import StaffDashboard from "./pages/StaffDashboard";
 import CustomerManagement from "./features/CustomerDetailManagement(Staff)/pages/CustomersDetailPage";
 import CustomerManagementEdit from "./features/CustomerDetailManagement(Staff)/pages/CustomersEditPage";
+import MyCustomerDetail from "./features/CustomerDetailManagement(Customer)/pages/MyCustomerDetailPage";
+import MyCustomerDetailEdit from "./features/CustomerDetailManagement(Customer)/pages/MyCustomerEditPage";
 import type { AppRouter } from "backend/src/routers/root.router";
 import { createTRPCProxyClient, createTRPCReact, httpBatchLink } from "@trpc/react-query";
 import SuperJSON from "superjson";
@@ -125,8 +127,20 @@ const router = createBrowserRouter([
       
       {
         path: "/profile",
-        loader: profileLoader(queryClient),
-        element: <Profile />,
+        children: [
+          { index: true, loader: profileLoader(queryClient), element: <Profile />,},
+          {
+            path: "myDetail",
+            children: [
+              {index: true, element: <MyCustomerDetail/>,},
+              {
+                path: "edit",
+                element: <MyCustomerDetailEdit/>,
+              },
+            ]
+            
+          }
+          ]
       },
       {
         path: "/logout",

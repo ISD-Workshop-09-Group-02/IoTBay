@@ -1,5 +1,6 @@
-import { Box, Code, Container, Stack, Text } from "@chakra-ui/react";
+import { Box, Code, Container, Stack, Text, Button } from "@chakra-ui/react";
 import useMe from "../hooks/useMe";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const { data: me } = useMe();
@@ -22,6 +23,10 @@ export default function Profile() {
             
         </Box>
       </Stack>
+      <Button as={Link} to="/profile/myDetail">
+            More Detail
+        </Button>
     </Container>
+    
   );
 }
