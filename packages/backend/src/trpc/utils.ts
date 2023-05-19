@@ -16,7 +16,12 @@ const enforceLoggedIn = t.middleware(({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
-  return next();
+  return next({
+    ctx: {
+      ...ctx,
+      user: ctx.user as Omit<User, "password">,
+    },
+  });
 });
 
 /**
@@ -30,12 +35,16 @@ const enforceLoggedIn = t.middleware(({ ctx, next }) => {
 export const loggedInProcedure = t.procedure.use(enforceLoggedIn);
 
 const enforceStaff = t.middleware(({ ctx, next }) => {
-    if (ctx.user?.userType !== "staff") {
-        throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next();
-    }
-);
+  if (ctx.user?.userType !== "staff") {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      ...ctx,
+      user: ctx.user as Omit<User, "password">,
+    },
+  });
+});
 
 export const staffProcedure = t.procedure.use(enforceStaff);
 

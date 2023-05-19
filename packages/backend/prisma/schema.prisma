@@ -82,7 +82,7 @@ model Order {
   total         Float
   userId        String
   user          User            @relation(fields: [userId], references: [userId])
-  paymentId     String
+  paymentId     String?
   payment       Payment?
   shipmentId    String?
   shipment      Shipment?

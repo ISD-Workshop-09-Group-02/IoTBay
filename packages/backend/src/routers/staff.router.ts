@@ -25,9 +25,14 @@ export const staffRouterDefinition = t.router({
         data: {
           userType: "staff",
           staffDetails: {
-            create: {
+            connectOrCreate: {
+              where: {
+                userId: input.userId,
+              },
+              create: {
               position: input.position,
               isActivated: true,
+              }
             },
           },
         },
@@ -44,6 +49,14 @@ export const staffRouterDefinition = t.router({
   deactivate: staffProcedure
     .input(StaffDeactivateSchema)
     .mutation(async ({ ctx, input }) => {
+
+      if (ctx.user.userId === input) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cannot deactivate yourself",
+        });
+      }
+
       const { password, ...user } = await ctx.prisma.user.update({
         where: {
           userId: input,

@@ -16,9 +16,11 @@ export default function EditInventory() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  const updateProductFunction = async (data: RouterInput["products"]["update"]) => {
+  const updateProductFunction = async (
+    data: RouterInput["products"]["update"]
+  ) => {
     try {
-      updateProduct.mutateAsync({
+      await updateProduct.mutateAsync({
         productId: data.productId,
         name: data.name,
         price: data.price,
@@ -51,7 +53,6 @@ export default function EditInventory() {
           duration: 5000,
         });
       }
-      
     }
   };
 
