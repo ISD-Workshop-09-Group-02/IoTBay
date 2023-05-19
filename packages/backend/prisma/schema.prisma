@@ -38,7 +38,7 @@ model CustomerDetails {
   user        User    @relation(fields: [userId], references: [userId], onDelete: Cascade)
   userId      String  @id
   isAnonymous Boolean @default(false)
-  sex         String
+  sex         String?
 }
 
 model StaffDetails {

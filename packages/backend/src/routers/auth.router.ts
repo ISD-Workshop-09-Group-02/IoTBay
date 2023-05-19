@@ -33,24 +33,45 @@ const authRouter = t.router({
 
       const passwordHash = await argon2.hash(passwordInput);
 
-      const { password, ...user } = await ctx.prisma.user.create({
+      const customer  = await ctx.prisma.user.create({
         data: {
           email,
           password: passwordHash,
           name,
           phone,
           address,
-          customerDetails: {
-            create: {
-              sex: input.sex,
-            },
-          }
         },
       });
 
+      const customerDetails = await ctx.prisma.customerDetails.create({
+        data: {
+          userId: customer.userId,
+        }
+      });
+
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          userId: customer.userId,
+        },
+        include: {
+          customerDetails: true,
+        }
+      });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "User does not exist",
+        });
+      }
+
+      const { password, ...userdata } = user;
+
+     
+
       ctx.req.session.set("passport", user.userId);
 
-      return user;
+      return userdata;
     }),
 
   login: publicProcedure.input(LoginSchema).mutation(async ({ ctx, input }) => {
