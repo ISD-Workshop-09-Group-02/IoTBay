@@ -283,6 +283,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="stock"
                       {...register("stock", {
+                        valueAsNumber: true,
                         required: "Stock is required",
                         max: {
                           value: 9999,
@@ -316,6 +317,7 @@ const EditUpdateInventory: React.FC<IEditUpdateInventoryProps> = (props) => {
                       variant="filled"
                       id="price"
                       {...register("price", {
+                        valueAsNumber: true,
                         required: "Price is required",
                         max: {
                           value: 9999,

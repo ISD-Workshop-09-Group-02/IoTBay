@@ -15,7 +15,7 @@ export default function CreateInventory() {
     data: RouterInput["products"]["create"]
   ) => {
     try {
-      createProduct.mutateAsync({
+      await createProduct.mutateAsync({
         name: data.name,
         price: data.price,
         image: data.image,
