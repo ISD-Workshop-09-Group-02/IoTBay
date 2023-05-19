@@ -20,7 +20,6 @@ export const ordersRouterDefinition = t.router({
   createOrder: loggedInProcedure
     .input(OrderCreateSchema)
     .mutation(async ({ ctx, input }) => {
-      // Create a new order for the specific user
       const order = await ctx.prisma.order.create({
         data: {
           userId: ctx.user.userId,
@@ -29,7 +28,30 @@ export const ordersRouterDefinition = t.router({
         },
       });
 
-      return order.orderId;
+      const initialLineItem = await ctx.prisma.orderLineItem.create({
+        data: {
+          quantity: input.products.quantity,
+          productId: input.products.productId,
+          orderId: order.orderId,
+          userId: ctx.user.userId,
+        }
+      })
+
+      const orderWithLineItem = await ctx.prisma.order.findUnique({
+        where: {
+          orderId: order.orderId,
+        },
+        include: {
+          orderLineItem: true,
+        },
+      });
+
+
+
+      // Create a new order for the specific user
+      
+
+      return orderWithLineItem;
     }),
 
   /**
