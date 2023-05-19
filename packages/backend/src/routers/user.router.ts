@@ -63,5 +63,29 @@ export const userRouterDefinition = t.router({
       });
 
       return user;
-    }),
+    
+  }),
+
+  /*deleteMany: staffProcedure
+  .input(UserSchema)
+  .mutation(async ({ ctx, input }) => {
+    const products = await ctx.prisma.user.findMany({
+      where: {
+        userId: input,
+      },
+    });
+
+    if (!products) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User not found",
+      });
+    }
+
+    return ctx.prisma.user.deleteMany({
+      where: {
+        userId: input
+      },
+    });
+  })*/
 });

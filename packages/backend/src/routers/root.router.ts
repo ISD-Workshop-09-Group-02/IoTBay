@@ -5,6 +5,9 @@ import { ordersRouterDefinition } from "./order.router";
 import { productsRouterDefinition } from "./products.router";
 import { staffRouterDefinition } from "./staff.router";
 import { userRouterDefinition } from "./user.router";
+import { customerRouterDefinition } from './customer.router'
+
+
 
 export const appRouter = t.router({
   auth: authRouterDefinition,
@@ -13,6 +16,7 @@ export const appRouter = t.router({
   categories: categoryRouterDefinition,
   staff: staffRouterDefinition,
   orders: ordersRouterDefinition,
+  customer: customerRouterDefinition,
 });
 
 // export type definition of API
