@@ -8,6 +8,8 @@ import {
   FormErrorMessage,
   FormControl,
   FormLabel,
+  Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
@@ -17,7 +19,11 @@ import { useForm } from "react-hook-form";
 import FormErrorNotification from "../../../components/Form/FormErrorNotification";
 import type { RouterInput, RouterOutput } from "backend/src";
 import { Link } from "react-router-dom";
-
+import useZodForm from "../../../hooks/useZodForm";
+import { CustomerEditSchema } from "backend/src/schema";
+import { SubmitHandler } from "react-hook-form";
+import { useEditCustomers, useGetCustomer } from "../../../hooks/useCustomer";
+import { isTRPCClientError } from "../../../utils/trpc";
 
 export type FormValues = {
   sex: string;
@@ -25,105 +31,103 @@ export type FormValues = {
 };
 
 interface IEditUpdateCustomerProps {
-
-  updateCustomer?: (data: RouterInput["customer"]["edit"]) => void;
-
-  initialFormValues?: FormValues;
-
-  editId?: string;
+  initialCustomer: RouterOutput["customer"]["customer"];
 }
 
 const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
-  const initialDefaultValues = {
-    sex: "",
-    isAnonymous: false
-  } as FormValues;
+  const customer = useGetCustomer(props.initialCustomer.userId);
 
-  const isPropsNull = () => {
-    if (!props.initialFormValues) return true;
-    if (Object.keys(props.initialFormValues).length === 0) return true;
+  const updateCustomer = useEditCustomers();
 
-    const value = Object.values(props.initialFormValues).some(
-      (value) => value === null || value === undefined || value === ""
-    );
-
-    return value;
-  };
+  const toast = useToast()
 
   const {
     handleSubmit, // function to invoke when the form is submitted
     register, // register the input into the hook by invoking the "register" function
-    formState: { errors, defaultValues },
+    formState: { errors, defaultValues, isSubmitting },
     reset,
     setValue,
-  } = useForm({
-    defaultValues: isPropsNull()
-      ? initialDefaultValues
-      : props.initialFormValues,
+  } = useForm<FormValues>({
+    defaultValues: {
+      isAnonymous: props.initialCustomer.isAnonymous,
+      sex: props.initialCustomer.sex,
+    },
   });
 
-  const onSubmit = (data: any) => {
-    const dataFormatted = { ...data };
-    props.updateCustomer && props.updateCustomer(dataFormatted);
-  };
-
   useEffect(() => {
-    if (props.initialFormValues) {
-      reset(props.initialFormValues);
-    }
-  }, [props.initialFormValues]);
-  
-
+    reset(customer.data)
+  }, [customer.data])
 
   return (
     <Container maxW={"container.xl"}>
       <Stack spacing={4}>
-        <PageTitle
-          title={
-            "Edit Customer"
-          }
-        />
+        <PageTitle title={"Edit Customer"} />
         <BreadCrumbRoute
           parameters={[
-            { paths: "Manage Customers Detail", links: "/staff/customerDetail" },
             {
-              paths:
-                    "Edit Customer",
-              links:
-                `/staff/customerDetail/edit/${props.editId}`,
+              paths: "Manage Customers Detail",
+              links: "/staff/customerDetail",
+            },
+            {
+              paths: "Edit Customer",
+              links: `/staff/customerDetail/edit/${props.initialCustomer.userId}`,
             },
           ]}
         />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-                <FormErrorNotification errors={errors} />
-                  <FormControl isInvalid={errors.sex ? true : false}>
-                    <FormLabel>Gender</FormLabel>
-                    <Select
-                      placeholder="Filter by sex"
-                      variant="filled"
-                      id="sex"
-                      {...register("sex", {
-                        required: "Gender must be required",
-                      })}
-                      defaultValue={
-                        defaultValues !== undefined && defaultValues.sex
-                          ? defaultValues.sex
-                          : initialDefaultValues.sex
-                      }
-                    >
-                        return (
-                          <option value= "male">male</option>
-                          <option value= "female">female</option>
-                          <option value= "other">other</option>
-                        );  
-                    </Select>
-                    <FormErrorMessage>
-                      {errors.sex && errors.sex.message}
-                    </FormErrorMessage>
-                  </FormControl>
+        <form
+          onSubmit={handleSubmit(async (data) => {
+            try {
+              await updateCustomer.mutateAsync({
+                ...data,
+                userId: props.initialCustomer.userId,
+              });
+              toast({
+                title: "Success",
+                description: "Successfully updated customer",
+                colorScheme: "green"
+              })
+  
+            } catch (error) {
+              if (isTRPCClientError(error)) {
+                toast({
+                  title: "Error",
+                  description: error.message,
+                  colorScheme: "red"
+                })
+              } else {
+                toast({
+                  title: "Error",
+                  description: "Something went wrong",
+                  colorScheme: "red"
+                })
+              }
+            }
+            
+            
+          })}
+        >
+          <FormErrorNotification errors={errors} />
+          <FormControl isInvalid={errors.sex ? true : false}>
+            <FormLabel>Gender</FormLabel>
+            <Select
+              variant="filled"
+              id="sex"
+              {...register("sex", {
+                required: "Gender must be required",
+              })}
+            >
+              <option value="male">male</option>
+              <option value="female">female</option>
+              <option value="other">other</option>
+            </Select>
+            <FormErrorMessage>
+              {errors.sex && errors.sex.message}
+            </FormErrorMessage>
+          </FormControl>
 
-              <FormControl isInvalid={errors.isAnonymous ? true : false}>
+          <Checkbox {...register("isAnonymous")}>Anonymous</Checkbox>
+          {/* <FormControl isInvalid={errors.isAnonymous ? true : false}>
                 <FormLabel>Anonymous</FormLabel>
                 <Select
                   placeholder="Anonymous Statement"
@@ -141,34 +145,34 @@ const EditCustomersDetail: React.FC<IEditUpdateCustomerProps> = (props) => {
                 <FormErrorMessage>
                   {errors.isAnonymous && errors.isAnonymous.message}
                 </FormErrorMessage>
-              </FormControl>
-      <Box>
-      <HStack spacing={2} align="center" justify="flex-end">
-          <Button
-            colorScheme="blue"
-            size="lg"
-            leftIcon={<AddIcon />}
-            type="submit"
-          >
-            Update Customer
-          </Button>
-        <Button
-          colorScheme="red"
-          variant={"outline"}
-          size="lg"
-          leftIcon={<CloseIcon />}
-          as={Link}
-          to="/staff/customerDetail"
-        >
-          Cancel
-        </Button>
-      </HStack>
-    </Box>
+              </FormControl> */}
+          <Box>
+            <HStack spacing={2} align="center" justify="flex-end">
+              <Button
+                colorScheme="blue"
+                size="lg"
+                leftIcon={<AddIcon />}
+                type="submit"
+                isLoading={isSubmitting}
+              >
+                Update Customer
+              </Button>
+              <Button
+                colorScheme="red"
+                variant={"outline"}
+                size="lg"
+                leftIcon={<CloseIcon />}
+                as={Link}
+                to="/staff/customerDetail"
+              >
+                Cancel
+              </Button>
+            </HStack>
+          </Box>
         </form>
       </Stack>
     </Container>
-    );
-  };
-
+  );
+};
 
 export default EditCustomersDetail;
