@@ -202,4 +202,27 @@ export const ordersRouterDefinition = t.router({
 
       return updatedOrder;
     }),
+
+    getOrder: loggedInProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const order = await ctx.prisma.order.findUnique({
+        where: {
+          orderId: input,
+        },
+        include: {
+          orderLineItem: true,
+        },
+      });
+
+      if (order?.userId !== ctx.user?.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to view this order",
+        });
+      }
+
+      return order;
+    }
+  ),
 });
